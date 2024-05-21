@@ -1,0 +1,100 @@
+﻿@using Garaaz.Models
+@{
+    ViewBag.Title = "Dashboard - Sales Growth";
+    var prodGroups = ViewBag.ProdGroups as SelectList;
+}
+@section AddToHead{
+    <script src="~/vendor/chart-js/Chart.bundle.min.js"></script>
+}
+
+<div class="kt-subheader-search">
+    <h3 class="kt-subheader-search__title">
+        Dashboard - Sales
+    </h3>
+</div>
+
+<header class="ribbon">
+    <h2>&nbsp;</h2>
+</header>
+<div class="page-content">
+    <div class="container-fluid">
+        @{Html.RenderPartial("alerts");}
+        <div id="main-content">
+            <input type="hidden" id="hdnGroupId" />
+            <input type="hidden" id="hdnFrequency" />
+            <input type="hidden" id="hdnGrowth" />
+            <div class="row">
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>Product Group</label>
+                        <select class="form-control" id="ddlProductGroup">
+                            @foreach (var item in prodGroups)
+                            {
+                                <option value="@item.Value">@item.Text</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>Start Date</label>
+                        <input type="text" data-format="0:MM/dd/yyyy" class="form-control datepicker-txt" readonly id="startDate" placeholder="Select date">
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>End Date</label>
+                        <input type="text" data-format="0:MM/dd/yyyy" class="form-control datepicker-txt" readonly id="endDate" placeholder="Select date">
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>Frequency</label>
+                        <select id="ddlFrequency" class="form-control">
+                            <option value="">--Select Frequency--</option>
+                            @foreach (var frequency in Enum.GetValues(typeof(Frequency)))
+                            {
+                                <option value="@frequency.ToString()">@frequency.ToString()</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label>Growth</label>
+                        <select id="ddlGrowth" class="form-control">
+                            <option value="">--Select Growth--</option>
+                            @foreach (var growth in Enum.GetValues(typeof(Growth)))
+                            {
+                                <option value="@growth.ToString()">@growth.ToString()</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+                <div class="col-sm-2">
+                    <div class="form-group">
+                        <label></label>
+                        <button id="btnGenerate" class="btn btn-success btn-width mt-2" onclick="gChart.ShowSalesChart()">Generate</button>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2 ml-auto"><button id="btnCompare" class="btn btn-warning btn-width" onclick="gChart.CompareSalesChart()">Comparison</button></div>
+            </div>
+        </div>
+    </div>
+    <div id="chartContainer" class="pt-3">
+        <canvas id="salesChart"></canvas>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/js/chart.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            common.bindDatepicker();
+        });
+    </script>
+}
+
+

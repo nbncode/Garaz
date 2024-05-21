@@ -1,0 +1,50 @@
+﻿@model List<Garaaz.Models.DashboardOverview.LoserAndGainer.LoserAndGainerInfoResponse>
+@{
+    string errorMsg = ViewBag.ErrorMsg;
+    if (string.IsNullOrWhiteSpace(errorMsg) && Model == null)
+    {
+        errorMsg = "Model is not set";
+    }
+}
+
+@if (string.IsNullOrWhiteSpace(errorMsg) && Model != null)
+{
+<div class="row">
+    @foreach (var lg in Model)
+    {
+        <div class="col-md-12 col-lg-4 col-xl-4">
+            <a href="javascript:void(0);" onclick="dbLG.fetchLGDetailForSubGroup('@lg.Category')">
+                <div class="info-box info-sub">
+                    <div class="kt-widget24">
+                        <div class="kt-widget24__details">
+                            <div class="kt-widget24__info">
+                                <h4>
+                                    @lg.DateInfo
+                                </h4>
+                                <span class="kt-widget24__desc dbRed">
+                                    <span>@lg.Loosers</span>
+                                </span><br>
+                                <span class="kt-widget24__desc dbGreen">
+                                    <span class="pr-1">
+                                        @lg.Gainers
+                                    </span>
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <h4 class="kt-widget24__title" style="text-align: center;">
+                        @lg.Footer
+                    </h4>
+                </div>
+            </a>
+        </div>
+    }
+</div>
+}
+else
+{
+    <p class="kt-font-bold">
+        <i class="kt-font-warning flaticon-warning-sign"></i>
+        &nbsp;@errorMsg
+    </p>
+}

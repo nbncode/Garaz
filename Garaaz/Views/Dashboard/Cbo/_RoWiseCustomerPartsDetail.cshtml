@@ -1,0 +1,83 @@
+﻿@model List<Garaaz.Models.DashboardOverview.Cbo.CustomerPartDetail>
+
+@{
+    const string noRecordFound = "Sorry! No record found for selected criteria";
+
+    string errorMsg = ViewBag.ErrorMsg;
+    if (string.IsNullOrWhiteSpace(errorMsg) && Model == null)
+    {
+        errorMsg = "Model is not set";
+    }
+}
+
+@if (string.IsNullOrWhiteSpace(errorMsg) && Model != null)
+{
+    if (Model.Count > 0)
+    {
+        <div class="table-responsive">
+            <table class="table table-bordered w-auto table-center">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Sr No</th>
+                        <th>Co Date</th>
+                        <th>Loc Code</th>
+                        <th>Part Number</th>
+                        <th>Part Desc</th>
+                        <th>Order</th>
+                        <th>Unit Price</th>
+                        <th>Order Value</th>
+                        <th>CBO</th>
+                        <th>StkMW</th>
+                        <th>ETA</th>
+                        <th>Inv</th>
+                        <th>Pick</th>
+                        <th>Alloc</th>
+                        <th>BO</th>
+                        <th>AO</th>
+                        <th>Action</th>
+                        <th>PD</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var cpd in Model)
+                    {
+                        <tr>
+                            <td>@cpd.SlNo</td>
+                            <td>@cpd.CoDate.ToString("dd-MM-yyyy")</td>
+                            <td>@cpd.LocCode</td>
+                            <td>@cpd.PartNum</td>
+                            <td>@cpd.PartDesc</td>
+                            <td>@cpd.Order</td>
+                            <td>@cpd.UnitPrice</td>
+                            <td>@cpd.OrderValue</td>
+                            <td>@cpd.Cbo</td>
+                            <td>@cpd.StkMw</td>
+                            <td>@cpd.Eta</td>
+                            <td>@cpd.Inv</td>
+                            <td>@cpd.Pick</td>
+                            <td>@cpd.Alloc</td>
+                            <td>@cpd.Bo</td>
+                            <td>@cpd.Ao</td>
+                            <td>@cpd.Action</td>
+                            <td>@cpd.Pd</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p class="kt-font-bold">
+            <i class="kt-font-warning flaticon-warning-sign"></i>
+            &nbsp;@noRecordFound
+        </p>
+    }
+}
+else
+{
+    <p class="kt-font-bold">
+        <i class="kt-font-warning flaticon-warning-sign"></i>
+        &nbsp;@errorMsg
+    </p>
+}

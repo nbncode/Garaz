@@ -1,0 +1,71 @@
+﻿@{ 
+    ViewBag.Title = "Brands";
+}
+@section AddToHead{
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-
+    Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+    <style>
+        th, td {
+            text-align: left;
+            border: 1px solid black;
+            padding: 4px 7px !important;
+            word-break: keep-all;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        .parts {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        #widget_container {
+            width: 100%;
+            display: inline-block;
+            height: 600px;
+        }
+    </style>
+}
+    <div class="marginTop20">
+        @*<table class="parts" data-element="parts-table">
+            <tr>
+                <th>Auto brand</th>
+                <th>
+                    Part number
+                    <form action="" data-oriparts-iframe-searchWithHints style="display:inline;">
+                        Type query
+                        <input type="text" value="" name="search" data-toggle="tooltip">
+                    </form>
+                </th>
+                <th>Name</th>
+                <th>Price</th>
+                <th></th>
+            </tr>
+        </table>*@
+        <form action="" data-oriparts-iframe-searchWithHints style="display:inline;">
+            <div class="smartSearch__content">
+                <input class="smartSearch__input" type="text" value="" name="search" data-toggle="tooltip">
+                <div class="submit_cell">
+                    <input class="submit_btn" type="button">
+                </div>
+            </div>
+        </form>
+        <div id="widget_container"></div>
+    </div>
+
+@section scripts{
+    <script type="text/javascript" src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="https://oriparts.com/js/popper-1.11.0.min.js"></script>
+    <script type="text/javascript" src="https://oriparts.com/js/bootstrap-4.0.0-beta.min.js"></script>
+    <script type="text/javascript" src="https://oriparts.com/js/iframe_widget.js?v=2"></script>
+    @*<script src="~/js/iframe_widget.js"></script>*@
+    <script type="text/javascript" src="~/js/api_widget.js"></script>
+    <script type="text/javascript">
+        InitWidget();
+    </script>
+}

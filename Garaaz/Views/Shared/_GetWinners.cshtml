@@ -1,0 +1,21 @@
+﻿@model List<Garaaz.Models.SchemeWorkshop>
+
+<input type="hidden" id="hdnGiftName" value="@ViewBag.GiftName" />
+<table class="table table-bordered">
+    <thead class="thead-light">
+        <tr>
+            <th>Coupon</th>
+            <th>Workshop</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td width="50%">@item.CouponNumber</td>
+                <td width="50%">@item.WorkshopName</td>
+            </tr>
+        }
+    </tbody>
+</table>
+

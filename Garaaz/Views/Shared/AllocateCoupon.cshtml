@@ -1,0 +1,44 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Allocate Coupon";
+
+    var controller = this.ViewContext.RouteData.GetRequiredString("controller");
+}
+
+@section AddToHead{
+    <link href="/Content/Css/fineuploader-3.7.0.min.css" rel="stylesheet" type="text/css" />
+}
+
+<div class="kt-subheader-search">
+    <h3 class="kt-subheader-search__title">
+        Allocate Coupon
+    </h3>
+</div>
+
+<header class="ribbon">
+    <h2>&nbsp;</h2>
+</header>
+<div class="page-content">
+    <div class="container-fluid">
+        @{Html.RenderPartial("alerts");}
+        <input type="hidden" id="PageView" value="/@controller/AllocateCouponPartialView?schemeId=@ViewBag.SchemeId" />
+        <div id="main-content">
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="/scripts/jquery.fineuploader-3.7.0.min.js" type="text/javascript"></script>
+    <script src="~/js/schmes.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () 
+        {
+            const url = $("#PageView").val();
+            doAjax(url,null,function (data)
+                {
+                    $('#main-content').html(data);
+                    admin.bindCouponUploader('@ViewBag.SchemeId','@controller');
+                });
+        });
+    </script>
+}

@@ -1,0 +1,129 @@
+﻿@model Cart
+@using Garaaz.Models
+
+@{
+    //var cartItems = new List<clsCartData>();
+    //if (Model != null)
+    //{ cartItems = Model.CartItems; }
+    var cartItems = Model != null ? Model.CartMain : new List<CartMain>();
+}
+    <div class="row">
+        <div class="col-md-12">
+            <!--begin::Portlet-->
+            <div class="kt-portlet">
+                <div class="kt-portlet__head">
+                    <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title">
+                            Review of your order.
+                        </h3>
+                    </div>
+                </div>
+                <div class="kt-portlet kt-portlet--mobile">
+                    <div class="kt-portlet__body">
+                        @if (Model != null)
+                        {
+                            <div class="kt-invoice-2">
+                                <div class="kt-invoice__body">
+                                    <div class="kt-invoice__container">
+                                        <div class="table-responsive">
+                                            <table class="table">
+                                                <thead>
+                                                    <tr>
+                                                        <th>ITEM</th>
+                                                        <th>PARTNO</th>
+                                                        <th>PRICE</th>
+                                                        <th>QUANTITY</th>
+                                                        <th>TOTAL</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @if (cartItems != null)
+                                                    {
+                                                        foreach (var od in cartItems)
+                                                        {
+                                                            var cartItem = od.data;
+                                                            foreach (var item in cartItem)
+                                                            {
+                                                    <tr>
+                                                        <td>@item.ProductName</td>
+                                                        <td>@item.PartNumber</td>
+                                                        <td><span class="rupee-sign">@Constants.Sign</span> @item.UnitPrice</td>
+                                                        <td>@item.Quantity</td>
+                                                        <td class="kt-font-danger kt-font-lg"><span class="rupee-sign">@Constants.Sign                                </span> @item.TotalPrice</td>
+                                                    </tr>
+                                                            }
+                                                        }
+                                                    }
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="kt-invoice__footer">
+                                    <div class="kt-invoice__container">
+                                        <div class="row">
+                                            <div class="col-md-4"></div>
+                                            <div class="col-md-4"></div>
+                                            <div class="col-md-4">
+                                                <table class="table">
+                                                    <tbody>
+                                                        <tr class="cart-summary-subtotal">
+                                                            <td class="cart-summary-label">Sub-Total:</td>
+                                                            <td class="cart-summary-value"><span class="rupee-sign">@Constants.Sign</span> @Model.SubTotal</td>
+                                                        </tr>
+                                                        @if (Model.DeliveryCharge != null && Model.DeliveryCharge > 0)
+                                                        {
+                                                            <tr class="cart-summary-neg">
+                                                                <td class="cart-summary-label">Delivery Charge:</td>
+                                                                <td class="cart-summary-value">
+
+                                                                    <span class="rupee-sign">@Constants.Sign</span> @Model.DeliveryCharge
+
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                        @if (Model.PackingCharge != null && Model.PackingCharge > 0)
+                                                        {
+                                                            <tr class="cart-summary-neg">
+                                                                <td class="cart-summary-label">Packing Charge:</td>
+                                                                <td class="cart-summary-value">
+
+                                                                    <span class="rupee-sign">@Constants.Sign</span> @Model.PackingCharge
+
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                        @if (Model.Discount != null && Model.Discount > 0)
+                                                        {
+                                                            <tr class="cart-summary-neg">
+                                                                <td class="cart-summary-label">Discount:</td>
+                                                                <td class="cart-summary-value">
+
+                                                                    <span class="rupee-sign">@Constants.Sign</span> @Model.Discount
+
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                        <tr class="cart-summary-total">
+                                                            <td class="kt-font-xl kt-font-boldest cart-summary-label">Order Total:</td>
+                                                            <td class="kt-font-danger kt-font-xl kt-font-boldest cart-summary-value"><span class="rupee-sign">@Constants.Sign</span> @Model.GrandTotal</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else
+                        {
+                            <h3>Order details not found.</h3>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

@@ -1,0 +1,118 @@
+﻿@model Garaaz.Models.PartRequestModel
+
+@{
+    var controller = ViewContext.RouteData.Values["controller"].ToString();
+    string errorMsg = ViewBag.ErrorMs;
+    if (string.IsNullOrWhiteSpace(errorMsg) && Model == null)
+    {
+        errorMsg = "Model is not set";
+    }
+}
+<div class="kt-portlet kt-portlet--mobile">
+    <div class="kt-portlet__head kt-portlet__head--lg">
+        <div class="kt-portlet__head-label">
+            <span class="kt-portlet__head-icon">
+                <i class="kt-font-brand flaticon-list-3"></i>
+            </span>
+            <h3 class="kt-portlet__head-title">
+                Approve Part Request
+            </h3>
+        </div>
+        <div class="kt-portlet__head-toolbar">
+            <div class="kt-portlet__head-wrapper">
+                <div class="kt-portlet__head-actions">
+                    <a href="/@controller/NewPartRequest" class="btn btn-brand btn-elevate btn-icon-sm">
+                        <i class="la la-step-backward"></i>
+                        Back
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @if (string.IsNullOrWhiteSpace(errorMsg) && Model != null)
+    {
+
+    <div class="pt-3 p-4">
+        <p><i>Filter used for search:</i></p>
+        <div class="row">
+            <div class="col-md-4">
+                <ul class="partReqFilter">
+                    <li><b>CarMake:</b> @Model.CarMake</li>
+                    <li><b>Model:</b> @Model.Model</li>
+                    <li><b>Year:</b> @(Model.Year == null ? "NA" : Model.Year.ToString())</li>
+                    <li><b>Modification:</b> @Model.Modification</li>
+                    <li><b>Search:</b> @Model.Search</li>
+                    <li><b>Part detail:</b> @Model.PartNumAndQty</li>
+                    <li><b>Status:</b> @Model.Status</li>
+                </ul>
+            </div>
+            <div class="col-md-8">
+                <div class="form-group ">
+                    <b>Image:</b>
+                    <div class="controls">
+                        <img id="blah" src="#" alt="" style="display:none" />
+                        @if (Model != null && !string.IsNullOrEmpty(Model.ImagePath))
+                        {
+                            <img src="@Url.Content(Model.ImagePath)" alt="" width="100%" height="300px" style="object-fit: contain;" />
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="p-4">
+        <div class="row">
+            <div class="col-md-4">
+                <label for="txtSearchPart">Search part: </label>
+                <input type="password" autocomplete="off" style="display:none" />
+                <input id="txtSearchPart" type="text" class="form-control" placeholder="Start typing part number or name" />
+            </div>
+        </div>
+    </div>
+            <div class="p-4">
+                @{
+                    var style = Model.ApprovedPartRequests.Count > 0 ? "" : "style=display:none;";
+                }
+                <table id="tblPartRequests" class="table table-striped table-bordered w-auto table-center" @style>
+                    <thead class="thead-light">
+                        <tr>
+                            <td>Part Number</td>
+                            <td>Part Name</td>
+                            <td>Action</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.ApprovedPartRequests)
+                        {
+                            <tr price="@item.Price">
+                                <td>@item.PartNumber</td>
+                                <td>@item.Description</td>
+                                <td><a class="table-trash-icon" title="Remove current part" onclick="appReq.removeCurrentPart(this)" href="javascript:void(0);"><i class="la la-trash"></i></a></td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+            <input type="hidden" id="RequestedId" value="@Model.RequestId" />
+            <div class="p-4">
+                <button id="btnSave" class="btn btn-primary" onclick="appReq.savePartsForPartRequest('@controller','@Model.RequestId')">Save</button>
+            </div>
+            }
+            else
+            {
+            <p class="kt-font-bold p-4">
+                <i class="kt-font-warning flaticon-warning-sign"></i>
+                &nbsp;@errorMsg
+            </p>
+            }
+        </div>
+
+        <script type="text/javascript">
+    $(document).ready(function ()
+    {
+        appReq.setAutoComplete('@controller');
+    });
+        </script>
+

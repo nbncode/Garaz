@@ -1,0 +1,222 @@
+﻿@model Garaaz.Models.ResponseBannerMobile
+@using Garaaz.Models
+
+@{
+    ViewBag.Title = "AddBanner";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string controller = ViewBag.Controller.ToString();
+   
+}
+<link href="/Content/Css/fineuploader-3.7.0.min.css" rel="stylesheet" type="text/css" />
+<script src="/scripts/jquery.fineuploader-3.7.0.min.js" type="text/javascript"></script>
+
+
+
+<script type="text/javascript">
+        $(document).ready(function () {
+            var count = 0;
+            var manualuploader = new qq.FineUploader({
+                element: $('#manual-fine-uploader')[0],
+                action: '@Url.Action("/Home/upload")',
+                type: "post",
+                minSizeLimit: 0,
+                autoUpload: true,
+                text: {
+                    uploadButton: '<i class="icon-plus icon-white"></i> Select Files'
+                },
+                validation: {
+                    sizeLimit: 2000000 // 50 kB = 50 * 1024 bytes
+                },
+                callbacks: {
+                    onComplete: function (id, filename, responseJSON) {
+                        console.log(responseJSON);
+                        if (responseJSON.success == true) {
+                            var response_show = responseJSON.filename;
+                            $("#BannerImage").val(responseJSON.filename);
+
+                        } else {
+                            alert("Error: " + responseJSON.message);
+                        }
+                    }
+                }
+            });
+        });
+</script>
+
+<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+    <div class="kt-subheader-search">
+        <h3 class="kt-subheader-search__title">
+            Banner Master
+        </h3>
+    </div>
+
+
+    <header class="ribbon">
+        <h2>&nbsp;</h2>
+    </header>
+
+    <div class="page-content">
+        <div class="page-content">
+            @{Html.RenderPartial("alerts");}
+
+            <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <!--begin::Portlet-->
+                        <div class="kt-portlet">
+                            <div class="kt-portlet__head">
+                                <div class="kt-portlet__head-label">
+                                    <h3 class="kt-portlet__head-title">
+                                        Add Banner
+                                    </h3>
+                                </div>
+                                <div class="kt-portlet__head-toolbar">
+                                    <div class="kt-portlet__head-wrapper">
+                                        <div class="kt-portlet__head-actions">
+                                            <a href="/@controller/Banner" class="btn btn-brand btn-elevate btn-icon-sm">
+                                                <i class="la la-step-backward"></i>
+                                                Back
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @using (Html.BeginForm())
+                            {
+                                    string style;
+                                    if (controller == "Admin")
+                                    {
+                                        style = "display:visible";
+                                    }
+                                    else
+                                    {
+                                        style = "display:none";
+                                    }
+                               
+                                <div class="kt-form">
+                                    <div class="kt-portlet__body">
+
+                                        <div class="row">
+                                            <div class="col-md-3" style="@style">
+                                                <div class="form-group">
+                                                    <label>Banner Distributor<em>*</em></label>
+                                                    @Html.DropDownListFor(model => model.DistributorId, new SelectList(ViewBag.Distributors as System.Collections.IEnumerable, "DistributorId", "DistributorName"), "Select Distributor", new { @class = "form-control", @Id = "ddldistributor" })
+                                                    @Html.ValidationMessageFor(model => model.DistributorId, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Banner Type</label>
+                                                    @Html.DropDownListFor(model => model.Type, new List<SelectListItem>
+                                                        {
+                                                        new SelectListItem{ Text="--Select--" ,Value="",Selected=false},
+                                                        new SelectListItem{ Text="Scheme", Value = "Scheme" },
+                                                        new SelectListItem{ Text="Other Page", Value = "OtherPage" },
+                                               }, new { @class = "form-control", @Id = "ddlbannertype" })
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3" id="scheme">
+                                                <div class="form-group">
+                                                    <label>Banner Scheme</label>
+                                                    <input type="hidden" id="hdnSchemeId" value="@(Model!=null?Model.SchemeId:0)"/>
+                                                    @Html.DropDownListFor(model => model.SchemeId, new List<SelectListItem>
+                                                        {
+                                                     new SelectListItem{ Text="--Select--" ,Value="",Selected=false},
+                                                  }, new { @class = "form-control" ,@Id = "ddlSchemes" })
+                                                    @Html.ValidationMessageFor(model => model.SchemeId, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Banner Name<em>*</em></label>
+                                                    @Html.EditorFor(model => model.BannerName, new { htmlAttributes = new { @class = "form-control required" } })
+                                                    @Html.ValidationMessageFor(model => model.BannerName, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Banner Description</label>
+                                                    @Html.TextAreaFor(model => model.Data, new { @class = "form-control Banner", @Id = "txtDescription", maxlength = "132" })
+
+                                                    Remaining characters : <label id="maxlength">132</label>
+                                                    @Html.ValidationMessageFor(model => model.Data, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group ">
+                                                    <label>Image<em>*</em></label>
+                                                    @Html.HiddenFor(model => model.BannerId)
+                                                    <div class="controls">
+                                                        <div id="manual-fine-uploader">
+                                                        </div>
+                                                        @Html.ValidationMessageFor(model => model.BannerImage, "", new { @class = "text-danger" })
+                                                        @Html.HiddenFor(a => a.BannerImage, new { @class = "form-control" })
+                                                        <img id="blah" src="#" alt="" style="display:none" />
+                                                        @if (Model != null && !string.IsNullOrEmpty(Model.BannerImage))
+                                                        {
+                                                            <img src="@Url.Content(Model.BannerImage)" alt="" width="100px" height="100px" />
+                                                        }
+                                                        <span class="imagesize">Image size should be 700*420px (Width*Height)</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="kt-portlet__foot">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="~/js/admin.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        admin.BindSchemeonDistributor();
+        charCal();
+        $("#ddldistributor").on("change", function () {
+            admin.BindSchemeonDistributor();
+        });
+        $("#ddlbannertype").on("change", function () {
+            admin.BindSchemeonDistributor();
+        });
+        $("#txtDescription").keyup(function () {
+
+            charCal();
+        });
+        
+    });
+    function charCal() {
+        var oldValue = ($("#txtDescription").val().slice(0, -1));
+        var newValue = $("#txtDescription").val();
+        //var character = $.trim($("#txtDescription").val()).length; //  Use Remove white space
+        var character = $("#txtDescription").val().length;
+        var av = 132 - character;
+        if (av <= -1) {
+            $(this).val(oldValue);
+            character = $("#txtDescription").val().length;
+            av = 132 - character;
+        }
+        else {
+            $(this).val(newValue);
+        }
+        $("#maxlength").text(av);
+
+    }
+</script>
+

@@ -1,0 +1,97 @@
+﻿@model IEnumerable<Garaaz.Models.ResponseAssuredGiftModel>
+@using Garaaz.Models;
+@{
+    var categories = (List<ResponseSchemeCategoryModel>)ViewBag.Categories;
+}
+
+@foreach (var item in Model)
+{
+    <div class="row" id="@item.AssuredGiftId">
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label>Category<em>*</em></label>
+                <select class="form-control multiselect category-gift" multiple>
+                    @{
+                        var selected = item.ListAssuredGiftCategory.FirstOrDefault(a => a.IsAll) != null ? "selected" : "";
+                        <option value="All" @selected>All</option>
+                    }
+
+                    @{
+                        foreach (var cat in categories)
+                        {
+                            selected = item.ListAssuredGiftCategory.Any(a => a.CategoryId == cat.CategoryId) ? "selected" : "";
+                            <option value="@cat.Category" @selected>@cat.Category</option>
+                        }
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label>Sales Target<em>*</em></label>
+                <input type="text" class="form-control target-input" value="@item.Target" placeholder="Target">
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label>Point</label>
+                <input type="text" class="form-control point-input" value="@item.Point" placeholder="Point">
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label>Reward</label>
+                <input type="text" class="form-control reward-input" value="@item.Reward" placeholder="Reward">
+            </div>
+        </div>
+        <div class="col-sm-1">
+            <label> &nbsp;</label>
+            <a class="trash-icon" onclick="schemes.removeCurrentCashBack(this)" href="javascript:void(0);">
+                <i class="la la-trash"></i>
+            </a>
+        </div>
+
+    </div>
+}
+
+<div class="row" id="0">
+    <div class="col-sm-3">
+        <div class="form-group">
+            <label>Category<em>*</em></label>
+            <select class="form-control multiselect category-gift" multiple>
+                <option value="All">All</option>
+                @{
+                    foreach (var cat in categories)
+                    {
+                        <option value="@cat.Category">@cat.Category</option>
+                    }
+                }
+            </select>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group">
+            <label>Sales Target<em>*</em></label>
+            <input type="text" class="form-control target-input" placeholder="Target">
+        </div>
+    </div>
+    <div class="col-sm-2">
+        <div class="form-group">
+            <label>Point</label>
+            <input type="text" class="form-control point-input" placeholder="Point">
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group">
+            <label>Reward</label>
+            <input type="text" class="form-control reward-input" placeholder="Reward">
+        </div>
+    </div>
+    <div class="col-sm-1">
+        <label> &nbsp;</label>
+        <a class="trash-icon" href="javascript:void(0);" title="Remove current assured gift" onclick="schemes.removeCurrentAssuredGift(this)">
+            <i class="la la-trash"></i>
+        </a>
+    </div>
+
+</div>

@@ -1,0 +1,53 @@
+﻿@model List<Garaaz.Models.Schemes.TargetOverview>
+
+@{
+    var errorMsg = ViewBag.ErrorMsg as string;
+}
+
+@if (Model != null && Model.Count > 0)
+{
+    <div class="table-responsive ">
+        <table class="table table-bordered">
+            <thead class="tbl-header">
+                <tr>
+                    <th scope="col">Growth Range</th>
+                    <th scope="col">Growth (%)</th>
+                    <th scope="col">Total Workshops</th>
+                    <th scope="col">Total Target</th>
+                    <th scope="col">Avg Target</th>
+                    <th scope="col">Max Target</th>
+                    <th scope="col">Min Target</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var to in Model)
+                {
+                    <tr>
+                        <td>@to.TargetGrowthRange</td>
+                        <td>@to.GrowthPercentage</td>
+                        <td>@to.TotalWorkshops</td>
+                        <td>@to.TotalTarget</td>
+                        <td>@to.AverageTarget</td>
+                        <td>@to.MaximumTarget</td>
+                        <td>@to.MinimumTarget</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    if (!string.IsNullOrWhiteSpace(errorMsg))
+    {
+        <div class="alert alert-danger">
+            @errorMsg
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-warning">
+            Can't display target overview as either target growths or target workshops were not found for current scheme.
+        </div>
+    }
+}

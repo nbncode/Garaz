@@ -1,0 +1,147 @@
+﻿@model DailySale
+@using Garaaz.Models
+@{
+
+    ViewBag.Title = "Import Request PartFilter";
+    string controller = ViewBag.Controller.ToString();
+    var style = controller == "Admin" ? "display:visible" : "display:none";
+
+    var genUse = new GeneralUse();
+    var fileType = Constants.RequestPartfilterImport;
+    var lastUploadDate = Model.DistributorId > 0 ? genUse.GetDistributorFileUploadDate(Model.DistributorId, fileType) : genUse.GetFileUploadDate(fileType);
+
+    var importStatusList = TempData["ImportStatusList"] as List<Garaaz.Models.Import.ImportErrorMessage>;
+}
+
+<div class="kt-subheader-search">
+    <h3 class="kt-subheader-search__title">
+        @ViewBag.Title
+    </h3>
+</div>
+<header class="ribbon">
+    <h2>&nbsp;</h2>
+</header>
+<div class="page-content">
+    <div class="container-fluid">
+        @if (importStatusList != null)
+        {
+            @Html.Partial("_AlertForImport", importStatusList)
+        }
+        else
+        {
+            @Html.Partial("alerts")
+        }
+    </div>
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="kt-portlet">
+                    <div class="kt-portlet__head">
+                        <div class="kt-portlet__head-label">
+                            <h3 class="kt-portlet__head-title">
+                                @ViewBag.Title
+                            </h3>
+                        </div>
+                    </div>
+
+                    @using (Html.BeginForm("ImportRequestPartFilter", controller, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <div class="kt-form">
+                            <div class="kt-portlet__body">
+                                <div class="row" style="@style">
+                                    <div class="col-sm-3">
+                                        <div class="form-group">
+                                            <label>Select Distributor:<em>*</em></label>
+                                            @Html.DropDownListFor(model => model.DistributorId, Model.Distributors, new { @class = "form-control", Id = "ddldistributor" })
+                                            @Html.ValidationMessageFor(model => model.DistributorId, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group">
+                                            <label>Select Excel File :<em>*</em></label>
+                                            <div></div>
+                                            <div class="custom-file">
+                                                <input type="file" class="custom-file-input" name="file" id="file" style="width: 100%;" />
+                                                <label class="custom-file-label" for="file">Choose file</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h4>Instructions</h4>
+                                        <ul>
+                                            <li>Sheet name Should Be : "Sheet1"</li>
+                                            <li>The file must match with <a href="~/Content/attachment/SampleFile_RequestPartFilter.xls" target="_blank">sample file</a>.</li>
+                                            <li>
+                                                Last uploaded on : <asp:Label ID="lastupdate" runat="server">@lastUploadDate</asp:Label>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="kt-portlet__foot">
+                            <div class="kt-form__actions">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="reset" class="btn btn-secondary">Cancel</button>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>
+
+        <div class="pl-5" id="importStatus">
+            @if (importStatusList?.Count > 0)
+            {
+                @Html.Partial("_ImportStatus", importStatusList)
+            }
+        </div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $(".kt-portlet").on("submit", function () {
+            common.showLoader();
+            $('Button').attr('disabled', 'disabled');
+        });
+
+        $("#ddldistributor").on("change", function () {
+            var distributorId = $("#ddldistributor").val();
+            console.log(distributorId);
+            if (distributorId !== '' && distributorId != undefined)
+            {
+                Getlastdate(distributorId);
+            }
+            if (distributorId === '') { Getlastdate(0);}
+        });
+        function Getlastdate(distributorId) {
+            var data = {
+                distributorId: distributorId,
+                filetype:"@fileType"
+            };
+            $.ajax(
+                {
+                    url: "/home/GetLastUploadFileDate",
+                    type: 'GET',
+                    data: data,
+                    contentType: 'application/json; charset=utf-8',
+                    success: function (result) {
+                        $("#lastupdate").text(result);
+                    },
+                    error: function () {
+                        console.log("error in get distributor lastupdate file date");
+                    }
+                });
+        }
+    });
+
+</script>
+
+

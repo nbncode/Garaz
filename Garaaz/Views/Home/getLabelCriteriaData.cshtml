@@ -1,0 +1,121 @@
+﻿@model IEnumerable<Garaaz.Models.LabelCriteria>
+@using Garaaz.Models;
+@{
+    var lst = new List<SelectListItem>();
+    lst.Add(new SelectListItem()
+    {
+        Text = "Equal",
+        Value = "Equal"
+    });
+    lst.Add(new SelectListItem()
+    {
+        Text = "Greater than",
+        Value = "Greaterthan"
+    });
+    lst.Add(new SelectListItem()
+    {
+        Text = "Lower than",
+        Value = "lower than"
+    });
+
+
+    List<clsProductGroup> lstProductGroup = (List<clsProductGroup>)ViewBag.ProductGroup;
+    List<ResponseProductModel> lstProduct = (List<ResponseProductModel>)ViewBag.Product;
+    var selected = "";
+}
+@foreach (var item in Model)
+{
+    <div class="row" id="@item.CriteriaId" label-id="@item.LabelId">
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label>Group</label>
+                <select class="form-control group">
+                    <option value="">--Select--</option>
+                    @foreach (var l in lstProductGroup)
+                    {
+                        selected = l.GroupId == item.GroupId ? "selected" : "";
+                        <option value="@l.GroupId.ToString()" @selected>@l.GroupName</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label>Product</label>
+                <select class="form-control product">
+                    <option value="">--Select--</option>
+                    @foreach (var l in lstProduct)
+                    {
+                        selected = l.ProductId == item.ProductId ? "selected" : "";
+                        <option value="@l.ProductId.ToString()" @selected>@l.ProductName</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label>Type</label>
+                <select class="form-control type">
+                    <option value="">--Select--</option>
+                    @foreach (var l in lst)
+                    {
+                        //selected = l.Value == item.Type ? "selected" : "";
+                        <option value="@l.Value" @selected>@l.Text</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label>Value</label>
+                <input type="text" class="form-control benifit-value" value="@item.Value" placeholder="Value">
+            </div>
+        </div>
+    </div>
+}
+
+<div class="row" id="0">
+    <div class="col-sm-3">
+        <div class="form-group">
+            <label>Group</label>
+            <select class="form-control group">
+                <option value="">--Select--</option>
+                @foreach (var l in lstProductGroup)
+                {
+                    <option value="@l.GroupId.ToString()">@l.GroupName</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group">
+            <label>Product</label>
+            <select class="form-control product">
+                <option value="">--Select--</option>
+                @foreach (var l in lstProduct)
+                {
+                    <option value="@l.ProductId.ToString()">@l.ProductName</option>
+                }
+            </select>
+        </div>
+    </div>
+
+    <div class="col-sm-3">
+        <div class="form-group">
+            <label>Type</label>
+            <select class="form-control type">
+                <option value="">--Select--</option>
+                @foreach (var l in lst)
+                {
+                    <option value="@l.Value">@l.Text</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group">
+            <label>Value</label>
+            <input type="text" class="form-control benifit-value" placeholder="Value">
+        </div>
+    </div>
+</div>

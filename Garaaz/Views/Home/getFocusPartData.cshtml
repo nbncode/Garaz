@@ -1,0 +1,178 @@
+﻿@model IEnumerable<Garaaz.Models.ResponseFocusPartModel>
+@using Garaaz.Models;
+@{
+    //var groups = (List<ProductGroupModel>)ViewBag.Groups;
+    var groupList = new SelectList(ViewBag.Groups, "GroupId", "GroupName", "");
+    var productList = (List<ProductModel>)ViewBag.Products;
+    //var repoSchemes = new RepoSchemes();
+}
+
+<input type="hidden" id="hdnErrorMsgForNonMatchedGroups" value="@ViewBag.ErrorMsgForNonMatchedGroups" />
+
+@foreach (var item in Model)
+{
+    <div class="row" id="@item.FocusPartId">
+        <div class="col-sm-2 resizebox">
+            <div class="form-group">
+                <label>Group</label>
+                @Html.DropDownList("ddlProdGroups", new SelectList(groupList, "Value", "Text", item.GroupId.ToString()), "--Select--", new { @id = "ddlProdGroups", @class = "form-control group", onchange = "schemes.bindProducts($(this))" })
+                @*<select id="ddlProdGroups" class="form-control group" onchange="schemes.bindProducts($(this))">
+                        <option value="">--Select--</option>
+                        @{
+                            string selected;
+                            foreach (var group in groups)
+                            {
+                                selected = group.GroupId == item.GroupId ? "selected" : string.Empty;
+                                <option value="@group.GroupId" @selected>@group.GroupName</option>
+                            }
+                        }
+                    </select>*@
+            </div>
+        </div>
+        <div class="col-sm-2 resizebox">
+            <div class="form-group">
+                <label>Product</label>
+                @{
+                    if (groupList.Count() > 0)
+                    {
+                        if (item.GroupId.HasValue && item.GroupId > 0)
+                        {
+                            var products = productList.Where(p => p.GroupId == item.GroupId);
+                            var productOption = new SelectList(products, "ProductId", "ProductName", "");
+
+                            @Html.DropDownList("ddlProducts", new SelectList(productOption, "Value", "Text", item.ProductId.ToString()), "--Select--", new { @id = "ddlProducts", @class = "form-control product" })
+                        }
+                    }
+                }
+                @*<select id="ddlProducts" class="form-control product">
+                    <option value="">--Select--</option>
+                    @{
+
+                        if (groups.Count > 0)
+                        {
+                            if (item.GroupId.HasValue && item.GroupId > 0)
+                            {
+                                var products = repoSchemes.GetProducts(item.GroupId.Value);
+                                foreach (var p in products)
+                                {
+                                    selected = p.ProductId == item.ProductId ? "selected" : string.Empty;
+                                    <option value="@p.ProductId" @selected>@p.ProductName</option>
+                                }
+                            }
+                        }
+                    }
+
+                </select>*@
+            </div>
+        </div>
+        <div class="col-sm-1 fp-column">
+            <div class="form-group">
+                <label>Amount</label>
+                <input type="text" class="form-control amount" value="@item.Price" placeholder="Amount">
+            </div>
+        </div>
+        <div class="col-sm-1 fp-column">
+            <div class="form-group">
+                <label>Qty</label>
+                <input type="text" class="form-control qty" value="@item.Qty" placeholder="Qty">
+            </div>
+        </div>
+        <div class="col-sm-2 fp-column">
+            <div class="form-group">
+                <label>Benefit Type</label>
+                <select class="form-control type">
+                    <option value="">--Select--</option>
+                    @foreach (var bt in ClsSchema.BenefitTypes)
+                    {
+                        var selected = bt.Value == item.Type ? "selected" : "";
+                        <option value="@bt.Value" @selected>@bt.Text</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-2 fp-column">
+            <div class="form-group">
+                <label>Benefit Value</label>
+                <input type="text" class="form-control benifit-value" value="@item.Value" placeholder="Benefit Value">
+            </div>
+        </div>
+        <div class="col-sm-2 fp-column">
+            <div class="form-group">
+                <label>Description</label>
+                <input type="text" class="form-control description" value="@item.Description" placeholder="Description">
+            </div>
+        </div>
+        <div class="col-sm-1">
+            <label> &nbsp;</label>
+            <a class="trash-icon" href="javascript:void(0);" title="Delete current row" onclick="schemes.removeCurrentFpgRow(this)">
+                <i class="la la-trash"></i>
+            </a>
+        </div>
+    </div>
+}
+
+<div class="row" id="0">
+    <div class="col-sm-2 resizebox">
+        <div class="form-group">
+            <label>Group</label>
+            @Html.DropDownList("ddlProdGroups", new SelectList(groupList, "Value", "Text"), "--Select--", new { @id = "ddlProdGroups", @class = "form-control group", onchange = "schemes.bindProducts($(this))" })
+            @*<select id="ddlProdGroups" class="form-control group" onchange="schemes.bindProducts($(this))">
+                    <option value="">--Select--</option>
+                    @foreach (var l in groups)
+                    {
+                        <option value="@l.GroupId.ToString()">@l.GroupName</option>
+                    }
+                </select>*@
+        </div>
+    </div>
+    <div class="col-sm-2 resizebox">
+        <div class="form-group">
+            <label>Product</label>
+            <select id="ddlProducts" class="form-control product">
+                <option value="">--Select--</option>
+            </select>
+        </div>
+    </div>
+    <div class="col-sm-1 fp-column">
+        <div class="form-group">
+            <label>Amount</label>
+            <input type="text" class="form-control amount" placeholder="Amount">
+        </div>
+    </div>
+    <div class="col-sm-1 fp-column">
+        <div class="form-group">
+            <label>Qty</label>
+            <input type="text" class="form-control qty" placeholder="Qty">
+        </div>
+    </div>
+    <div class="col-sm-2 fp-column">
+        <div class="form-group">
+            <label>Benefit Type</label>
+            <select class="form-control type">
+                <option value="">--Select--</option>
+                @foreach (var bt in ClsSchema.BenefitTypes)
+                {
+                    <option value="@bt.Value">@bt.Text</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="col-sm-2 fp-column">
+        <div class="form-group">
+            <label>Benefit Value</label>
+            <input type="text" class="form-control benifit-value" placeholder="Benefit Value">
+        </div>
+    </div>
+    <div class="col-sm-2 fp-column">
+        <div class="form-group">
+            <label>Description</label>
+            <input type="text" class="form-control description" placeholder="Description">
+        </div>
+    </div>
+    <div class="col-sm-1">
+        <label> &nbsp;</label>
+        <a class="trash-icon" href="javascript:void(0);" title="Delete current row" onclick="schemes.removeCurrentFpgRow(this)">
+            <i class="la la-trash"></i>
+        </a>
+    </div>
+</div>

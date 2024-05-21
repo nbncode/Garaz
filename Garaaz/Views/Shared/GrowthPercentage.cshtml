@@ -1,0 +1,107 @@
+﻿@model GrowthPercentageModel
+@using Garaaz.Models
+@{
+    ViewBag.Title = "Add Growth Percentage";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string controller = ViewBag.Controller.ToString();
+    var style = controller == "Admin" ? "display:visible" : "display:none";
+}
+
+<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+    <div class="kt-subheader-search">
+        <h3 class="kt-subheader-search__title">
+            Growth Percentage
+        </h3>
+    </div>
+
+
+    <header class="ribbon">
+        <h2>&nbsp;</h2>
+    </header>
+
+    <div class="page-content">
+        <div class="page-content">
+            @{Html.RenderPartial("alerts");}
+
+            <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <!--begin::Portlet-->
+                        <div class="kt-portlet">
+                            <div class="kt-portlet__head">
+                                <div class="kt-portlet__head-label">
+                                    <h3 class="kt-portlet__head-title">
+                                        Add Growth Percentage
+                                    </h3>
+                                </div>
+                            </div>
+                            @using (Html.BeginForm())
+                            {
+                                <div class="kt-form">
+                                    <div class="kt-portlet__body">
+
+                                        <div class="row" style="@style">
+
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Select Distributor:<em>*</em></label>
+
+                                                    @Html.DropDownListFor(model => model.DistributorId, new SelectList(ViewBag.Distributor as System.Collections.IEnumerable, "DistributorId", "DistributorName"), "Select Distributor", new { @class = "form-control", @Id = "ddldistributor" })
+                                                    @Html.ValidationMessageFor(model => model.DistributorId, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Min. value to check:<em>*</em></label>
+                                                    @Html.EditorFor(model => model.MinValue, new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.MinValue, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Growth % in case of Min. value :<em>*</em></label>
+                                                    @Html.EditorFor(model => model.GrowthPercentage, new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.GrowthPercentage, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="kt-portlet__foot">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="~/js/admin.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#ddldistributor").on("change", function () {
+            var distributorId = $("#ddldistributor").val();
+            if (distributorId != '' && distributorId != undefined) {
+                admin.BindGrowthPercentage(distributorId);
+            }
+            else
+            {
+                $("#MinValue").val(null);
+                $("#GrowthPercentage").val(null); 
+            }
+        });
+   
+    });
+</script>
+

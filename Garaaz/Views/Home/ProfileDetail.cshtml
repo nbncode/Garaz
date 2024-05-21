@@ -1,0 +1,407 @@
+﻿@model Garaaz.Models.ResponseUserProfile
+@using Garaaz.Models
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+   
+}
+
+<div class="kt-subheader-search">
+    <h3 class="kt-subheader-search__title">
+        Profile
+    </h3>
+</div>
+
+
+<header class="ribbon">
+    <h2>&nbsp;</h2>
+</header>
+
+<div class="page-content">
+    <div class="container-fluid">
+        @{Html.RenderPartial("alerts");}
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__head kt-portlet__head--lg">
+                <div class="kt-portlet__head-label">
+                    <span class="kt-portlet__head-icon">
+                        <i class="kt-font-brand flaticon2-line-chart"></i>
+                    </span>
+                    <h3 class="kt-portlet__head-title">
+                        Details 
+                    </h3>
+                </div>
+            </div>
+            <div class="kt-portlet__body">
+                <div class="kt-card-profile__details">
+                    @{
+                        @Html.HiddenFor(model => model.Role)
+                        @Html.HiddenFor(model => model.WorkshopId)
+                    }
+                    <div class="row">
+                        
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <strong><label>Profile Complete : </label></strong>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <div class="form-group">
+                                <b> @Model.CompleteProfile %</b>
+                            </div>
+                        </div>
+                    </div>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <strong><label>Code : </label></strong>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <b> @Model.code</b>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <img src="@Model.UserImage" onerror="changeurl(this)" class="kt-card-profile__no-photo" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <strong><label>First Name : </label></strong>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <b> @Model.FirstName</b>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <strong><label>Last Name : </label></strong>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <b> @Model.LastName</b>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <strong><label>Phone Number : </label></strong>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <b> @Model.PhoneNumber</b>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <strong><label>Email Address : </label></strong>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <b> @Model.Emailaddress</b>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <strong><label>Address : </label></strong>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <div class="form-group">
+                                    <b> @Model.Address</b>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        @if (Model.Role == Constants.Workshop || Model.Role == Constants.WorkshopUsers)
+                        {
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h2>Workshop Details</h2>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <strong><label>WorkShop Name : </label></strong>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <b> @Model.WorkShopName</b>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <strong><label>Billing Name : </label></strong>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <b> @Model.BillingName</b>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <strong><label>GSTIN : </label></strong>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <b> @Model.Gstin</b>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <strong><label>Year Of Establishment : </label></strong>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <b> @Model.YearOfEstablishment</b>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <strong><label>Workshop Type : </label></strong>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <b> @Model.WorkshopType</b>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <strong><label>Total Owners : </label></strong>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <b> @Model.TotalOwners</b>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <strong><label>Total Employees : </label></strong>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <b> @Model.TotalEmployees</b>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <strong><label>Total ChiefMechanics : </label></strong>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <b> @Model.TotalChiefMechanics</b>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <strong><label>Two PostLifts : </label></strong>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <b> @Model.TwoPostLifts</b>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <strong><label>Monthly Vehicles Serviced : </label></strong>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <b> @Model.MonthlyVehiclesServiced</b>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <strong><label>Monthly Part Purchase : </label></strong>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <b> @Model.MonthlyPartPurchase</b>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <strong><label>Monthly Consumables Purchase : </label></strong>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <b> @Model.MonthlyConsumablesPurchase</b>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <strong><label>Jobs Undertaken : </label></strong>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <b> @Model.JobsUndertaken</b>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <strong><label>Make : </label></strong>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <b> @Model.Make</b>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <strong><label>Garaaz Area(sq.ft) : </label></strong>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <b> @Model.GaraazArea</b>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <strong><label>Working Hours : </label></strong>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <b> @Model.WorkingHours</b>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <strong><label>Weekly Off Day : </label></strong>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <b> @Model.WeeklyOffDay</b>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <strong><label>Website : </label></strong>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <b> @Model.Website</b>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <strong><label>Insurance Companies : </label></strong>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <b> @Model.InsuranceCompanies</b>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <strong><label>Premise : </label></strong>
+                                    </div>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="form-group">
+                                        <b> @Model.Premise</b>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        }
+
+                    </div>
+                </div>
+            <div class="kt-portlet__foot">
+                <div class="kt-form__actions">
+                    <a href="/Home/Profile" class="btn btn-brand btn-elevate btn-icon-sm">
+                        <i class="la la-edit"></i>
+                        Edit
+                    </a>
+                </div>
+            </div>
+          
+        </div>
+    </div>
+</div>
+
+
+
+
+

@@ -1,0 +1,88 @@
+﻿@model Garaaz.Models.ProductAvailabilityType
+@using Garaaz.Models
+
+@{
+    ViewBag.Title = "Add ProductAvailability";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<link href="/Content/Css/fineuploader-3.7.0.min.css" rel="stylesheet" type="text/css" />
+<script src="/scripts/jquery.fineuploader-3.7.0.min.js" type="text/javascript"></script>
+
+<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+    <div class="kt-subheader-search">
+        <h3 class="kt-subheader-search__title">
+            Product Availability
+        </h3>
+    </div>
+
+
+    <header class="ribbon">
+        <h2>&nbsp;</h2>
+    </header>
+
+    <div class="page-content">
+        <div class="page-content">
+            @{Html.RenderPartial("alerts");}
+
+            <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <!--begin::Portlet-->
+                        <div class="kt-portlet">
+                            <div class="kt-portlet__head">
+                                <div class="kt-portlet__head-label">
+                                    <h3 class="kt-portlet__head-title">
+                                        Add Availability
+                                    </h3>
+                                </div>
+                                <div class="kt-portlet__head-toolbar">
+                                    <div class="kt-portlet__head-wrapper">
+                                        <div class="kt-portlet__head-actions">
+                                            <a href="/admin/ProductAvailabilityType" class="btn btn-brand btn-elevate btn-icon-sm">
+                                                <i class="la la-step-backward"></i>
+                                                Back
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @using (Html.BeginForm())
+                            {
+                                <div class="kt-form">
+                                    <div class="kt-portlet__body">
+
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Availability Type</label>
+                                                    @Html.EditorFor(model => model.Text, new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.Text, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <label>IsActive</label>
+                                                <div class="form-group">
+                                                    @Html.CheckBoxFor(model => Model.IsActive,new {Checked  =new { htmlAttributes = new { @class = "form-control" } } })
+                                                    @Html.ValidationMessageFor(model => model.IsActive, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="kt-portlet__foot">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>

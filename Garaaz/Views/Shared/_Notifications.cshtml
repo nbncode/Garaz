@@ -1,0 +1,216 @@
+﻿@using Garaaz.Models.Notifications
+@using Garaaz.Controllers
+@using System.Linq
+@using Garaaz.Models
+
+@{
+    int newNotifCount = 0;
+    List<NotificationData> notificationData = new List<NotificationData>();
+    var userId = General.GetUserId();
+
+    var sc = new SystemController();
+    var nModel = new ClsNotification()
+    {
+        UserId = userId,
+        NumberOfNotification = 10,
+        GetAllNotification = false
+    };
+    var notifications = sc.GetNotifications(nModel);
+
+    notificationData = (List<NotificationData>)notifications.Data;
+    newNotifCount = (from n in notificationData
+                     where n.IsRead == false
+                     select n).Count();
+}
+
+<div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl">
+    <form>
+        <!--begin: Head -->
+        <div class="kt-head kt-head--skin-dark kt-head--fit-x kt-head--fit-b" style="background-image: url(/assets/images/misc/bg-1.jpg)">
+            <h3 class="kt-head__title">
+                Notifications
+                &nbsp;
+                @if (newNotifCount > 0)
+                {
+                    <a href='@Url.Action("AllNotifications","Home")' class="btn btn-success btn-sm btn-bold btn-font-md" id="countnoti">@newNotifCount new</a>
+                }
+                else
+                {
+                    <a href='@Url.Action("AllNotifications","Home")' class="btn btn-success btn-sm btn-bold btn-font-md" id="countnoti"></a>
+                }
+            </h3>
+            <ul class="nav nav-tabs nav-tabs-line nav-tabs-bold nav-tabs-line-3x nav-tabs-line-success kt-notification-item-padding-x" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active show" data-toggle="tab" href="#topbar_notifications_notifications" role="tab" aria-selected="true">Alerts</a>
+                </li>
+            </ul>
+        </div>
+        <!--end: Head -->
+        <div class="tab-content">
+            <div class="tab-pane active show" id="topbar_notifications_notifications" role="tabpanel">
+                <div class="kt-notification kt-margin-t-10 kt-margin-b-10 kt-scroll" data-scroll="true" data-height="300" data-mobile-height="200">
+                    @if (notificationData.Count > 0)
+                    {
+                        foreach (var nd in notificationData)
+                        {
+                            switch (nd.Type)
+                            {
+                                case "NewRegisterDistributor":
+                                    <a href="@Url.Action("NewDistributorOverview", "Admin",new {nId=nd.Id, @refUserId = nd.RefUserId })" class="@(nd.IsRead ? "kt-notification__item kt-notification__item--read" : "kt-notification__item")">
+                                        <div class="kt-notification__item-icon">
+                                            <i class="flaticon2-box-1 kt-font-brand"></i>
+                                        </div>
+                                        <div class="kt-notification__item-details">
+                                            <div class="kt-notification__item-title">
+                                                @nd.Message
+                                            </div>
+                                            <div class="kt-notification__item-time">
+                                                @nd.CreatedDate
+                                            </div>
+                                        </div>
+                                    </a>
+                                    break;
+
+                                case "NewRegisterWorkshop":
+                                    <a href="@Url.Action("NewWorkshopOverview", "Admin",new {nId=nd.Id, @refUserId = nd.RefUserId, @workshopId = nd.WorkshopId })" class="@(nd.IsRead ? "kt-notification__item kt-notification__item--read" : "kt-notification__item")">
+                                        <div class="kt-notification__item-icon">
+                                            <i class="flaticon-security kt-font-warning"></i>
+                                        </div>
+                                        <div class="kt-notification__item-details">
+                                            <div class="kt-notification__item-title">
+                                                @nd.Message
+                                            </div>
+                                            <div class="kt-notification__item-time">
+                                                @nd.CreatedDate
+                                            </div>
+                                        </div>
+                                    </a>
+                                    break;
+
+                                case "RejectBackOrder":
+                                    <a href="javascript:void(0);" class="@(nd.IsRead ? "kt-notification__item kt-notification__item--read" : "kt-notification__item")">
+                                        <div class="kt-notification__item-icon">
+                                            <i class="flaticon2-favourite kt-font-danger"></i>
+                                        </div>
+                                        <div class="kt-notification__item-details">
+                                            <div class="kt-notification__item-title">
+                                                @nd.Message
+                                            </div>
+                                            <div class="kt-notification__item-time">
+                                                @nd.CreatedDate
+                                            </div>
+                                        </div>
+                                    </a>
+                                    break;
+
+                                case "RejectMainOrder":
+                                    <a href="@Url.Action("OrderDetailByOrderId", "Home",new {orderId = nd.RefUserId})" class="@(nd.IsRead ? "kt-notification__item kt-notification__item--read" : "kt-notification__item")">
+                                        <div class="kt-notification__item-icon">
+                                            <i class="flaticon2-favourite kt-font-danger"></i>
+                                        </div>
+                                        <div class="kt-notification__item-details">
+                                            <div class="kt-notification__item-title">
+                                                @nd.Message
+                                            </div>
+                                            <div class="kt-notification__item-time">
+                                                @nd.CreatedDate
+                                            </div>
+                                        </div>
+                                    </a>
+                                    break;
+
+                                case "NewOrderPlaced":
+                                    <a href="@Url.Action("OrderDetailByOrderId", "Home",new {orderId = nd.RefUserId})" class="@(nd.IsRead ? "kt-notification__item kt-notification__item--read" : "kt-notification__item")">
+                                        <div class="kt-notification__item-icon">
+                                            <i class="flaticon2-favourite kt-font-danger"></i>
+                                        </div>
+                                        <div class="kt-notification__item-details">
+                                            <div class="kt-notification__item-title">
+                                                @nd.Message
+                                            </div>
+                                            <div class="kt-notification__item-time">
+                                                @nd.CreatedDate
+                                            </div>
+                                        </div>
+                                    </a>
+                                    break;
+
+                                case "GiftAllocated":
+                                    <a href="javascript:void(0)" class="@(nd.IsRead ? "kt-notification__item kt-notification__item--read" : "kt-notification__item")">
+                                        <div class="kt-notification__item-icon">
+                                            <i class="flaticon2-drop kt-font-info"></i>
+                                        </div>
+                                        <div class="kt-notification__item-details">
+                                            <div class="kt-notification__item-title">
+                                                @nd.Message
+                                            </div>
+                                            <div class="kt-notification__item-time">
+                                                @nd.CreatedDate
+                                            </div>
+                                        </div>
+                                    </a>
+                                    break;
+
+                                case "Support":
+                                    <a href="@Url.Action("AddSupportQuery", "Admin",new {Id = Convert.ToInt32(nd.RefUserId), mode="edit", IsFromNotification= true })" class="@(nd.IsRead ? "kt-notification__item kt-notification__item--read" : "kt-notification__item")">
+                                        <div class="kt-notification__item-icon">
+                                            <i class="flaticon2-drop kt-font-info"></i>
+                                        </div>
+                                        <div class="kt-notification__item-details">
+                                            <div class="kt-notification__item-title">
+                                                @nd.Message
+                                            </div>
+                                            <div class="kt-notification__item-time">
+                                                @nd.CreatedDate
+                                            </div>
+                                        </div>
+                                    </a>
+                                    break;
+
+                                case "PartRequestPlaced":
+                                    <a href="javascript:void(0)" class="@(nd.IsRead ? "kt-notification__item kt-notification__item--read" : "kt-notification__item")">
+                                        <div class="kt-notification__item-icon">
+                                            <i class="flaticon-cart kt-font-info"></i>
+                                        </div>
+                                        <div class="kt-notification__item-details">
+                                            <div class="kt-notification__item-title">
+                                                @nd.Message
+                                            </div>
+                                            <div class="kt-notification__item-time">
+                                                @nd.CreatedDate
+                                            </div>
+                                        </div>
+                                    </a>
+                                    break;
+
+                                default:
+                                    <a href="javascript:void(0)" class="@(nd.IsRead ? "kt-notification__item kt-notification__item--read" : "kt-notification__item")">
+                                        <div class="kt-notification__item-icon">
+                                            <i class="flaticon2-pie-chart-2 kt-font-success"></i>
+                                        </div>
+                                        <div class="kt-notification__item-details">
+                                            <div class="kt-notification__item-title">
+                                                @nd.Message
+                                            </div>
+                                            <div class="kt-notification__item-time">
+                                                @nd.CreatedDate
+                                            </div>
+                                        </div>
+                                    </a>
+                                    break;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        <a href="#" class="kt-notification__item">
+                            <div class="kt-notification__item-details">
+                                No notification
+                            </div>
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

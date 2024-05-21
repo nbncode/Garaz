@@ -1,0 +1,130 @@
+﻿@model Garaaz.Models.clsAddUserFeature
+@using Garaaz.Models;
+@{
+
+    ViewBag.Title = "AddUsersFeature";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var userId = ViewBag.userId;
+    var Features = (List<clsFeatures>)ViewBag.FeatureList;
+}
+
+
+<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+    <div class="kt-subheader-search">
+        <h3 class="kt-subheader-search__title">
+            Permissions
+        </h3>
+    </div>
+    <header class="ribbon">
+        <h2>&nbsp;</h2>
+    </header>
+    <div class="page-content">
+        <div class="page-content">
+            <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="main-content">
+                @{Html.RenderPartial("alerts");}
+                <div class="row">
+                    <div class="col-md-12">
+                        <!--begin::Portlet-->
+                        <div class="kt-portlet">
+                            <div class="kt-portlet__head">
+                                <div class="kt-portlet__head-label">
+                                    <h3 class="kt-portlet__head-title">
+                                        Permissions
+                                    </h3>
+                                </div>
+                                <div class="kt-portlet__head-toolbar">
+                                    <div class="kt-portlet__head-wrapper">
+                                        <div class="kt-portlet__head-actions">
+                                            <a href="@Request.UrlReferrer" class="btn btn-brand btn-elevate btn-icon-sm">
+                                                <i class="la la-step-backward"></i>
+                                                Back
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="kt-form">
+                                    <div class="kt-portlet__body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                @if (Features == null)
+                                                {
+                                                    <h5>No Records found for this role.</h5>
+                                                }
+
+                                                @{
+                                                    if (Features != null)
+                                                    {
+                                                        <div class="form-group">
+                                                            <input id="userId" type="hidden" name="userId" value="@ViewBag.userId" />
+                                                            @if (Model != null && !string.IsNullOrEmpty(Model.FeatureIds))
+                                                            {
+                                                                var featureArr = Model.FeatureIds.Split(',');
+                                                                <div class="row">
+                                                                    @{
+                                                                        foreach (var item in Features)
+                                                                        {
+
+                                                                            if (featureArr.Contains(item.FeatureId.ToString()))
+                                                                            {
+                                                                                <div class="col-md-3">
+                                                                                    <div class="form-group">
+                                                                                        <input type="checkbox" checked class="icheck_n" name="Feature" value="@item.FeatureId"><label>@item.FeatureName </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <div class="col-md-3">
+                                                                                    <div class="form-group">
+                                                                                        <input type="checkbox" class="icheck_n" name="Feature" value="@item.FeatureId"><label>@item.FeatureName </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                            }
+
+                                                                        }
+                                                                    }
+                                                                </div>
+                                                            }
+
+                                                            @if (string.IsNullOrEmpty(Model.FeatureIds))
+                                                            {
+                                                                <div class="row">
+                                                                    @foreach (var item in Features)
+                                                                    {
+                                                                        <div class="col-md-3">
+                                                                            <div class="form-group">
+                                                                                <input type="checkbox" class="icheck_n" name="@item.FeatureId" value="@item.FeatureId"><label>@item.FeatureName </label>
+                                                                            </div>
+                                                                        </div>
+                                                                    }
+                                                                </div>
+                                                            }
+                                                        </div>
+                                                    }
+                                                }
+                                                <!-- /.panel-body -->
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.panel-primary panel -->
+                            </div>
+                            <!-- /.col-md-7 -->
+                            <div class="kt-portlet__foot">
+                                <div class="form-group">
+                                    @if (Features != null)
+                                    {
+                                        <a href="javascript:void(0);" class="btn btn-primary text-white" onclick="admin.SubmitUserFeatures('@userId')">Submit</a>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

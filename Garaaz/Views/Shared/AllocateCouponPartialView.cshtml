@@ -1,0 +1,90 @@
+﻿@model Garaaz.Models.CouponSchemeModel
+@{
+    var couponAllocated = Convert.ToBoolean(Model.Scheme.IsCouponAllocated);
+    var controller = this.ViewContext.RouteData.GetRequiredString("controller");
+}
+<div class="kt-portlet kt-portlet--mobile">
+    <div class="kt-portlet__head kt-portlet__head--lg">
+        <div class="kt-portlet__head-label">
+            <span class="kt-portlet__head-icon">
+                <i class="kt-font-brand flaticon2-line-chart"></i>
+            </span>
+            <h3 class="kt-portlet__head-title">
+                Scheme's Workshops
+            </h3>
+        </div>
+    </div>
+    <div class="kt-portlet__body">
+        <input type="hidden" id="schemeId" value="@Model.Scheme.SchemeId" />
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label for="couponNumber">Coupon number:</label>
+                    <input type="password" style="display:none;"> <!--This input is to make autocomplete off work in Chrome browser for couponNumber.-->
+                    <input id="couponNumber" type="text" maxlength="6" autocomplete="off" placeholder="Coupon to search" class="form-control" />
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <button class="btn btn-info mt-25" onclick="admin.GetWorkshopByCoupon('@controller')">Search Workshop</button>&nbsp;
+                    <button class="btn btn-warning mt-25" onclick="admin.ResetWorkshopWithCoupons('@controller',@Model.Scheme.SchemeId)">Reset</button>
+                </div>
+                <div class="coupon-fineUploader"></div>
+            </div>
+        </div>
+        <div id="workshops">
+            @{Html.RenderPartial("_GetWorkshopWithCoupons", Model);}
+        </div>
+    </div>
+
+    @if (!couponAllocated)
+    {
+        <div class="kt-portlet__foot">
+            <div class="kt-form__actions">
+                <button type="submit" onclick="admin.SaveCoupons('@controller')" class="btn btn-primary">Generate Coupons</button>
+            </div>
+        </div>
+    }
+
+</div>
+
+<div class="modal modalWithList" id="couponModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Coupons</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="addCouponModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Generate Coupons</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body text-center">
+                <div id="statusMsg"></div>                
+                <input type="hidden" id="hdnWorkshopId" />
+                <label>Enter number of coupons to generate:</label>
+                <input id="numOfCouponToGen" type="number" min="0" class="form-control w-25"style="margin: 0 auto;" />
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="admin.SaveAdditionalCoupons(@Model.Scheme.SchemeId)">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

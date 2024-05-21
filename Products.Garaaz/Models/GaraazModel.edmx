@@ -1,0 +1,250 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="GaraazModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="DistributorId" Type="int" />
+          <Property Name="GroupId" Type="int" />
+          <Property Name="ProductName" Type="nvarchar" MaxLength="500" />
+          <Property Name="PartNo" Type="nvarchar" MaxLength="500" />
+          <Property Name="Price" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Description" Type="nvarchar(max)" />
+          <Property Name="Remarks" Type="nvarchar(max)" />
+          <Property Name="ImagePath" Type="nvarchar" MaxLength="500" />
+          <Property Name="CreatedDate" Type="datetime" />
+          <Property Name="ProductType" Type="nvarchar" MaxLength="500" />
+          <Property Name="BinLocation" Type="nvarchar" MaxLength="100" />
+          <Property Name="PurchasePrice" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="LatestLandedCost" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="TaxPaidSellingPrice" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="TaxableSellingPrice" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="CurrentStock" Type="int" />
+          <Property Name="InventoryValue" Type="decimal" Precision="18" Scale="2" />
+          <Property Name="Abc" Type="nvarchar" MaxLength="10" />
+          <Property Name="Fms" Type="nvarchar" MaxLength="10" />
+          <Property Name="Xyz" Type="nvarchar" MaxLength="10" />
+          <Property Name="MovementCode" Type="nvarchar" MaxLength="50" />
+          <Property Name="PackQuantity" Type="int" />
+          <Property Name="Margin" Type="int" />
+          <Property Name="SequenceNo" Type="int" />
+          <Property Name="IssueIndicator" Type="nvarchar" MaxLength="500" />
+          <Property Name="StartDate" Type="date" />
+          <Property Name="CloseDate" Type="date" />
+          <Property Name="ModelsApplicable" Type="nvarchar" MaxLength="200" />
+          <Property Name="SalesTaxCategory" Type="nvarchar" MaxLength="10" />
+          <Property Name="TaxDesc" Type="nvarchar" MaxLength="200" />
+          <Property Name="OnOrderQtyMul" Type="int" />
+          <Property Name="InTransitQty" Type="int" />
+          <Property Name="AllocQty" Type="int" />
+          <Property Name="FloatStock" Type="int" />
+          <Property Name="MinimumLevel" Type="nvarchar" MaxLength="200" />
+          <Property Name="MaximumLevel" Type="nvarchar" MaxLength="200" />
+          <Property Name="ReorderLevel" Type="nvarchar" MaxLength="200" />
+          <Property Name="Last12MonthAvgConsumption" Type="int" />
+          <Property Name="ReservationQty" Type="nvarchar" MaxLength="200" />
+          <Property Name="SafetyStock" Type="nvarchar" MaxLength="200" />
+          <Property Name="SeasonalPartYn" Type="nvarchar" MaxLength="200" />
+          <Property Name="DeadStockYn" Type="nvarchar" MaxLength="10" />
+          <Property Name="ReasonToEditInPo" Type="nvarchar" MaxLength="200" />
+          <Property Name="VorPartYn" Type="nvarchar" MaxLength="10" />
+          <Property Name="HsCode" Type="int" />
+          <Property Name="QuarantineQty" Type="nvarchar" MaxLength="200" />
+          <Property Name="BrandId" Type="int" />
+          <Property Name="TaxValue" Type="nvarchar" MaxLength="500" />
+          <Property Name="RootPartNum" Type="nvarchar" MaxLength="500" />
+          <Property Name="PartCategoryCode" Type="nvarchar" MaxLength="500" />
+        </EntityType>
+        <Association Name="FK_Product_Product">
+          <End Role="Product" Type="Self.Product" Multiplicity="1" />
+          <End Role="Product1" Type="Self.Product" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="Product1">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="GaraazModelStoreContainer">
+          <EntitySet Name="Product" EntityType="Self.Product" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Product_Product" Association="Self.FK_Product_Product">
+            <End Role="Product" EntitySet="Product" />
+            <End Role="Product1" EntitySet="Product" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="GaraazModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="ProductGaraazEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Products" EntityType="GaraazModel.Product" />
+          <AssociationSet Name="FK_Product_Product" Association="GaraazModel.FK_Product_Product">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="Product1" EntitySet="Products" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ProductId" />
+          </Key>
+          <Property Name="ProductId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DistributorId" Type="Int32" />
+          <Property Name="GroupId" Type="Int32" />
+          <Property Name="ProductName" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PartNo" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Remarks" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ImagePath" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="CreatedDate" Type="DateTime" Precision="3" />
+          <Property Name="ProductType" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="BinLocation" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PurchasePrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="LatestLandedCost" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TaxPaidSellingPrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="TaxableSellingPrice" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="CurrentStock" Type="Int32" />
+          <Property Name="InventoryValue" Type="Decimal" Precision="18" Scale="2" />
+          <Property Name="Abc" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Fms" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="Xyz" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="MovementCode" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="PackQuantity" Type="Int32" />
+          <Property Name="Margin" Type="Int32" />
+          <Property Name="SequenceNo" Type="Int32" />
+          <Property Name="IssueIndicator" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="StartDate" Type="DateTime" Precision="0" />
+          <Property Name="CloseDate" Type="DateTime" Precision="0" />
+          <Property Name="ModelsApplicable" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="SalesTaxCategory" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="TaxDesc" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="OnOrderQtyMul" Type="Int32" />
+          <Property Name="InTransitQty" Type="Int32" />
+          <Property Name="AllocQty" Type="Int32" />
+          <Property Name="FloatStock" Type="Int32" />
+          <Property Name="MinimumLevel" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="MaximumLevel" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="ReorderLevel" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="Last12MonthAvgConsumption" Type="Int32" />
+          <Property Name="ReservationQty" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="SafetyStock" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="SeasonalPartYn" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="DeadStockYn" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="ReasonToEditInPo" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="VorPartYn" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="HsCode" Type="Int32" />
+          <Property Name="QuarantineQty" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+          <Property Name="BrandId" Type="Int32" />
+          <Property Name="TaxValue" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="RootPartNum" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <Property Name="PartCategoryCode" Type="String" MaxLength="500" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Product1" Relationship="GaraazModel.FK_Product_Product" FromRole="Product" ToRole="Product1" />
+          <NavigationProperty Name="Product2" Relationship="GaraazModel.FK_Product_Product" FromRole="Product1" ToRole="Product" />
+        </EntityType>
+        <Association Name="FK_Product_Product">
+          <End Type="GaraazModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="GaraazModel.Product" Role="Product1" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ProductId" />
+            </Principal>
+            <Dependent Role="Product1">
+              <PropertyRef Name="ProductId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="GaraazModelStoreContainer" CdmEntityContainer="ProductGaraazEntities">
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="GaraazModel.Product">
+              <MappingFragment StoreEntitySet="Product">
+                <ScalarProperty Name="PartCategoryCode" ColumnName="PartCategoryCode" />
+                <ScalarProperty Name="RootPartNum" ColumnName="RootPartNum" />
+                <ScalarProperty Name="TaxValue" ColumnName="TaxValue" />
+                <ScalarProperty Name="BrandId" ColumnName="BrandId" />
+                <ScalarProperty Name="QuarantineQty" ColumnName="QuarantineQty" />
+                <ScalarProperty Name="HsCode" ColumnName="HsCode" />
+                <ScalarProperty Name="VorPartYn" ColumnName="VorPartYn" />
+                <ScalarProperty Name="ReasonToEditInPo" ColumnName="ReasonToEditInPo" />
+                <ScalarProperty Name="DeadStockYn" ColumnName="DeadStockYn" />
+                <ScalarProperty Name="SeasonalPartYn" ColumnName="SeasonalPartYn" />
+                <ScalarProperty Name="SafetyStock" ColumnName="SafetyStock" />
+                <ScalarProperty Name="ReservationQty" ColumnName="ReservationQty" />
+                <ScalarProperty Name="Last12MonthAvgConsumption" ColumnName="Last12MonthAvgConsumption" />
+                <ScalarProperty Name="ReorderLevel" ColumnName="ReorderLevel" />
+                <ScalarProperty Name="MaximumLevel" ColumnName="MaximumLevel" />
+                <ScalarProperty Name="MinimumLevel" ColumnName="MinimumLevel" />
+                <ScalarProperty Name="FloatStock" ColumnName="FloatStock" />
+                <ScalarProperty Name="AllocQty" ColumnName="AllocQty" />
+                <ScalarProperty Name="InTransitQty" ColumnName="InTransitQty" />
+                <ScalarProperty Name="OnOrderQtyMul" ColumnName="OnOrderQtyMul" />
+                <ScalarProperty Name="TaxDesc" ColumnName="TaxDesc" />
+                <ScalarProperty Name="SalesTaxCategory" ColumnName="SalesTaxCategory" />
+                <ScalarProperty Name="ModelsApplicable" ColumnName="ModelsApplicable" />
+                <ScalarProperty Name="CloseDate" ColumnName="CloseDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="IssueIndicator" ColumnName="IssueIndicator" />
+                <ScalarProperty Name="SequenceNo" ColumnName="SequenceNo" />
+                <ScalarProperty Name="Margin" ColumnName="Margin" />
+                <ScalarProperty Name="PackQuantity" ColumnName="PackQuantity" />
+                <ScalarProperty Name="MovementCode" ColumnName="MovementCode" />
+                <ScalarProperty Name="Xyz" ColumnName="Xyz" />
+                <ScalarProperty Name="Fms" ColumnName="Fms" />
+                <ScalarProperty Name="Abc" ColumnName="Abc" />
+                <ScalarProperty Name="InventoryValue" ColumnName="InventoryValue" />
+                <ScalarProperty Name="CurrentStock" ColumnName="CurrentStock" />
+                <ScalarProperty Name="TaxableSellingPrice" ColumnName="TaxableSellingPrice" />
+                <ScalarProperty Name="TaxPaidSellingPrice" ColumnName="TaxPaidSellingPrice" />
+                <ScalarProperty Name="LatestLandedCost" ColumnName="LatestLandedCost" />
+                <ScalarProperty Name="PurchasePrice" ColumnName="PurchasePrice" />
+                <ScalarProperty Name="BinLocation" ColumnName="BinLocation" />
+                <ScalarProperty Name="ProductType" ColumnName="ProductType" />
+                <ScalarProperty Name="CreatedDate" ColumnName="CreatedDate" />
+                <ScalarProperty Name="ImagePath" ColumnName="ImagePath" />
+                <ScalarProperty Name="Remarks" ColumnName="Remarks" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="PartNo" ColumnName="PartNo" />
+                <ScalarProperty Name="ProductName" ColumnName="ProductName" />
+                <ScalarProperty Name="GroupId" ColumnName="GroupId" />
+                <ScalarProperty Name="DistributorId" ColumnName="DistributorId" />
+                <ScalarProperty Name="ProductId" ColumnName="ProductId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

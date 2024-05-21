@@ -1,0 +1,27 @@
+﻿@model Garaaz.Models.DecideWinnersModel
+@using System.Linq;
+
+@{ Html.RenderPartial("alerts");}
+<div class="statusMsg"></div>
+@if (Model != null)
+{
+    <input type="hidden" id="hdnGiftName" value="@Model.GiftName" />
+    <input type="hidden" id="hdnGiftId" value="@Model.GiftId" />
+    <input type="hidden" id="hdnSchemeId" value="@Model.SchemeId" />
+    <input type="hidden" id="hdnGiftRemQty" value="@Model.GiftRemainingQty" />
+
+    foreach (var item in Model.WorkshopCoupons)
+    {
+        var defaultWinner = Model.DefaultWinners.Where(d => d.Workshop.WorkShopId == item.Workshop.WorkShopId).FirstOrDefault();
+        foreach (var coupon in item.Coupons)
+        {
+            var selected = defaultWinner != null ? defaultWinner.Coupons.Where(c => c == coupon).Any() ? "checked" : "" : "";
+
+            <input type="checkbox" class="icheck" @selected value="@coupon" data-workshop-id="@item.Workshop.WorkShopId" /> <text>@string.Format("{0} ({1})", coupon, item.Workshop.WorkShopName)</text><br /><br />
+        }
+    }
+}
+else
+{
+    <p>An error occurred. Please check log for more details.</p>
+}

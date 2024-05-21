@@ -1,0 +1,139 @@
+﻿@model IEnumerable<Garaaz.Models.UserDetail>
+
+<div class="kt-portlet kt-portlet--mobile">
+    <div class="kt-portlet__head kt-portlet__head--lg">
+        <div class="kt-portlet__head-label">
+            <span class="kt-portlet__head-icon">
+                <i class="kt-font-brand flaticon2-line-chart"></i>
+            </span>
+            <h3 class="kt-portlet__head-title">
+                Distributor List
+            </h3>
+        </div>
+        <div class="kt-portlet__head-toolbar">
+            <div class="kt-portlet__head-wrapper">
+                <div class="kt-portlet__head-actions">
+                    <a href="/admin/AddDistributor" class="btn btn-brand btn-elevate btn-icon-sm">
+                        <i class="la la-plus"></i>
+                        Add New
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="kt-portlet__body">
+        <!--begin: Datatable -->
+        <table class="table table-striped- table-bordered table-hover table-checkable datatable" id="kt_table_1">
+            <thead>
+                <tr>
+                    <th>
+                        Distributor
+                    </th>
+                    <th>
+                        Contact Person
+                    </th>
+                    <th>
+                        Contact Person Phone
+                    </th>
+                    <th>
+                        IsApproved
+                    </th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                    <th>
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+
+            <tbody>
+                @foreach (var item in Model)
+                {
+                    var isapproved = "Pending";
+                    var DistributorUsers = item.AspNetUser.DistributorUsers.ToList();
+                    if (DistributorUsers.Count > 0)
+                    {
+                        var distributor = DistributorUsers.FirstOrDefault().Distributor;
+                        <tr id="@item.UserId">
+                            <td>
+                                @distributor.DistributorName
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FirstName) @Html.DisplayFor(modelItem => item.LastName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.AspNetUser.UserName)
+                            </td>
+                            <td>
+                                @if (item.AspNetUser.EmailConfirmed)
+                                {
+                                    isapproved = "Approved";
+                                }
+                                @isapproved
+                            </td>
+                            <td>
+                                <a class="dropdown-item" href="/Admin/AddDistributor/@item.UserId?mode=edit">
+                                    <i class="la la-edit"></i> Edit
+                                </a>
+                            </td>
+                            <td>
+
+                                <a class="dropdown-item" onclick="admin.DeleteUser(this)" href="javascript:void(0);">
+                                    <i class="la la-trash"></i> Delete
+                                </a>
+                            </td>
+                            <td>
+                                <span class="dropdown">
+                                    <a href="#" class="btn btn-sm btn-brand btn-icon btn-icon-md" data-toggle="dropdown" aria-expanded="false">
+                                        <i class="la la-ellipsis-h"></i>
+                                    </a>
+                                    <div class="dropdown-menu dropdown-menu-right" x-placement="top-end" style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(-214px, -144px, 0px);">
+                                        <a class="dropdown-item" href="/Admin/DistributorUsers?DistributorId=@distributor.DistributorId">
+                                            <i class="la la-list-alt"></i> Users
+                                        </a>
+                                        <a class="dropdown-item" href="/Admin/SalesExecutive?DistributorId=@distributor.DistributorId">
+                                            <i class="la la-list-alt"></i> Sales Executive
+                                        </a>
+                                        <a class="dropdown-item" href="/Admin/RoIncharge?DistributorId=@distributor.DistributorId">
+                                            <i class="la la-list-alt"></i> RO Incharge
+                                        </a>
+                                        <a class="dropdown-item" href="/Admin/DistributorOutlets?DistributorId=@distributor.DistributorId">
+                                            <i class="la la-leaf"></i> Outlets
+                                        </a>
+                                        <a class="dropdown-item" href="/Admin/Workshop?DistributorId=@distributor.DistributorId">
+                                            <i class="la la-list"></i> WorkShops
+                                        </a>
+                                        <a class="dropdown-item" href="/Admin/DistributorLocations?DistributorId=@distributor.DistributorId">
+                                            <i class="flaticon-location"></i> Location code
+                                        </a>
+                                        <a class="dropdown-item changePasswordPopUp" href="javascript:void(0)" onclick="common.ChangePasswordPopUp('@item.UserId')">
+                                            <i class="la la-edit"></i> Change Password
+                                        </a>
+                                        <a class="dropdown-item" href="/Admin/RequestPartFilter?DistributorId=@distributor.DistributorId">
+                                            <i class="la la-list"></i> Request Part Filter
+                                        </a>
+                                        @*<a class="dropdown-item" href="/Admin/AddDistributor/@item.UserId?mode=edit">
+            <i class="la la-edit"></i> Edit
+        </a>
+
+        <a class="dropdown-item" onclick="admin.DeleteUser(this)" href="javascript:void(0);">
+            <i class="la la-trash"></i> Delete
+        </a>*@
+                                    </div>
+                                </span>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+
+        </table>
+        <!--end: Datatable -->
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('table.datatable').dataTable();
+    });
+</script>

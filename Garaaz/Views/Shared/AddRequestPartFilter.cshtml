@@ -1,0 +1,134 @@
+﻿@model Garaaz.Models.clsPartfilter
+@{
+    ViewBag.Title = "Add Request PartFilter";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string controller = ViewBag.Controller.ToString();
+}
+
+<div class="kt-subheader-search">
+    <h3 class="kt-subheader-search__title">
+        Add Request PartFilter
+    </h3>
+</div>
+
+
+<header class="ribbon">
+    <h2>&nbsp;</h2>
+</header>
+
+
+<div class="page-content">
+    <div class="page-content">
+        @{Html.RenderPartial("alerts");}
+        <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+            <div class="row">
+                <div class="col-md-12">
+                    <!--begin::Portlet-->
+                    <div class="kt-portlet">
+                        <div class="kt-portlet__head">
+                            <div class="kt-portlet__head-label">
+                                <h3 class="kt-portlet__head-title">
+                                    Add/Edit
+                                </h3>
+                            </div>
+                            <div class="kt-portlet__head-toolbar">
+                                <div class="kt-portlet__head-wrapper">
+                                    <div class="kt-portlet__head-actions">
+                                        <a href="/@ViewBag.Controller/RequestPartFilter?distributorId=@ViewBag.distributorId" class="btn btn-brand btn-elevate btn-icon-sm">
+                                            <i class="la la-step-backward"></i>
+                                            Back
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        @using (Html.BeginForm("AddRequestPartFilter", controller, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                        {
+                            <div class="kt-form">
+                                <div class="kt-portlet__body">
+                                    @Html.HiddenFor(model => model.DistributorId)
+                                    @Html.HiddenFor(model => model.Id)
+
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Car Make <em>*</em></label>
+                                                @Html.EditorFor(model => model.CarMake, new { htmlAttributes = new { @class = "form-control required" } })
+                                                @Html.ValidationMessageFor(model => model.CarMake, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Model <em>*</em></label>
+                                                @Html.EditorFor(model => model.ModelNumber, new { htmlAttributes = new { @class = "form-control required" } })
+                                                @Html.ValidationMessageFor(model => model.ModelNumber, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Year <em>*</em></label>
+                                                @Html.EditorFor(model => model.Year, new { htmlAttributes = new { @class = "form-control required" } })
+                                                @Html.ValidationMessageFor(model => model.Year, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Part Group<em>*</em></label>
+                                                @Html.EditorFor(model => model.PartGroup, new { htmlAttributes = new { @class = "form-control required" } })
+                                                @Html.ValidationMessageFor(model => model.PartGroup, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>PartNumber<em>*</em></label>
+                                                @Html.EditorFor(model => model.PartNumber, new { htmlAttributes = new { @class = "form-control required" } })
+                                                @Html.ValidationMessageFor(model => model.PartNumber, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Root PartNumber<em>*</em></label>
+                                                @Html.EditorFor(model => model.RootPartNumber, new { htmlAttributes = new { @class = "form-control required" } })
+                                                @Html.ValidationMessageFor(model => model.RootPartNumber, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Part Description<em>*</em></label><br />
+                                                @Html.TextAreaFor(model => model.PartDescription, new { htmlAttributes = new { @class = "form-control required" } })
+                                                @Html.ValidationMessageFor(model => model.PartDescription, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+
+                                                <label>Modification <em>*</em></label><br />
+                                                @Html.TextAreaFor(model => model.Modification, new { htmlAttributes = new { @class = "form-control required" } })
+                                                @Html.ValidationMessageFor(model => model.Modification, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+
+                            <div class="kt-portlet__foot">
+                                <div class="form-group">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <button type="reset" class="btn btn-secondary">Cancel</button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

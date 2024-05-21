@@ -1,0 +1,83 @@
+﻿@model List<Garaaz.Models.DashboardOverview.Inventory.InvDetail>
+
+@{
+    const string noRecordFound = "Sorry! No record found for selected criteria";
+
+    string errorMsg = ViewBag.ErrorMsg;
+    if (string.IsNullOrWhiteSpace(errorMsg) && Model == null)
+    {
+        errorMsg = "Model is not set";
+    }
+}
+
+@if (string.IsNullOrWhiteSpace(errorMsg) && Model != null)
+{
+    if (Model.Count > 0)
+    {
+        var totalStockDays = Model.Sum(m => m.StockDays);
+        var totalAvgSales = Model.Sum(m => m.AverageSales);
+        var totalStock = Model.Sum(m => m.StockPrice);
+
+        <div class="table-responsive">
+            <table class="table table-bordered w-auto table-center dataTable">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Sr No</th>
+                        <th>Branch Code</th>
+                        <th>Branch Name</th>
+                        <th>Stock Days</th>
+                        <th>Avg. Sales (Lacs)</th>
+                        <th>Stock (In lacs)</th>
+                        <th>No. of Partlines In Stock</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var invDet in Model)
+                    {
+                        <tr>
+                            <td>@invDet.SlNo</td>
+                            <td>@invDet.BranchCode</td>
+                            <td>@invDet.BranchName</td>
+                            <td>@invDet.StockDays</td>
+                            <td>@invDet.AverageSales</td>
+                            <td>@invDet.StockPrice</td>
+                            <td>@invDet.PartLinesInStock</td>
+                            <td><a href="javascript:void(0);" onclick="dbInv.fetchInvForBranch('@invDet.BranchCode',this)">View</a></td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td><b>Grand Total</b></td>
+                        <td></td>
+                        <td><b>@totalStockDays.ToString("N")</b></td>
+                        <td><b>@totalAvgSales.ToString("N")</b></td>
+                        <td><b>@totalStock.ToString("N")</b></td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p class="kt-font-bold">
+            <i class="kt-font-warning flaticon-warning-sign"></i>
+            &nbsp;@noRecordFound
+        </p>
+    }
+
+}
+else
+{
+    <p class="kt-font-bold">
+        <i class="kt-font-warning flaticon-warning-sign"></i>
+        &nbsp;@errorMsg
+    </p>
+}
+
+
+

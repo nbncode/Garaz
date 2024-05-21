@@ -1,0 +1,48 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.hidden{
+    visibility:hidden;
+}
+
+.visible{
+    visibility:visible;
+}
+.ui-widget label {
+    padding-right:15px;
+}
+.ui-widget input {
+    width: 60%;
+    height: auto;
+    padding: 5px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+}
+.workshop-btn a{
+    padding: 4px 12px;
+}
+.ui-menu .ui-menu-item-wrapper {
+    display: block;
+}

@@ -1,0 +1,30 @@
+﻿@model Garaaz.Models.DashboardOverview.Collection.ColInfoResponse
+@{
+    string errorMsg = ViewBag.ErrorMsg;
+    if (string.IsNullOrWhiteSpace(errorMsg) && Model == null)
+    {
+        errorMsg = "Model is not set";
+    }
+}
+
+<div class="kt-widget24__details">
+    <div class="kt-widget24__info">
+        @if (string.IsNullOrWhiteSpace(errorMsg) && Model != null)
+        {
+            var collectionPercentage = $"({Model.CollectionPercentage}%)";
+            <h4>
+                @Model.DateInfo
+            </h4>
+            <span class="kt-widget24__title dbGreen">
+                <span class="pr-2">@Model.TotalCollection</span> <span class="growthPercent">@collectionPercentage</span>
+            </span>
+        }
+        else
+        {
+            <p class="kt-font-bold">
+                <i class="kt-font-warning flaticon-warning-sign"></i>
+                &nbsp;@errorMsg
+            </p>
+        }
+    </div>
+</div>

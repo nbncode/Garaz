@@ -1,0 +1,88 @@
+﻿@model string
+@using Garaaz.Models;
+
+@{
+    ViewBag.Title = "Payment Method";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var sGrandTotal = string.Empty;
+    if (!string.IsNullOrEmpty(Model))
+    {
+        sGrandTotal = String.Format("{0:0.00}", Model);
+    }
+
+}
+
+<div class="kt-subheader-search">
+    <h3 class="kt-subheader-search__title">
+        Checkout
+    </h3>
+</div>
+
+<header class="ribbon">
+    <h2>&nbsp;</h2>
+</header>
+<div class="page-content">
+    <div class="container-fluid">
+
+        <div id="main-content">
+            @{Html.RenderPartial("alerts");}
+
+        </div>
+    </div>
+    @*@using (Html.BeginForm("PaymentMethod", "Home", FormMethod.Post))
+        {*@
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+        <input type="hidden" id="PageView" value="/Home/CartPartialView" />
+        <div class="row">
+            <div class="col-md-12">
+                <!--begin::Portlet-->
+                <div class="kt-portlet">
+                    <div class="kt-portlet__head">
+                        <div class="kt-portlet__head-label">
+                            <h3 class="kt-portlet__head-title">
+                                Select payment method for INR
+                            </h3>
+                        </div>
+                    </div>
+
+                    <div class="kt-portlet kt-portlet--mobile">
+                        <div class="kt-portlet__body">
+                            <table class="table table-striped- table-bordered table-hover table-checkable payment-table" align="center">
+                                <tbody>
+                                    <tr>
+                                        <td width="15%" align="center"><input type="radio" class="icheck" name="paymentMethod" value="CashOnDelivery" checked /></td>
+                                        <td width="85%">Cash on Delivery</td>
+                                    </tr>
+                                    <tr>
+                                        <td width="15%" align="center"><input type="radio" class="icheck" name="paymentMethod" value="RazorPay" /></td>
+                                        <td width="85%">Razor Pay</td>
+                                    </tr>
+                                    <tr>
+                                        <td colspan="2" align="center"><span class="rupee-sign">@Constants.Sign</span> @sGrandTotal</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="kt-portlet__foot">
+                        <div class="kt-form__actions">
+                            <button type="submit" class="btn btn-primary" onclick="payment.PlaceOrder()">Place Order</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*}*@
+</div>
+@section scripts{
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <script src="~/js/payment.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var url = $("#PageView").val();
+            admin.LoadPartialView(url);
+        });
+    </script>
+}

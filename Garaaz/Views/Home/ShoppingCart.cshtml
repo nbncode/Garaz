@@ -1,0 +1,296 @@
+﻿@model Cart
+@using Garaaz.Models
+
+@{
+    ViewBag.Title = "Shopping Cart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var style = "";
+    var cartMain = Model != null ? Model.CartMain : new List<CartMain>();
+    if (@ViewBag.Role == Constants.WorkshopUsers) { style = "display: none;"; }
+}
+
+<div class="kt-subheader-search">
+    <h3 class="kt-subheader-search__title">
+        Shopping Cart
+    </h3>
+</div>
+
+<header class="ribbon">
+    <h2>&nbsp;</h2>
+</header>
+
+<div class="page-content">
+    @{Html.RenderPartial("alerts");}
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+        <div class="row">
+            <div class="col-md-12">
+                <!--begin::Portlet-->
+                <div class="kt-portlet">
+                    <div class="kt-portlet__head">
+                        <div class="kt-portlet__head-label">
+                            <h3 class="kt-portlet__head-title">
+                                Items in your cart:
+                            </h3>
+                        </div>
+                    </div>
+
+                    <div class="kt-portlet kt-portlet--mobile">
+                        <div class="kt-portlet__body">
+                            @if (Model != null)
+                            {
+                                <!--begin: Datatable -->
+                                <table class="table table-striped- table-bordered table-hover table-checkable datatable" id="kt_table_1">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th>
+                                                Product Name
+                                            </th>
+                                            <th>
+                                                Qty
+                                            </th>
+                                            <th>
+                                                Unit Price
+                                            </th>
+                                            <th>
+                                                Total
+                                            </th>
+                                            <th>
+                                                Action
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tfoot>
+                                        <tr class="first last">
+                                            <td colspan="50">
+                                                <a href="javascript:void(0);" onclick="history.go(-1);" title="Continue Shopping" style="float:left" class="btn btn-primary">Continue Shopping</a>
+                                                <button type="button" style="float:right" onclick="product.UpdateCart()" title="Update Shopping Cart" class="btn btn-primary">Update Shopping Cart</button>
+                                            </td>
+                                        </tr>
+                                    </tfoot>
+                                    <tbody>
+                                        @foreach (var cm in cartMain)
+                                        {
+                                            <tr>
+                                                <td class="py-3" colspan="6">
+                                                    <h4>@cm.Name</h4>
+                                                </td>
+                                            </tr>
+
+                                            var cartItems = cm.data;
+                                            foreach (var item in cartItems)
+                                            {
+                                                <tr id="@item.ProductId">
+                                                    <td align="center">
+                                                        <img height="100" width="100" src='@Html.Raw(item.ImagePath)' alt="ItemImage" onerror="changeurl(this)">
+                                                    </td>
+                                                    <td>
+                                                        @item.ProductName
+                                                        <div style="margin-top:10px;margin-bottom:10px;">
+                                                            @item.PartNumber
+                                                        </div>
+                                                        <div style="@style">
+                                                            @if (item.OutletData.Any())
+                                                            {
+                                                                <div class="comboBox">
+                                                                    <select @(item.Available ? "disabled" : "") id="@(item.ProductId)OutletId" class="form-control" onchange="product.bindProductAvailablityType(this)">
+                                                                        <option value=""> -- Select Outlet-- </option>
+                                                                        @foreach (var outlet in item.OutletData)
+                                                                        {
+                                                                            var productList = string.Join(",", @outlet.lstProductAvailablity);
+                                                                            <option data-type="@productList" @((item.Available && outlet.IsDefaultOutlet) || (item.OutletId == outlet.OutletId) ? "selected" : "") value="@outlet.OutletId"> @outlet.OutletName</option>
+                                                                        }
+                                                                    </select>
+                                                                </div>
+                                                            }
+
+                                                            <div id="@(item.ProductId)radio-blockCart" class="radio-blockCart">
+                                                                @{
+                                                                    if (item.OutletId.HasValue)
+                                                                    {
+                                                                        var OutletData = item.OutletData.Where(x => x.OutletId == item.OutletId).FirstOrDefault();
+                                                                        if (OutletData != null)
+                                                                        {
+                                                                            var productAvailablityType = OutletData.lstProductAvailablity;
+                                                                            foreach (var type in productAvailablityType)
+                                                                            {
+                                                                                var check = "";
+                                                                                if (!string.IsNullOrEmpty(item.ProductAvailablityType))
+                                                                                {
+                                                                                    check = type == item.ProductAvailablityType ? "checked" : "";
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    check = (type == Constants.SelfPickup || type == Constants.OrderToMSIL) ? "checked" : "";
+                                                                                }
+                                                                                <div class="radio-box">
+                                                                                    <input type="radio" @check name="@(item.ProductId)productType" class="icheck_n name form-control @check" value="@type" />
+                                                                                    <label style="margin-right: 10px;margin-left: 10px;">@type</label>
+                                                                                </div>
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        if (item.OutletData.Any())
+                                                                        {
+                                                                            if (item.Available)
+                                                                            {
+                                                                                foreach (var outlet in item.OutletData.Where(x => x.IsDefaultOutlet == true))
+                                                                                {
+                                                                                    <div class="radio-box">
+                                                                                        @foreach (var type in outlet.lstProductAvailablity)
+                                                                                        {
+                                                                                            var check = "";
+                                                                                            if (!string.IsNullOrEmpty(item.ProductAvailablityType))
+                                                                                            {
+                                                                                                check = type == item.ProductAvailablityType ? "checked" : "";
+                                                                                            }
+                                                                                            else
+                                                                                            {
+                                                                                                check = (type == Constants.SelfPickup || type == Constants.OrderToMSIL) ? "checked" : "";
+                                                                                            }
+                                                                                            <input type="radio" @check name="@(item.ProductId)productType" class="icheck_n name form-control @check" value="@type" />
+                                                                                            <label style="margin-right: 10px; margin-left: 10px;">@type</label>
+
+                                                                                        }
+                                                                                    </div>
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                    if (!item.OutletData.Any())
+                                                                    {
+                                                                        var productAvailablityType = item.ProductAvailablityNotFoundData.FirstOrDefault();
+                                                                        var check = "";
+                                                                        if (!string.IsNullOrEmpty(item.ProductAvailablityType))
+                                                                        {
+                                                                            check = productAvailablityType == item.ProductAvailablityType ? "checked" : "";
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            check = (productAvailablityType == Constants.SelfPickup || productAvailablityType == Constants.OrderToMSIL) ? "checked" : "";
+                                                                        }
+                                                                        <div class="radio-box">
+                                                                            <input type="radio" @check name="@(item.ProductId)productType" class="icheck_n name form-control @check" value="@item.ProductAvailablityNotFoundData.FirstOrDefault()" />
+                                                                            <label style="margin-right: 10px; margin-left: 10px;">@item.ProductAvailablityNotFoundData.FirstOrDefault()</label>
+                                                                        </div>
+                                                                    }
+                                                                }
+                                                            </div>
+                                                        </div>
+                                                    </td>
+
+                                                    <td>
+                                                        <input value="@item.Quantity" size="4" title="Qty" maxlength="12" class="form-control qty">
+                                                    </td>
+                                                    <td>
+                                                        <input type="hidden" class="unit-price" value="@item.UnitPrice" />
+                                                        <span class="rupee-sign">@Constants.Sign</span> @item.UnitPrice
+                                                    </td>
+                                                    <td>
+                                                        <span class="rupee-sign">@Constants.Sign</span> @item.TotalPrice
+                                                    </td>
+                                                    <td>
+                                                        <a class="dropdown-item" id="Delete" onclick="product.DeleteCart('@item.ProductId')" href="javascript:void(0);" title="Remove item">
+                                                            <i class="la la-trash"></i>
+                                                        </a>
+                                                    </td>
+                                                </tr>
+                                            }
+                                        }
+                                    </tbody>
+                                </table>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <div class="apply-couppon">
+                                            @if (!string.IsNullOrEmpty(Model.DiscountCode))
+                                            {
+                                                <input type="text" id="PromoCode" placeholder="Enter Promo Code" value="@Model.DiscountCode" disabled class="form-control" autocomplete="off">
+                                               
+                                                <div class="success" style="background-color: #00BCD4;color:white">
+                                                    <strong>Success!</strong> Coupon Successfully Applied
+                                                    <span onclick="product.RemovePromocode()" title="Remove Coupon">X</span>
+                                                </div>
+
+                                            }
+                                            else
+                                            {
+                                                <input type="text" id="PromoCode" placeholder="Enter Promo Code" value="@Model.DiscountCode" class="form-control" autocomplete="off">
+                                                <button type="button" onclick="product.ApplyPromocode()" title="Apply Coupon" class="btn btn-primary">Apply Coupon</button>
+                                            }
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4 pull-right offset-md-4 kt-mycart">
+                                        <div class="kt-mycart__footer">
+                                            <div class="kt-mycart__section">
+                                                <div class="kt-mycart__subtitel">
+                                                    <span>Sub Total:</span>
+                                                    @{
+                                                        if (Model.Discount != null && Model.Discount > 0)
+                                                        {
+                                                            <span>Discount:</span>
+                                                        }
+                                                        if (Model.DeliveryCharge != null && Model.DeliveryCharge > 0)
+                                                        {
+                                                            <span>DeliveryCharge:</span>
+                                                        }
+                                                        if (Model.PackingCharge != null && Model.PackingCharge > 0)
+                                                        {
+                                                            <span>PackingCharge:</span>
+                                                        }
+                                                        <span>Grand Total:</span>
+                                                    }
+                                                </div>
+
+                                                <div class="kt-mycart__prices">
+                                                    <span class="rupee-sign">@Constants.Sign @( Model != null ? Model.SubTotal : 0)</span>
+                                                    @{
+                                                        if (Model.Discount != null && Model.Discount > 0)
+                                                        {
+                                                            <span class="rupee-sign">@Constants.Sign @( Model != null ? Model.Discount : 0)</span>
+                                                        }
+                                                        if (Model.DeliveryCharge != null && Model.DeliveryCharge > 0)
+                                                        {
+                                                            <span class="rupee-sign">@Constants.Sign @( Model != null ? Model.DeliveryCharge : 0)
+                                                    </span>
+                                                        }
+                                                        if (Model.PackingCharge != null && Model.PackingCharge > 0)
+                                                        {
+                                                            <span class="rupee-sign">@Constants.Sign @( Model != null ? Model.PackingCharge : 0)
+                                                    </span>
+                                                        }
+                                                    }
+                                                    <span class="rupee-sign kt-font-brand">@Constants.Sign @( Model != null ? Model.GrandTotal : 0)</span>
+                                                </div>
+                                            </div>
+                                            <div class="kt-mycart__button kt-align-right">
+                                                <a href='@Url.Action("Checkout", "Home")' title="Proceed to Checkout" class="btn btn-primary btn-sm">Proceed to Checkout</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <h3>cart is empty.</h3>
+                            }
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+</div>
+
+@section scripts{
+    <script src="~/js/product.js"></script>
+    <script>
+        $(document).ready(function () {
+            product.init();
+        });
+    </script>
+}

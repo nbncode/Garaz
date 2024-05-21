@@ -1,0 +1,78 @@
+﻿@model Garaaz.Models.SaveOrderModel
+
+@{
+    ViewBag.Title = "Shopping Cart";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="kt-subheader-search">
+    <h3 class="kt-subheader-search__title">
+        Checkout
+    </h3>
+</div>
+
+<header class="ribbon">
+    <h2>&nbsp;</h2>
+</header>
+
+<div class="page-content">
+    @{Html.RenderPartial("alerts");}
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+        <div class="row">
+            <div class="col-md-12">
+                <!--begin::Portlet-->
+                <div class="kt-portlet">
+                    <div class="kt-portlet__head">
+                        <div class="kt-portlet__head-label">
+                            <h3 class="kt-portlet__head-title">
+                                Congratulations!
+                            </h3>
+                        </div>
+                    </div>
+
+                    <div class="kt-portlet kt-portlet--mobile">
+                        <div class="kt-portlet__body">
+
+                            @if (Model != null)
+                            {
+                                <h1 class="heading-title">Your order has been received</h1>
+
+                                <h3 class="text-muted">
+                                    Thank you for your purchase!
+                                </h3>
+
+                                <div class="pt-4">
+                                    <div>
+                                        <div class="fs-h5">
+                                            <p>
+                                                <span>Your order number:</span>
+                                                <a href="/Home/OrderDetails?orderId=@Model.OrderId&userId=@Model.UserId" rel="nofollow"><strong>@Model.OrderNumber</strong></a>
+                                            </p>
+                                        </div>
+                                        <p class="pt-3 mb-5">
+                                            <a href="/Home/OrderDetails?orderId=@Model.OrderId&userId=@Model.UserId" class="btn btn-warning" rel="nofollow">
+                                                <span>Order details</span>
+                                            </a>
+                                            <a href="/Home/Brands" class="btn btn-secondary order-completed-continue-button">
+                                                <span>Continue shopping</span>
+                                            </a>
+                                        </p>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <p class="pt-3 mb-5">Something unexpected happened. Failed to save order.</p>
+                            }
+
+
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+

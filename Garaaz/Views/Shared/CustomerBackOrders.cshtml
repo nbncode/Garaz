@@ -1,0 +1,69 @@
+﻿@model Garaaz.Models.RepoCBO
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Customer Back Orders";
+    var controller = ViewContext.RouteData.GetRequiredString("controller");
+}
+
+<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+    <div class="kt-subheader-search">
+        <h3 class="kt-subheader-search__title">
+            @ViewBag.Title
+        </h3>
+    </div>
+    <header class="ribbon">
+        <h2>&nbsp;</h2>
+    </header>
+    <div class="page-content">
+        <div class="page-content">
+            <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="main-content">
+                @{Html.RenderPartial("alerts");}
+                <div class="row">
+                    <div class="col-md-12">
+                        <!--begin::Portlet-->
+                        <div class="kt-portlet">
+                            <div class="kt-portlet__head">
+                                <div class="kt-portlet__head-label">
+                                    <h3 class="kt-portlet__head-title">
+                                        @ViewBag.Title
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="kt-form">
+                                    <div class="kt-portlet__body">
+                                        @{
+                                            var style = controller.Equals("Admin", StringComparison.OrdinalIgnoreCase) ? "display:visible" : "display:none";
+                                            var divSize = controller.Equals("Admin", StringComparison.OrdinalIgnoreCase) ? "col-sm-9 text-right" : "col-sm-12 text-right";
+
+                                            var changeMethod = string.Format("admin.GetCBOByDistributor(this.value, '{0}')", controller);
+                                        }
+
+                                        <div class="row">
+                                            <div class="col-sm-3" style="@style">
+                                                <div class="form-group">
+                                                    <label>Select Distributor:<em>*</em></label>
+                                                    @Html.DropDownListFor(model => model.DistributorId, Model.Distributors, new { @class = "form-control", Id = "ddlDistributor", onchange = changeMethod })
+                                                    @Html.ValidationMessageFor(model => model.DistributorId, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="@divSize" style="margin: 0 0 15px;">
+                                                <br />
+                                                <input type="submit" class="btn btn-info" onclick="admin.CboExportToExel()" value="Export to Excel">
+                                            </div>
+                                        </div>
+
+                                        <div class="row backOrders">
+                                            @{Html.RenderPartial("_BackOrders", Model.CustomerBackOrders);}
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.panel-primary panel -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,48 @@
+﻿@model List<Garaaz.Models.DashboardOverview.Sale.SaleInfoResponse>
+@{
+    string errorMsg = ViewBag.ErrorMsg;
+    if (string.IsNullOrWhiteSpace(errorMsg) && Model == null)
+    {
+        errorMsg = "Model is not set";
+    }
+}
+
+@if (string.IsNullOrWhiteSpace(errorMsg) && Model != null)
+{
+    <div class="row">
+        @foreach (var saleInfoResp in Model)
+        {
+            <div class="col-md-12 col-lg-4 col-xl-4">
+                <a href="javascript:void(0);" onclick="dbSale.fetchSalesBySubGroup('@saleInfoResp.Category')">
+                    <div class="info-box info-sub">
+                        <div class="kt-widget24">
+                            <div class="kt-widget24__details">
+                                <div class="kt-widget24__info">
+                                    @{ var growthPercentage = $"({saleInfoResp.GrowthPercentage}%)"; }
+                                    <h4>
+                                        @saleInfoResp.DateInfo
+                                    </h4>
+                                    <span class="kt-widget24__title @(saleInfoResp.GrowthPercentage >= 0 ? "dbGreen" : "dbRed")">
+                                        <span class="pr-2">@saleInfoResp.TotalSale</span> <span class="growthPercent">@growthPercentage</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <h4 class="kt-widget24__title" style="text-align: center;">
+                            @saleInfoResp.Footer
+                        </h4>
+                    </div>
+                </a>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p class="kt-font-bold">
+        <i class="kt-font-warning flaticon-warning-sign"></i>
+        &nbsp;@errorMsg
+    </p>
+}
+
+

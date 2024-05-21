@@ -1,0 +1,1246 @@
+﻿@model Garaaz.Models.ResponseSchemeModel
+@using Garaaz.Models;
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Add Scheme";
+    var partCategories = ProductPartCategory.GetPartCategories();
+}
+
+@section AddToHead{
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="/Content/Css/fineuploader-3.7.0.min.css" rel="stylesheet" type="text/css" />
+}
+
+<script src="/scripts/jquery.fineuploader-3.7.0.min.js" type="text/javascript"></script>
+<input type="hidden" id="pathId" value="wordFile" />
+<input type="hidden" id="wordFile" />
+<div class="kt-subheader-search">
+    <h3 class="kt-subheader-search__title">
+        <label id="lblSchemeTypeHeader">@(!string.IsNullOrEmpty(Model?.SchemeType) ? Model?.SchemeType : "Add Scheme")</label>
+    </h3>
+</div>
+
+<header class="ribbon">
+    <h2>&nbsp;</h2>
+</header>
+
+<div class="page-content">
+    @{Html.RenderPartial("alerts");}
+
+    <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+        <div class="kt-portlet">
+            <div class="kt-portlet__body kt-portlet__body--fit">
+                <div class="kt-grid  kt-wizard-v2 kt-wizard-v2--white" id="kt_wizard_v2" data-ktwizard-state="first">
+                    <div class="kt-grid__item kt-wizard-v2__aside">
+                        <!--begin: Form Wizard Nav -->
+                        <div class="kt-wizard-v2__nav">
+                            <div class="kt-wizard-v2__nav-items">
+                                <a class="kt-wizard-v2__nav-item step-basic" href="javascript:void(0);" onclick="schemes.goToStep('Basic')" data-ktwizard-type="step" data-ktwizard-state="current">
+                                    <div class="kt-wizard-v2__nav-body">
+                                        <div class="kt-wizard-v2__nav-label">
+                                            <span>1</span>
+                                            Basic Information
+                                        </div>
+                                        <div class="kt-wizard-v2__nav-bar"></div>
+                                    </div>
+                                </a>
+                                <a class="kt-wizard-v2__nav-item step-part-info" href="javascript:void(0);" onclick="schemes.goToStep('PartInfo')" data-ktwizard-type="step" data-ktwizard-state="pending">
+                                    <div class="kt-wizard-v2__nav-body">
+                                        <div class="kt-wizard-v2__nav-label">
+                                            <span>2</span>
+                                            Part Info
+                                        </div>
+                                        <div class="kt-wizard-v2__nav-bar"></div>
+                                    </div>
+                                </a>
+                                <a class="kt-wizard-v2__nav-item step-customer-segment" href="javascript:void(0);" onclick="schemes.goToStep('CustomerSegment')" data-ktwizard-type="step" data-ktwizard-state="pending">
+                                    <div class="kt-wizard-v2__nav-body">
+                                        <div class="kt-wizard-v2__nav-label">
+                                            <span>3</span>
+                                            Customer Segment
+                                        </div>
+                                        <div class="kt-wizard-v2__nav-bar"></div>
+                                    </div>
+                                </a>
+                                <a class="kt-wizard-v2__nav-item step-target" href="javascript:void(0);" onclick="schemes.goToStep('TargetInfo')" data-ktwizard-type="step" data-ktwizard-state="pending">
+                                    <div class="kt-wizard-v2__nav-body">
+                                        <div class="kt-wizard-v2__nav-label">
+                                            <span>4</span>
+                                            Target Info
+                                        </div>
+                                        <div class="kt-wizard-v2__nav-bar"></div>
+                                    </div>
+                                </a>
+                                <a class="kt-wizard-v2__nav-item step-other" href="javascript:void(0);" onclick="schemes.goToStep('@(Model?.SchemeType == "Cashback" ? "Cashback" : "Tabs")')" data-ktwizard-type="step" data-ktwizard-state="pending">
+                                    <div class="kt-wizard-v2__nav-body">
+
+                                        <div class="kt-wizard-v2__nav-label">
+                                            <span>5</span>
+                                            Reward Info
+                                        </div>
+                                        <div class="kt-wizard-v2__nav-bar"></div>
+                                    </div>
+                                </a>
+                                <a class="kt-wizard-v2__nav-item step-done" href="/home/SchemePreview?schemeId=@ViewBag.SchemeId" data-ktwizard-type="step" data-ktwizard-state="pending">
+                                    <div class="kt-wizard-v2__nav-body">
+                                        <div class="kt-wizard-v2__nav-label">
+                                            <span>6</span>
+                                            Preview & Confirmation
+                                            @*Completed!*@
+                                        </div>
+                                        <div class="kt-wizard-v2__nav-bar"></div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                        <!--end: Form Wizard Nav -->
+                    </div>
+
+                    <div class="kt-grid__item kt-grid__item--fluid kt-wizard-v2__wrapper">
+                        <!--begin: Form Wizard Form-->
+                        <form class="kt-form" id="kt_form" novalidate="novalidate">
+                            <!--begin: Form Wizard Step 1-->
+                            <div class="kt-wizard-v2__content step-basic-content" data-ktwizard-type="step-content" data-ktwizard-state="current">
+                                <div class="basic-form">
+                                    <div class="kt-heading kt-heading--md">Basic Information</div>
+                                    <div class="kt-form__section kt-form__section--first">
+                                        <div class="kt-wizard-v2__form">
+                                            <input type="hidden" id="hdnSchemeId" value="@(Model?.SchemeId)" />
+                                            <input type="hidden" id="Role" value="@ViewBag.Role" />
+                                            <input type="hidden" id="hdnAction" value="@ViewBag.Action" />
+
+                                            <div class="form-group">
+                                                <label>Scheme Name<em>*</em></label>
+                                                <input type="text" class="form-control required" name="SchemeName" id="SchemeName" value="@(Model!=null ? Model.SchemeName : "")" placeholder="Scheme Name">
+                                            </div>
+
+                                            <div class="form-group">
+                                                <label for="ddlSchemeType">Select scheme type<em>*</em></label>
+                                                <select id="ddlSchemeType" class="form-control required">
+                                                    @foreach (var st in ClsSchema.SchemeTypes)
+                                                    {
+                                                        var selected = Model?.SchemeType == st.Value ? "selected" : string.Empty;
+                                                        <option value="@st.Value" @selected>@st.Text</option>
+                                                    }
+                                                </select>
+                                            </div>
+
+                                            <div id="cashbackSchemeType" style="display:none;" class="pt-1">
+                                                <div class="form-group">
+                                                    <label for="ddlSubSchemeType">Select scheme<em>*</em></label>
+                                                    <select id="ddlSubSchemeType" class="form-control required">
+                                                        @foreach (var sst in ClsSchema.SubSchemeTypes)
+                                                        {
+                                                            var selected = Model?.SubSchemeType == sst.Value ? "selected" : string.Empty;
+                                                            <option value="@sst.Value" @selected>@sst.Text</option>
+                                                        }
+                                                    </select>
+                                                </div>
+                                            </div>
+
+                                            <div id="luckyDrawSchemeType" style="display: none;" class="pt-1">
+                                                <h6 class="mb-3">Select Reward Options</h6>
+                                                <div class="row">
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <input type="checkbox" id="chkCashback" value="Cashback" class="icheck form-control" @(Model == null ? "checked" : Model.CashBack == true ? "checked" : string.Empty) />
+                                                            <label for="chkCashback">Cashback</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <input type="checkbox" id="chkAssuredGift" value="AssuredGift" class="icheck form-control" @(Model == null ? "checked" : Model.AssuredGift == true ? "checked" : string.Empty) />
+                                                            <label for="chkAssuredGift">Assured gifts</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-group">
+                                                            <input type="checkbox" id="chkLuckyDraw" value="LuckyDraw" class="icheck form-control" @(Model == null ? "checked" : Model.LuckyDraw == true ? "checked" : string.Empty) />
+                                                            <label for="chkLuckyDraw">Lucky draw</label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group" style="@(ViewBag.Role == Constants.Distributor || ViewBag.Role == Constants.Users ? "display:none;" : "" )">
+                                                <label>Distributor<em>*</em></label>
+                                                <select id="distributorId" class="form-control required">
+                                                    <option value="">--Select--</option>
+                                                    @{
+                                                        var distributors = (List<Distributor>)ViewBag.Distributors;
+                                                        foreach (var item in distributors)
+                                                        {
+                                                            var selected = Model?.DistributorId != null && Model.DistributorId.Value == item.DistributorId ? "selected" : "";
+                                                            if (!string.IsNullOrEmpty(selected))
+                                                            {
+                                                                selected = "selected";
+                                                            }
+                                                            else if ((ViewBag.Role == Constants.Distributor || ViewBag.Role == Constants.Users) && item.DistributorId == (int)ViewBag.DistributorId)
+                                                            {
+                                                                selected = "selected";
+                                                            }
+
+                                                            <option value="@item.DistributorId" @selected>@item.DistributorName</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>Start Date<em>*</em></label>
+                                                        <input type="text" class="form-control datepicker-txt" name="StartDate" id="StartDate" value="@(Model!=null ? Model.StartDate : "")" placeholder="Start Date" onchange="schemes.SchemeStartDateEndDateValidate('StartDate');">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>End Date<em>*</em></label>
+                                                        <input type="text" class="form-control datepicker-txt" name="EndDate" id="EndDate" value="@(Model!=null ? Model.EndDate : "")" placeholder="End Date" onchange="schemes.SchemeStartDateEndDateValidate('EndDate');">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>Payback Period</label>
+                                                        <select id="FrequencyId" class="form-control required">
+                                                            @foreach (var item in ClsSchema.PaybackPeriods)
+                                                            {
+                                                                var selected = Model?.DispersalFrequency == item.Value ? "selected" : "";
+                                                                <option value="@item.Value" @selected>@item.Text</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <input type="hidden" id="hdnPaybackType" value="@(Model!=null? Model.PaybackType: string.Empty)" />
+                                                        <label>Payback Type</label>
+                                                        <select id="DispersalTypeId" class="form-control required"></select>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>Thumbnail Image</label>
+                                                        <div class="controls">
+                                                            <div id="manual-fine-uploader-1">
+                                                            </div>
+                                                            @Html.HiddenFor(a => a.ThumbnailImage, new { @class = "form-control" })
+                                                            @if (Model != null && !string.IsNullOrEmpty(Model.ThumbnailImage))
+                                                            {
+                                                                <img src="@Url.Content(Model.ThumbnailImage)" alt="" width="100" height="100" />
+                                                            }
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>Banner Image</label>
+                                                        <div class="controls">
+                                                            <div id="manual-fine-uploader-2">
+                                                            </div>
+                                                            @Html.HiddenFor(a => a.BannerImage, new { @class = "form-control" })
+                                                            @if (Model != null && !string.IsNullOrEmpty(Model.BannerImage))
+                                                            {
+                                                                <img src="@Url.Content(Model.BannerImage)" alt="" width="100" height="100" />
+                                                            }
+                                                        </div>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="kt-form__actions">
+                                        <div class="btn btn-brand btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u next-btn" onclick="schemes.saveBasicInfo(true)" data-ktwizard-type="action-next">
+                                            Next Step
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end: Form Wizard Step 1-->
+                            <!--begin: Form Wizard Step 2-->
+                            <div class="kt-wizard-v2__content step-part-content" data-ktwizard-type="step-content">
+                                <div class="part-form">
+                                    <div class="kt-heading kt-heading--md">Parts Information</div>
+                                    <div class="kt-form__actions">
+                                        <div class="btn btn-secondary btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u previews-btn" onclick="schemes.showStepNew('Prev');">
+                                            Previous
+                                        </div>
+                                        <div class="btn btn-brand btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u next-btn" onclick="schemes.savePartInfo(true)" data-ktwizard-type="action-next">
+                                            Next Step
+                                        </div>
+                                    </div>
+                                    <div class="kt-form__section kt-form__section--first">
+                                        <div class="kt-wizard-v2__form">
+                                            <div class="row">
+                                                <div class="col-sm-6">
+                                                    <div class="form-group multi-box">
+                                                        <label>Part Category</label>
+                                                        <select id="PartCategory" class="form-control multiselect required" multiple>
+                                                            @{
+                                                                var partCat = Model != null && !string.IsNullOrEmpty(Model.PartCategory) ? Model.PartCategory.Split(',') : "".Split('.');
+
+                                                                foreach (var item in partCategories)
+                                                                {
+                                                                    var selected = Model != null && partCat.Contains(item.Value) ? "selected" : "";
+                                                                    <option value="@item.Value" @selected>@item.Text</option>
+                                                                }
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group">
+                                                        <label>Part Group</label>
+                                                        <select id="PartType" class="form-control required">
+                                                            @foreach (var item in ClsSchema.PartGroups)
+                                                            {
+                                                                var selected = Model?.PartType == item.Value ? "selected" : string.Empty;
+                                                                <option value="@item.Value" @selected>@item.Text</option>
+                                                            }
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div id="fmsPartsGroup" class="hide pb-3">
+                                                <h5>Select FMS Part Group</h5>
+                                                <div class="row">
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label class="pt-5">Date range for calculating FMS:</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>Start Date<em>*</em></label>
+                                                            <input type="text" class="form-control datepicker-txt" id="startRange" value="@(Model!=null ? Model.StartRange : "")" placeholder="Start Date">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>End Date<em>*</em></label>
+                                                            <input type="text" class="form-control datepicker-txt" id="endRange" value="@(Model!=null ? Model.EndRange : "")" placeholder="End Date">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="row">
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>F (Fast moving contribution %)<em>*</em></label>
+                                                            <input type="number" class="form-control" name="FValue" id="FValue" value="@(Model?.FValue ?? 75)" placeholder="FValue">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>M (Medium moving contribution %)<em>*</em></label>
+                                                            <input type="number" class="form-control" name="MValue" id="MValue" value="@(Model?.MValue ?? 15)" placeholder="MValue">
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-4">
+                                                        <div class="form-group">
+                                                            <label>S (Slow moving contribution %)<em>*</em></label>
+                                                            <input type="number" class="form-control" name="SValue" id="SValue" value="@(Model?.SValue ?? 10)" placeholder="SValue">
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div>
+                                                    <label for="ddlPartCreation" class="pt-1">Select part creation:</label>
+                                                    <select id="ddlPartCreation" class="form-control w-25 required">
+                                                        @{
+                                                            var partCreations = Model?.PartCreations != null ? Model.PartCreations.Split(',') : new[] { "" };
+                                                            foreach (var item in ClsSchema.PartCreations)
+                                                            {
+                                                                var selected = partCreations.Contains(item.Value) ? "selected" : string.Empty;
+                                                                <option value="@item.Value" @selected>@item.Text</option>
+                                                            }
+                                                        }
+                                                    </select>
+                                                </div>
+
+                                            </div>
+
+                                            <div id="partInfoFocusPart" class="hide pb-3">
+                                                <h5>Focus Parts Group</h5>
+                                                <div class="row">
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group">
+                                                            @*<div style="margin-top: 8px;">
+                                                                    <input type="radio" name="FocusPartBenifitTypetab" class="icheck focusPart-benifitType form-control" @((Model != null && Model.FocusPartBenifitType == "BenifitByGroup") ? "checked" : "") value="BenifitByGroup" /><label style="margin-right: 10px;margin-left: 10px;">Benifit By Group</label>
+                                                                    <input type="radio" name="FocusPartBenifitTypetab" class="icheck focusPart-benifitType form-control" @((Model != null && Model.FocusPartBenifitType == "BenifitIndividual") ? "checked" : "") value="BenifitIndividual" /><label style="margin-right: 10px;margin-left: 10px;">Benifit Individual</label>
+                                                                </div>*@
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="target-file-upload twsBtn" id="manual-fine-uploader-focusPartMix">
+                                                        </div>
+                                                        <a href="~/Content/attachment/SampleFile_FocusPartsGroup.xls" target="_blank" class="btn pull-right twsBtn download">Download Sample</a>
+                                                    </div>
+                                                </div>
+                                                <div class="focus-part-data-mix">
+
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-12 text-right">
+                                                        <a href="javascript:void(0);" class="btn btn-info" onclick="schemes.getFocusPartData(true)">Add New</a>
+                                                    </div>
+                                                </div>
+                                                @*<div class="row fpTargetDiv" style="display: none">
+                                                        <div class="col-sm-3 text-left">
+                                                            <label>Focus Part Target</label>
+                                                            <input type="number" class="form-control focusPartTarget" name="FocusPartTargettab" id="focusPartTargettab" value="@(Model?.FocusPartTarget ?? 0)" placeholder="FocusPartTarget">
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <label>Benefit Type</label>
+                                                            <select name="FocusPartBenifitTypeValuetab" id="focusPartBenifitTypeValuetab" class="form-control focusPartBenifitTypeValue">
+                                                                <option value="">--Select--</option>
+                                                                @foreach (var l in benefitTypeList)
+                                                                {
+                                                                    <option value="@l.Value" @((Model != null && Model.FocusPartBenifitTypeValue == l.Value) ? "selected" : "")>@l.Text</option>
+                                                                }
+                                                            </select>
+                                                        </div>
+                                                        <div class="col-sm-3">
+                                                            <label>Benefit Type Value</label>
+                                                            <input type="text" class="form-control" name="FenifitTypeNumbertab" id="benifitTypeNumbertab" value="@(Model != null ? Model.FocusPartBenifitTypeNumber : "")" placeholder="Benifit Type Value">
+                                                        </div>
+                                                    </div>*@
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="kt-form__actions">
+                                        <div class="btn btn-secondary btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u previews-btn" onclick="schemes.showStepNew('Prev');">
+                                            Previous
+                                        </div>
+                                        <div class="btn btn-brand btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u next-btn" onclick="schemes.savePartInfo(true)" data-ktwizard-type="action-next">
+                                            Next Step
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--end: Form Wizard Step 2-->
+                            <!--begin: Form Wizard Step 3-->
+                            <div class="kt-wizard-v2__content step-customer-segment-content" data-ktwizard-type="step-content">
+                                <div class="kt-heading kt-heading--md">Customer Segment</div>
+                                <div class="kt-form__section kt-form__section--first">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group multi-box">
+                                                <label for="ddlBranchCode">Select Branch code</label>
+                                                <select id="ddlBranchCode" class="form-control multiselect required" multiple>
+                                                    @{
+                                                        if (Model != null)
+                                                        {
+                                                            var outlets = (List<Outlet>)ViewBag.Outlets;
+                                                            var branch = Model != null && !string.IsNullOrEmpty(Model.BranchCode) ? Model.BranchCode.Split(',') : "".Split('.');
+
+                                                            foreach (var item in outlets)
+                                                            {
+                                                                var selected = Model != null && branch.Contains(item.OutletId.ToString()) ? "selected" : "";
+                                                                <option value="@item.OutletId" @selected>@item.OutletName</option>
+                                                            }
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Select Sales person</label>
+                                                <select id="ddlSalesExecutive" class="form-control multiselect required" multiple>
+                                                    @{
+                                                        var saleExecutives = Model != null && !string.IsNullOrEmpty(Model.SalesExecutiveId) ? Model.SalesExecutiveId.Split(',') : new[] { "" };
+
+                                                        List<UserModel> seUsers = null;
+                                                        if (ViewBag.SeUsers != null)
+                                                        {
+                                                            seUsers = (List<UserModel>)ViewBag.SeUsers;
+                                                        }
+
+                                                        if (seUsers?.Count > 0)
+                                                        {
+                                                            @*<option value="All" @(Model?.IsAllSalesExecutiveSelected != null && Model.IsAllSalesExecutiveSelected.Value ? "selected" : "")>All Sales Executive</option>*@
+
+                                                            foreach (var item in seUsers)
+                                                            {
+                                                                var selected = saleExecutives.Contains(item.UserId) ? "selected" : "";
+                                                                <option value="@item.UserId" @selected>@item.UserName</option>
+                                                            }
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="kt-form__section kt-form__section--first">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <div class="form-group">
+                                                <label>Customer Type</label>
+                                                <select id="ddlCustomerType" class="form-control multiselect required" multiple>
+                                                    @{
+                                                        var partyTypes = Model != null && !string.IsNullOrEmpty(Model.PartyType) ? Model.PartyType.Split(',') : new[] { "" };
+                                                        if (ViewBag.customerTypes != null)
+                                                        {
+                                                            foreach (var item in ViewBag.customerTypes as List<string>)
+                                                            {
+                                                                var selected = partyTypes.Contains(item) ? "selected" : "";
+                                                                <option value="@item" @selected>@item</option>
+                                                            }
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="targetGrowth" style="display: none;">
+                                    <div class="kt-heading kt-heading--md">Enter Target Growth</div>
+                                    <div class="kt-form__section kt-form__section--first">
+                                        <div class="tabular-format">
+                                            <!--Table Header-->
+                                            <div class="row header">
+                                                <div class="col-sm-3 th">
+                                                    <label>Monthly Purchase From</label>
+                                                </div>
+                                                <div class="col-sm-3 th">
+                                                    <label>Monthly Purchase To</label>
+                                                </div>
+                                                <div class="col-sm-2 th">
+                                                    <label>Growth (%)</label>
+                                                </div>
+                                                <div class="col-sm-2 th">
+                                                    <label>Min. Target</label>
+                                                </div>
+                                                <div class="col-sm-1 th text-center">
+                                                    <label>Remove</label>
+                                                </div>
+                                            </div>
+                                            <div class="targetGrowth-rows"></div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-sm-12 text-right pt-2">
+                                                <a href="javascript:void(0);" class="btn btn-info" onclick="schemes.getTargetGrowth(0)">Add New</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <a href="javascript:void(0);" id="btnShowCategoryDetails" class="btn btn-success" onclick="schemes.toggleCategoryDetails()">Show Category Details</a>
+                                <input type="hidden" id="hdnIsCategoryDetailsVisible" value="false" />
+
+                                <div id="categoryDetails" style="display: none;">
+                                    <div class="kt-heading kt-heading--md">Enter Category Details</div>
+                                    <div class="kt-form__section kt-form__section--first">
+                                        <div class="kt-wizard-v2__form">
+                                            <div class="tabular-format">
+                                                <!--Table Header-->
+                                                <div class="row header">
+                                                    <div class="col-sm-4 th">
+                                                        <label>Category Name<em>*</em></label>
+                                                    </div>
+                                                    <div class="col-sm-4 th">
+                                                        <label>Monthly Purchase From</label>
+                                                    </div>
+                                                    <div class="col-sm-3 th">
+                                                        <label>Monthly Purchase To</label>
+                                                    </div>
+                                                    <div class="col-sm-1 th text-center">
+                                                        <label>Remove</label>
+                                                    </div>
+                                                </div>
+                                                <div class="category-rows"></div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-12 text-right pt-2">
+                                                    <a href="javascript:void(0);" class="btn btn-info" onclick="schemes.getCategoryData(0)">Add New</a>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="kt-form__actions">
+                                    <div class="btn btn-secondary btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u previews-btn" onclick="schemes.showStepNew('Prev');">
+                                        Previous
+                                    </div>
+                                    <div class="btn btn-brand btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u next-btn" onclick="schemes.saveCustomerSegment(true)" data-ktwizard-type="action-next">
+                                        Next Step
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!--end: Form Wizard Step 3-->
+                            <!--begin: Form Wizard Step 4-->
+
+                            <div class="kt-wizard-v2__content step-target-content" data-ktwizard-type="step-content">
+                                <div class="part-form">
+                                    <div class="kt-heading kt-heading--md">Target Setting</div>
+                                    <div class="kt-form__actions">
+                                        <div class="btn btn-secondary btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u previews-btn" onclick="schemes.showStepNew('Prev');">
+                                            Previous
+                                        </div>
+                                        <div class="btn btn-brand btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u next-btn" onclick="schemes.saveTargetInfo(true)" data-ktwizard-type="action-next">
+                                            Next Step
+                                        </div>
+                                    </div>
+                                    <div class="kt-form__section kt-form__section--first">
+                                        <div class="kt-wizard-v2__form">
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    <label class="mt-5">Select previous year dates:</label>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <div class="form-group">
+                                                        <label>From Date<em>*</em></label>
+                                                        <input type="text" class="form-control datepicker-txt" name="PrevYearFromDate" id="PrevYearFromDate" placeholder="Prev Year From Date" value="@(Model != null ? Model.PrevYearFromDate : string.Empty)">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <div class="form-group">
+                                                        <label>To Date<em>*</em></label>
+                                                        <input type="text" class="form-control datepicker-txt" name="PrevYearToDate" id="PrevYearToDate" placeholder="Prev Year To Date" value="@(Model != null ? Model.PrevYearToDate : string.Empty)">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-3">
+                                                    <label class="mt-5">Select previous month dates:</label>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <div class="form-group">
+                                                        <label>From Date<em>*</em></label>
+                                                        <input type="text" class="form-control datepicker-txt" name="PrevMonthFromDate" id="PrevMonthFromDate" placeholder="Prev Month From Date" value="@(Model != null ? Model.PrevMonthFromDate : string.Empty)">
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-3">
+                                                    <div class="form-group">
+                                                        <label>To Date<em>*</em></label>
+                                                        <input type="text" class="form-control datepicker-txt" name="PrevMonthToDate" id="PrevMonthToDate" placeholder="Prev Month To Date" value="@(Model != null ? Model.PrevMonthToDate : string.Empty)">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <a href="javascript:void(0);" onclick="schemes.generateTargets(true)" class="btn btn-success">Generate Targets</a>
+
+                                        <div id="targetWorkshops" class="kt-wizard-v2__form pt-2" style="/* display: none; */">
+                                            <div class="kt-heading kt-heading--md clearfix">
+                                                Target
+                                                <div class="target-file-upload twsBtn" id="manual-fine-uploader">
+                                                </div>
+                                                <a href="~/Content/attachment/SampleFile_TargetWorkshop.xls" target="_blank" class="btn pull-right twsBtn" style="text-decoration: underline;">Download Sample</a>
+                                            </div>
+                                            <div class="kt-form__section kt-form__section--first">
+                                                <div class="kt-wizard-v2__form">
+                                                    <div class="target-workshop-data">
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="kt-form__actions">
+                                        <div class="btn btn-secondary btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u previews-btn" onclick="schemes.showStepNew('Prev');">
+                                            Previous
+                                        </div>
+                                        <div class="btn btn-brand btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u next-btn" onclick="schemes.saveTargetInfo(true)" data-ktwizard-type="action-next">
+                                            Next Step
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end: Form Wizard Step 4-->
+                            <!--begin: Form Wizard Step 5-->
+                            <div class="kt-wizard-v2__content step-other-content" data-ktwizard-type="step-content">
+                                <div id="targetOverview">
+                                </div>
+                                <div class="other-content assured-type-mix-management">
+                                    <div class="kt-heading kt-heading--md">Select your type</div>
+                                    <a href="javascript:void(0);" class="btn btn-info mr-2 twsBtn" id="add-category" style="display: none;">Add Categories</a>
+                                    <div class="kt-form__section kt-form__section--first">
+                                        <div class="kt-wizard-v2__form">
+                                            <ul class="nav nav-tabs" role="tablist">
+                                                <li class="nav-item nav-item-cashback-mix">
+                                                    <a class="nav-link active" data-toggle="tab" href="#kt_tabs_CashBackMix">Cashback</a>
+                                                </li>
+                                                <li class="nav-item nav-item-assured-mix" style="display: none">
+                                                    <a class="nav-link" data-toggle="tab" href="#kt_tabs_AssuredGiftMix">Assured Gifts</a>
+                                                </li>
+                                                <li class="nav-item nav-item-gift-mix" style="display: none">
+                                                    <a class="nav-link" data-toggle="tab" href="#kt_tabs_GiftMix">Lucky Draw</a>
+                                                </li>
+                                                <li class="nav-item nav-item-coupon-mix" style="display: none">
+                                                    <a class="nav-link" data-toggle="tab" href="#kt_tabs_CouponMix">Coupon Allocation</a>
+                                                </li>
+                                            </ul>
+                                            <div class="tab-content">
+                                                <div class="tab-pane active" id="kt_tabs_CashBackMix" role="tabpanel">
+                                                    <div class="cashback-data-main">
+                                                        <div class="row">
+                                                            <div class="col-sm-3">
+                                                                <div class="form-group">
+                                                                    <label>Cashback Criteria</label>
+                                                                    <select id="CriteriaCashback" class="form-control required CriteriaCashback">
+                                                                        @foreach (var cc in ClsSchema.CashbackCriterias)
+                                                                        {
+                                                                            var selected = string.Empty;
+                                                                            if (Model?.CashbackCriteria != null)
+                                                                            {
+                                                                                selected = Model.CashbackCriteria == cc.Value ? "selected" : "";
+                                                                            }
+                                                                            <option value="@cc.Value" @selected>@cc.Text</option>
+                                                                        }
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="row both-cbAg-applicable-data" style="display: none;">
+                                                            <div class="col-sm-12">
+                                                                <div class="form-group">
+                                                                    <input type="hidden" id="hdnBothCbAgApplicable" value="@(Model?.AreBothCbAgApplicable??false)" />
+                                                                    <label>Are both Cashback and Assured gift applicable?</label>
+                                                                    <div style="margin-top: 8px;">
+                                                                        <input type="radio" name="BothCbAgApplicable" class="icheck both-cbAg-applicable form-control" value="Yes" /><label style="margin-right: 10px; margin-left: 10px;">Yes</label>
+                                                                        <input type="radio" name="BothCbAgApplicable" class="icheck both-cbAg-applicable form-control" value="No" /><label style="margin-right: 10px; margin-left: 10px;">No</label>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                        <div class="reward-info-heading">
+                                                            <h5>Cashback Slabs</h5>
+                                                            <a href="javascript:void(0);" onclick="schemes.showCashbackRangeModal()" class="btn btn-warning mx-2">Set Discount Range</a>
+                                                            <a href="javascript:void(0);" class="btn btn-info" onclick="schemes.getCashBackData(true)">Add New</a>
+                                                        </div>
+                                                        <div class="cashBack-content-data-mix">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="tab-pane" id="kt_tabs_AssuredGiftMix" role="tabpanel">
+                                                    <div class="row both-agLd-applicable-data" style="display: none;">
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group">
+                                                                <input type="hidden" id="hdnBothAgLdApplicable" value="@(Model?.AreBothAgLdApplicable ?? false)" />
+                                                                <label>Are both Assured gift and Lucky draw applicable?</label>
+                                                                <div style="margin-top: 8px;">
+                                                                    <input type="radio" name="BothAgLdApplicable" class="icheck both-agLd-applicable form-control" value="Yes" /><label style="margin-right: 10px; margin-left: 10px;">Yes</label>
+                                                                    <input type="radio" name="BothAgLdApplicable" class="icheck both-agLd-applicable form-control" value="No" /><label style="margin-right: 10px; margin-left: 10px;">No</label>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="assured-gift-mix-data">
+
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 text-right">
+                                                            <a href="javascript:void(0);" class="btn btn-info" onclick="schemes.getAssuredGiftData(true)">Add New</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="tab-pane" id="kt_tabs_GiftMix" role="tabpanel">
+                                                    <div class="gift-management-data">
+
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 text-right">
+                                                            <a href="javascript:void(0);" class="btn btn-info" onclick="schemes.getLuckyDrawData(true)">Add New</a>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="row can-take-more-then-one-data">
+                                                        <div class="col-sm-12">
+                                                            <div class="form-group">
+                                                                <label>Can a user participate in multiple draw?</label>
+                                                                <div style="margin-top: 8px;">
+                                                                    <input type="radio" name="CanTake" class="icheck can-take form-control" value="Yes" /><label style="margin-right: 10px; margin-left: 10px;">Yes</label>
+                                                                    <input type="radio" name="CanTake" class="icheck can-take form-control" value="No" /><label style="margin-right: 10px; margin-left: 10px;">No</label>
+                                                                </div>
+                                                            </div>
+                                                            <div class="form-group col-sm-3">
+                                                                <label>Max number of gifts allowed:</label>
+                                                                <input type="number" min="0" id="maxGiftAllowed" class="form-control" />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <div class="tab-pane" id="kt_tabs_CouponMix" role="tabpanel">
+                                                    <div class="qualifying-criteria-data">
+
+                                                    </div>
+                                                    <div class="row">
+                                                        <div class="col-sm-12 text-right">
+                                                            <a href="javascript:void(0);" class="btn btn-info" onclick="schemes.getCouponAllocationData(true)">Add New</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="kt-form__actions">
+                                        <div class="btn btn-secondary btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u previews-btn" onclick="schemes.showStepNew('Prev');">
+                                            Previous
+                                        </div>
+                                        <div class="btn btn-brand btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u next-btn" onclick="schemes.saveRewardInfo(true)" data-ktwizard-type="action-next">
+                                            Next Step
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end: Form Wizard Step 5-->
+                            <!--begin: Form Wizard Step 6-->
+                            <div class="kt-wizard-v2__content step-done-content" data-ktwizard-type="step-content">
+                                <div class="kt-heading kt-heading--md">
+                                    Review your details and submit
+                                    <a href="javascript:void(0);" class="btn btn-info pull-right active-scheme" style="display:none;">Activate scheme</a>
+                                    <a href="javascript:void(0);" class="btn btn-info pull-right inactive-scheme" style="display:none;">Deactivate scheme</a>
+                                </div>
+
+                                @*Preview*@
+                                <div id="preview" class="mt-5">
+                                    <div id="prev-basicInfo">
+                                        <div class="kt-portlet kt-portlet--height-fluid-">
+                                            <div class="kt-portlet__head  kt-portlet__head--noborder">
+                                                <div class="kt-portlet__head-label">
+                                                    <h3 class="kt-portlet__head-title"></h3>
+                                                </div>
+                                            </div>
+                                            <div class="kt-portlet__body kt-portlet__body--fit-y">
+                                                <!--begin::Widget -->
+                                                <div class="kt-widget kt-widget--user-profile-1">
+                                                    <div class="kt-widget__head" id="prvBannerDiv" style="background: rgba(29,201,183,.1);padding: 40px 0; background-image: url('');background-repeat:no-repeat;">
+                                                        <div class="kt-widget__media pl-3">
+                                                            <img src="" alt="Scheme's thumbnail" id="prvThumbnailImg">
+                                                        </div>
+                                                        <div class="kt-widget__content">
+                                                            <div class="kt-widget__section">
+                                                                <span class="kt-widget__username" id="prvSchemeName">
+                                                                </span>
+                                                                <span class="kt-widget__subtitle" id="prvSchemeDate">
+                                                                </span>
+                                                                <span class="kt-widget__subtitle" id="prvSchemeType">
+                                                                </span>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="kt-widget__body">
+                                                        <div class="row">
+                                                            <div class="col-md-6">
+                                                                <div class="kt-widget__content">
+                                                                    <div class="kt-widget__info prv-sub-scheme-type" style="display: none;">
+                                                                        <span class="kt-widget__label">Sub-Scheme Type:</span>
+                                                                        <span class="kt-widget__data" id="prvSubSchemeType"></span>
+                                                                    </div>
+                                                                    <div class="kt-widget__info prv-reward-options" style="display: none;">
+                                                                        <span class="kt-widget__label">Reward options:</span>
+                                                                        <span class="kt-widget__data" id="prvRewardOptions"></span>
+                                                                    </div>
+                                                                    <div class="kt-widget__info">
+                                                                        <span class="kt-widget__label">Distributor:</span>
+                                                                        <span class="kt-widget__data" id="prvDistributor"></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
+                                                                <div class="kt-widget__content">
+                                                                    <div class="kt-widget__info">
+                                                                        <span class="kt-widget__label">Payback Period:</span>
+                                                                        <span class="kt-widget__data" id="prvPaybackPeriod"></span>
+                                                                    </div>
+                                                                    <div class="kt-widget__info">
+                                                                        <span class="kt-widget__label">Payback Type:</span>
+                                                                        <span class="kt-widget__data" id="prvPaybackType"></span>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <!--end::Widget -->
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="prev-partInfo" class="kt-portlet kt-portlet--height-fluid preview-container mb-25">
+                                        <div class="kt-portlet__head preview-header">
+                                            <div class="kt-portlet__head-label">
+                                                <h3 class="kt-portlet__head-title">
+                                                    Parts Information
+                                                </h3>
+                                            </div>
+                                        </div>
+                                        <div class="kt-portlet__body">
+                                            <div class="kt-widget13">
+                                                <div class="kt-widget13__item">
+                                                    <span class="kt-widget13__desc">
+                                                        Part Category:
+                                                    </span>
+                                                    <span class="kt-widget13__text kt-font-dark" id="prvPartCategory">
+                                                    </span>
+                                                </div>
+                                                <div class="kt-widget13__item">
+                                                    <span class="kt-widget13__desc">
+                                                        Part Group:
+                                                    </span>
+                                                    <span class="kt-widget13__text kt-font-dark" id="prvPartGroup">
+                                                    </span>
+                                                </div>
+                                                <div id="prvFmsPartGroup" style="display: none;">
+                                                    <div class="kt-widget13__item">
+                                                        <span class="kt-widget13__desc">
+                                                            Date range for calculating FMS:
+                                                        </span>
+                                                        <span class="kt-widget13__text kt-font-dark" id="prvFmsDateRange">
+                                                        </span>
+                                                    </div>
+                                                    <div class="kt-widget13__item">
+                                                        <span class="kt-widget13__desc">
+                                                            F Percentage:
+                                                        </span>
+                                                        <span class="kt-widget13__text kt-font-dark" id="prvFPercentage">
+                                                        </span>
+                                                    </div>
+                                                    <div class="kt-widget13__item">
+                                                        <span class="kt-widget13__desc">
+                                                            M Percentage:
+                                                        </span>
+                                                        <span class="kt-widget13__text kt-font-dark" id="prvMPercentage">
+                                                        </span>
+                                                    </div>
+                                                    <div class="kt-widget13__item">
+                                                        <span class="kt-widget13__desc">
+                                                            S Percentage:
+                                                        </span>
+                                                        <span class="kt-widget13__text kt-font-dark" id="prvSPercentage">
+                                                        </span>
+                                                    </div>
+                                                    <div class="kt-widget13__item">
+                                                        <span class="kt-widget13__desc">
+                                                            Part Creation:
+                                                        </span>
+                                                        <span class="kt-widget13__text kt-font-dark" id="prvPartCreation">
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                                <div id="prvFpg" class="table-responsive" style="display: none;">
+                                                    <table class="table table-bordered w-auto table-center">
+                                                        <caption>Focus parts group setting</caption>
+                                                        <thead class="thead-light">
+                                                            <tr>
+                                                                <th>Group</th>
+                                                                <th>Product</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="prev-customerSegment" class="kt-portlet kt-portlet--height-fluid preview-container mb-25">
+                                        <div class="kt-portlet__head preview-header">
+                                            <div class="kt-portlet__head-label">
+                                                <h3 class="kt-portlet__head-title">
+                                                    Customer Segment
+                                                </h3>
+                                            </div>
+                                        </div>
+                                        <div class="kt-portlet__body">
+                                            <div class="kt-widget13">
+                                                <div class="kt-widget13__item">
+                                                    <span class="kt-widget13__desc">
+                                                        Branch Code:
+                                                    </span>
+                                                    <span class="kt-widget13__text kt-font-dark" id="prvBranchCode">
+                                                    </span>
+                                                </div>
+                                                <div class="kt-widget13__item">
+                                                    <span class="kt-widget13__desc">
+                                                        Sales Person:
+                                                    </span>
+                                                    <span class="kt-widget13__text kt-font-dark" id="prvSalesPerson">
+                                                    </span>
+                                                </div>
+                                                <div class="kt-widget13__item">
+                                                    <span class="kt-widget13__desc">
+                                                        Customer Type:
+                                                    </span>
+                                                    <span class="kt-widget13__text kt-font-dark" id="prvCustomerType">
+                                                    </span>
+                                                </div>
+                                                <div id="prvTargetGrowth" class="table-responsive" style="display: none;">
+                                                    <table class="table table-bordered w-auto table-center">
+                                                        <caption>Target growth setting</caption>
+                                                        <thead class="thead-light">
+                                                            <tr>
+                                                                <th>Monthly Purchase From</th>
+                                                                <th>Monthly Purchase To</th>
+                                                                <th>Growth (%)</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>
+
+                                                </div>
+                                                <div id="prvCategories" class="table-responsive" style="display: none;">
+                                                    <table class="table table-bordered w-auto table-center">
+                                                        <caption>Categories setting</caption>
+                                                        <thead class="thead-light">
+                                                            <tr>
+                                                                <th>Category Name</th>
+                                                                <th>Monthly Purchase From</th>
+                                                                <th>Monthly Purchase To</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="prev-targetInfo" class="kt-portlet kt-portlet--height-fluid preview-container mb-25">
+                                        <div class="kt-portlet__head preview-header">
+                                            <div class="kt-portlet__head-label">
+                                                <h3 class="kt-portlet__head-title">
+                                                    Target Information
+                                                </h3>
+                                            </div>
+                                        </div>
+                                        <div class="kt-portlet__body">
+                                            <div class="kt-widget13">
+                                                <div class="kt-widget13__item">
+                                                    <span class="kt-widget13__desc">
+                                                        Previous year date range:
+                                                    </span>
+                                                    <span class="kt-widget13__text kt-font-dark" id="prvYearDateRange">
+                                                    </span>
+                                                </div>
+                                                <div class="kt-widget13__item">
+                                                    <span class="kt-widget13__desc">
+                                                        Previous month date range:
+                                                    </span>
+                                                    <span class="kt-widget13__text kt-font-dark" id="prvMonthDateRange">
+                                                    </span>
+                                                </div>
+                                                <div id="prvTargetWorkshops" class="table-responsive" style="display: none;">
+                                                    <table class="table table-bordered w-auto table-center">
+                                                        <caption>Target workshops</caption>
+                                                        <thead class="thead-light">
+                                                            <tr>
+                                                                <th>WorkShop</th>
+                                                                <th>Customer Type</th>
+                                                                <th>Prev FY Avg Sale</th>
+                                                                <th>Growth (%)</th>
+                                                                <th>New Target</th>
+                                                                <th>Prev Month Data</th>
+                                                                <th>Growth Comparison (%)</th>
+                                                                <th>Qualified</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody></tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div id="prev-rewardInfo" class="kt-portlet kt-portlet--height-fluid preview-container mb-25">
+                                        <div class="kt-portlet__head preview-header">
+                                            <div class="kt-portlet__head-label">
+                                                <h3 class="kt-portlet__head-title">
+                                                    Reward Information
+                                                </h3>
+                                            </div>
+                                        </div>
+                                        <div class="kt-portlet__body">
+                                            <div class="kt-widget13">
+                                                <div id="prv-rewardInfo-Cashback" style="display: none;">
+                                                    <div class="kt-widget13__item">
+                                                        <span class="kt-widget13__desc">
+                                                            Cashback Criteria:
+                                                        </span>
+                                                        <span class="kt-widget13__text kt-font-dark" id="prvCashbackCriteria">
+                                                        </span>
+                                                    </div>
+                                                    <div class="kt-widget13__item">
+                                                        <span class="kt-widget13__desc">
+                                                            Both cashback and assured gift applicable:
+                                                        </span>
+                                                        <span class="kt-widget13__text kt-font-dark" id="prvAreBothCbAgApplicable">
+                                                        </span>
+                                                    </div>
+                                                    <div id="prvCashback" class="table-responsive" style="display: none;">
+                                                        <table class="table table-bordered w-auto table-center">
+                                                            <caption>Cashback setting</caption>
+                                                            <thead class="thead-light">
+                                                                <tr>
+                                                                    <th>From Amount</th>
+                                                                    <th>To Amount</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody></tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <div id="prv-rewardInfo-AssureGift" class="pt-3" style="display: none;">
+                                                    <div id="prvAssuredGift" class="table-responsive" style="display: none;">
+                                                        <table class="table table-bordered w-auto table-center">
+                                                            <caption>Assured gift setting</caption>
+                                                            <thead class="thead-light">
+                                                                <tr>
+                                                                    <th>Category</th>
+                                                                    <th>Sales Target</th>
+                                                                    <th>Point</th>
+                                                                    <th>Reward</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody></tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                                <div id="prv-rewardInfo-LuckyDraw" class="pt-3" style="display: none;">
+                                                    <div class="kt-widget13__item">
+                                                        <span class="kt-widget13__desc">
+                                                            User participate in multiple draw:
+                                                        </span>
+                                                        <span class="kt-widget13__text kt-font-dark" id="prvCanTakeMoreThanOneGift">
+                                                        </span>
+                                                    </div>
+                                                    <div class="kt-widget13__item">
+                                                        <span class="kt-widget13__desc">
+                                                            Max number of gifts allowed:
+                                                        </span>
+                                                        <span class="kt-widget13__text kt-font-dark" id="prvMaxGiftsAllowed">
+                                                        </span>
+                                                    </div>
+                                                    <div id="prvLuckyDraw" class="table-responsive" style="display: none;">
+                                                        <table class="table table-bordered w-auto table-center">
+                                                            <caption>Lucky draw setting</caption>
+                                                            <thead class="thead-light">
+                                                                <tr>
+                                                                    <th>Category</th>
+                                                                    <th>Gift</th>
+                                                                    <th>Qty/No of Draws</th>
+                                                                    <th>Draw Order</th>
+                                                                    <th>Image</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody></tbody>
+                                                        </table>
+                                                    </div>
+
+                                                </div>
+                                                <div id="prv-rewardInfo-CouponAllocation" class="pt-3" style="display: none;">
+                                                    <div id="prvCouponAllocation" class="table-responsive" style="display: none;">
+                                                        <table class="table table-bordered w-auto table-center">
+                                                            <caption>Coupon allocation setting</caption>
+                                                            <thead class="thead-light">
+                                                                <tr>
+                                                                    <th>Amount</th>
+                                                                    <th>Type</th>
+                                                                    <th>Parts/Accessories</th>
+                                                                    <th>Number of coupons</th>
+                                                                    <th>Additional Coupon Amount</th>
+                                                                    <th>Additional Number Of Coupons</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody></tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="kt-form__actions">
+                                    <div class="btn btn-secondary btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u previews-btn" onclick="schemes.showStepNew('Prev');">
+                                        Previous
+                                    </div>
+                                    <div class="btn btn-success btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u submit-btn" data-ktwizard-type="action-next">
+                                        Submit
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end: Form Wizard Step 6-->
+                            <!--begin: Form Wizard Step 7-->
+                            <div class="kt-wizard-v2__content step-category-content" data-ktwizard-type="step-content">
+                                <div class="kt-form__actions">
+                                    <div class="btn btn-secondary btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u previews-btn" onclick="schemes.showStepNew('', 'Tabs');">
+                                        Previous
+                                    </div>
+                                    <div class="btn btn-brand btn-md btn-tall btn-wide kt-font-bold kt-font-transform-u next-btn" onclick="schemes.saveCategories()" data-ktwizard-type="action-next">
+                                        Next Step
+                                    </div>
+                                </div>
+                            </div>
+                            <!--end: Form Wizard Step 7-->
+
+                        </form>
+                        <!--end: Form Wizard Form-->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="cashbackRangeModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Define range for cashback</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="cashback-range-main-data">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-info" onclick="schemes.getCashBackRangeData(true)">Add New</button>
+                <button type="button" class="btn btn-success" onclick="schemes.saveCashBackRangeData()">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <link href="~/assets/css/wizard-2.css" rel="stylesheet" />
+    <script src="~/vendor/moment/moment.min.js"></script>
+    <script src="~/Scripts/jquery.autocomplete.js"></script>
+    <script src="~/js/schmes.js?v=0.1"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            schemes.init();
+        });
+    </script>
+    <style>
+        .dropdown-two {
+            display: inline-block;
+            width: 49%;
+        }
+    </style>
+}

@@ -1,0 +1,38 @@
+﻿
+@{
+    ViewBag.Title = "Banner";
+    string controller = ViewBag.Controller.ToString();
+}
+
+<div class="kt-subheader-search">
+    <h3 class="kt-subheader-search__title">
+        Banner Master
+    </h3>
+</div>
+
+
+<header class="ribbon">
+    <h2>&nbsp;</h2>
+</header>
+<div class="page-content">
+    <input type="hidden" id="hdnController" value="@controller" />
+    <div class="container-fluid">
+        @{Html.RenderPartial("alerts");}
+        <input type="hidden" id="PageView" value="BannerPartialView" />
+        <div id="main-content">
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var controller = $("#hdnController").val();
+            if (controller == 'Admin') {
+                admin.LoadAdminPartialView('BannerPartialView');
+            }
+            else {
+                admin.LoadDistributorPartialView('BannerPartialView');
+            }
+        });
+    </script>
+}

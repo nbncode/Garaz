@@ -1,0 +1,149 @@
+﻿@model IEnumerable<Garaaz.Models.ResponseTicketOfJoyModel>
+@using Garaaz.Models;
+@{
+    var lst = new List<SelectListItem>();
+    lst.Add(new SelectListItem()
+    {
+        Text = "Coupons",
+        Value = "Coupons"
+    });
+    lst.Add(new SelectListItem()
+    {
+        Text = "Points",
+        Value = "Points"
+    });
+    lst.Add(new SelectListItem()
+    {
+        Text = "Amount",
+        Value = "Amount"
+    });
+    lst.Add(new SelectListItem()
+    {
+        Text = "Percentage",
+        Value = "Percentage"
+    });
+    lst.Add(new SelectListItem()
+    {
+        Text = "Product",
+        Value = "Product"
+    });
+    lst.Add(new SelectListItem()
+    {
+        Text = "Gift",
+        Value = "Gift"
+    });
+
+
+    List<clsProductGroup> lstProductGroup = (List<clsProductGroup>)ViewBag.ProductGroup;
+    List<ResponseProductModel> lstProduct = (List<ResponseProductModel>)ViewBag.Product;
+    var selected = "";
+}
+@foreach (var item in Model)
+{
+    <div class="row" id="@item.TicketId">
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label>Group</label>
+                <select class="form-control group">
+                    <option value="">--Select--</option>
+                    @foreach (var l in lstProductGroup)
+                    {
+                        selected = l.GroupId == item.GroupId ? "selected" : "";
+                        <option value="@l.GroupId.ToString()" @selected>@l.GroupName</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label>Product</label>
+                <select class="form-control product">
+                    <option value="">--Select--</option>
+                    @foreach (var l in lstProduct)
+                    {
+                        selected = l.ProductId == item.ProductId ? "selected" : "";
+                        <option value="@l.ProductId.ToString()" @selected>@l.ProductName</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label>Benefit Type</label>
+                <select class="form-control type">
+                    <option value="">--Select--</option>
+                    @foreach (var l in lst)
+                    {
+                        selected = l.Value == item.Type ? "selected" : "";
+                        <option value="@l.Value" @selected>@l.Text</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label>Benifit Value</label>
+                <input type="text" class="form-control value" value="@item.Value" placeholder="Benifit Value">
+            </div>
+        </div>
+
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label>Coupon Code</label>
+                <input type="text" class="form-control coupon-code" value="@item.CouponCode" placeholder="Coupon Code">
+            </div>
+        </div>
+    </div>
+}
+
+<div class="row" id="0">
+    <div class="col-sm-3">
+        <div class="form-group">
+            <label>Group</label>
+            <select class="form-control group">
+                <option value="">--Select--</option>
+                @foreach (var l in lstProductGroup)
+                {
+                    <option value="@l.GroupId.ToString()">@l.GroupName</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="col-sm-3">
+        <div class="form-group">
+            <label>Product</label>
+            <select class="form-control product">
+                <option value="">--Select--</option>
+                @foreach (var l in lstProduct)
+                {
+                    <option value="@l.ProductId.ToString()">@l.ProductName</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="col-sm-2">
+        <div class="form-group">
+            <label>Benefit Type</label>
+            <select class="form-control type">
+                <option value="">--Select--</option>
+                @foreach (var l in lst)
+                {
+                    <option value="@l.Value">@l.Text</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="col-sm-2">
+        <div class="form-group">
+            <label>Benifit Value</label>
+            <input type="text" class="form-control value" placeholder="Benifit Value">
+        </div>
+    </div>
+
+    <div class="col-sm-2">
+        <div class="form-group">
+            <label>Coupon Code</label>
+            <input type="text" class="form-control coupon-code" placeholder="Coupon Code">
+        </div>
+    </div>
+</div>

@@ -1,0 +1,120 @@
+﻿@model clsAddUserWorkshop
+@using Garaaz.Models;
+@{
+
+    ViewBag.Title = "Add User Workshops";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var userId = ViewBag.UserId;
+    var distId = ViewBag.DistributorId;
+    var Workshops = (List<WorkShop>)ViewBag.WorkshopList;
+}
+
+
+<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+    <div class="kt-subheader-search">
+        <h3 class="kt-subheader-search__title">
+            Workshops
+        </h3>
+    </div>
+    <header class="ribbon">
+        <h2>&nbsp;</h2>
+    </header>
+    <div class="page-content">
+        <div class="page-content">
+            <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="main-content">
+                @{Html.RenderPartial("alerts");}
+                <div class="row">
+                    <div class="col-md-12">
+                        <!--begin::Portlet-->
+                        <div class="kt-portlet">
+                            <div class="kt-portlet__head">
+                                <div class="kt-portlet__head-label">
+                                    <h3 class="kt-portlet__head-title">
+                                        Add user workshops
+                                    </h3>
+                                </div>
+                                <div class="kt-portlet__head-toolbar">
+                                    <div class="kt-portlet__head-wrapper">
+                                        <div class="kt-portlet__head-actions">
+                                            <a href="@Request.UrlReferrer" class="btn btn-brand btn-elevate btn-icon-sm">
+                                                <i class="la la-step-backward"></i>
+                                                Back
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="kt-form">
+                                    <div class="kt-portlet__body">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="form-group">                                                   
+                                                    @if (Model != null && Model.WorkshopIds.Count > 0)
+                                                    {
+                                                        <div class="row">
+                                                            @foreach (var item in Workshops)
+                                                            {
+                                                                if (Model.WorkshopIds.Contains(item.WorkShopId))
+                                                                {
+                                                                    <div class="col-md-2">
+                                                                        <div class="form-group">
+                                                                            <input type="checkbox" checked class="icheck_n" name="Feature" value="@item.WorkShopId"><label>@item.WorkShopName</label>
+                                                                        </div>
+                                                                    </div>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <div class="col-md-2">
+                                                                        <div class="form-group">
+                                                                            <input type="checkbox" class="icheck_n" name="Feature" value="@item.WorkShopId"><label>@item.WorkShopName </label>
+                                                                        </div>
+                                                                    </div>
+                                                                }
+                                                            }
+
+                                                        </div>
+                                                    }
+
+                                                    @if (Model.WorkshopIds.Count == 0)
+                                                    {
+
+                                                        <div class="row">
+                                                            @{
+                                                                foreach (var item in Workshops)
+                                                                {
+                                                                    <div class="col-md-2">
+                                                                        <div class="form-group">
+                                                                            <input type="checkbox" class="icheck_n" name="@item.WorkShopId" value="@item.WorkShopId"><label>@item.WorkShopName </label>
+                                                                        </div>
+                                                                    </div>
+                                                                }
+                                                            }
+                                                        </div>
+                                                    }
+
+
+
+                                                </div>
+                                                <!-- /.panel-body -->
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.panel-primary panel -->
+                            </div>
+                            <!-- /.col-md-7 -->
+                            <div class="kt-portlet__foot">
+                                <div class="form-group">
+                                    <a href="javascript:void(0);" class="btn btn-primary text-white" onclick="admin.SubmitUserWorkshops('@distId','@userId')">Submit</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

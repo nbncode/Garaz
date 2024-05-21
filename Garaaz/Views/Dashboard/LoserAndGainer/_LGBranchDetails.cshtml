@@ -1,0 +1,117 @@
+﻿@model List<Garaaz.Models.DashboardOverview.LoserAndGainer.BranchWiseLGInfo>
+
+@{
+    const string noRecordFound = "Sorry! No record found for selected criteria";
+
+    string errorMsg = ViewBag.ErrorMsg;
+    if (string.IsNullOrWhiteSpace(errorMsg) && Model == null)
+    {
+        errorMsg = "Model is not set";
+    }
+}
+
+@if (string.IsNullOrWhiteSpace(errorMsg) && Model != null)
+{
+    if (Model.Count > 0)
+    {
+        var subGroup = Model.First().SubGroup;
+        var totalCustomers = Model.Sum(m => m.NumberOfCustomers);
+        var totalLoosers = Model.Sum(m => m.Loosers);
+        var totalLostRetailValue = Model.Sum(m => m.LostRetailValue);
+        var totalGainers = Model.Sum(m => m.Gainers);
+        var totalGainedRetailValue = Model.Sum(m => m.GainedRetailValue);
+        var totalCOrcerDays = Model.Sum(m => m.CurrentOrderDays);
+        var totalPOrderDays = Model.Sum(m => m.PreviousOrderDays);
+        var totalGrowthDays = Model.Sum(m => m.GrowthDays);
+        var totalCOrcerValue = Model.Sum(m => m.CurrentOrderValue);
+        var totalPOrderValue = Model.Sum(m => m.PreviousOrderValue);
+        var totalGrowthValue = Model.Sum(m => m.GrowthValue);
+
+
+        <div class="table-responsive">
+            <table class="table table-bordered w-auto table-center dataTable">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Sr No</th>
+                        <th>Branch Code</th>
+                        @if (subGroup == "RO")
+                        {
+                            <th>BranchName</th>
+                        }
+                        else
+                        {
+                            <th>Sales Exe. Name</th>
+                        }
+                        <th>Total Customers</th>
+                        <th>Loosers</th>
+                        <th>Lost Retail Value</th>
+                        <th>Gainers</th>
+                        <th>Gained Retail Value</th>
+                        <th>Days ordered_FY</th>
+                        <th>Days ordered_PY</th>
+                        <th>Growth%</th>
+                        <th>Order Value_FY</th>
+                        <th>Order Value_PY</th>
+                        <th>Growth %</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var lg in Model)
+                    {
+                    <tr>
+                        <td>@lg.SlNo</td>
+                        <td>@lg.BranchCode</td>
+                        <td>@lg.BranchOrSalesName</td>
+                        <td>@lg.NumberOfCustomers</td>
+                        <td>@lg.Loosers</td>
+                        <td>@lg.LostRetailValue</td>
+                        <td>@lg.Gainers</td>
+                        <td>@lg.GainedRetailValue</td>
+                        <td>@lg.CurrentOrderDays</td>
+                        <td>@lg.PreviousOrderDays</td>
+                        <td>@lg.GrowthDays%</td>
+                        <td>@lg.CurrentOrderValue</td>
+                        <td>@lg.PreviousOrderValue</td>
+                        <td>@lg.GrowthValue%</td>
+                        <td><a href="javascript:void(0);" onclick="dbLG.fetchCustomerDetail('@lg.SubGroup','@lg.BranchCode','@lg.SeUserId','',this)">View</a></td>
+                    </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td></td>
+                        <td><b>Total</b></td>
+                        <td><b>@totalCustomers</b></td>
+                        <td><b>@totalLoosers</b></td>
+                        <td><b>@totalLostRetailValue.ToString("N")</b></td>
+                        <td><b>@totalGainers</b></td>
+                        <td><b>@totalGainedRetailValue.ToString("N")</b></td>
+                        <td><b>@totalCOrcerDays.ToString("N")</b></td>
+                        <td><b>@totalPOrderDays.ToString("N")</b></td>
+                        <td><b>@totalGrowthDays%</b></td>
+                        <td><b>@totalCOrcerValue.ToString("N")</b></td>
+                        <td><b>@totalPOrderValue.ToString("N")</b></td>
+                        <td><b>@totalGrowthValue%</b></td>
+                            <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p class="kt-font-bold">
+            <i class="kt-font-warning flaticon-warning-sign"></i>
+            &nbsp;@noRecordFound
+        </p>
+    }
+}
+else
+{
+    <p class="kt-font-bold">
+        <i class="kt-font-warning flaticon-warning-sign"></i>
+        &nbsp;@errorMsg
+    </p>
+}

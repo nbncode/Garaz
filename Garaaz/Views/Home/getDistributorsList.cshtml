@@ -1,0 +1,31 @@
+﻿@model IEnumerable<Garaaz.Models.UserDetail>
+@using Garaaz.Models;
+@{
+    List<DistributorWorkShop> distributors = (List<DistributorWorkShop>)ViewBag.Distributors;
+}
+<div class="modal-dialog" id="@ViewBag.WorkShopId">
+    <!-- Modal content-->
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Distributors List</h4>
+        </div>
+        <div class="modal-body">
+            <div class="row">
+                @foreach (var item in Model)
+                {
+                    var check = distributors.Where(a => a.DistributorId == item.UserId).FirstOrDefault() != null ? "checked" : "";
+
+                    <div class="col-sm-3">
+                        <input type="checkbox" class="input-chk" @check id="distributors_@item.UserId" name="distributors_@item.UserId" value="@item.UserId" />
+                        <label for="distributors_@item.UserId">@item.FirstName @item.LastName </label>
+                    </div>
+                    }
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button type="button" class="btn btn-success" id="submit" onclick="admin.saveDistributors()">Submit</button>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+    </div>
+</div>

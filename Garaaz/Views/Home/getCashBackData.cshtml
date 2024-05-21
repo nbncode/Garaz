@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Garaaz.Models.ResponseCashBackModel>
+@using Garaaz.Models
+
+@{
+    var cashbackRange = (List<CashbackRange>)ViewBag.CashBackRange;
+}
+@foreach (var item in Model)
+{
+    <div class="row" id="@item.CashbackId">
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label>From Amount<em>*</em></label>
+                <input type="number" step="any" class="form-control from-amount" value="@item.FromAmount" placeholder="From Amount">
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label>To Amount</label>
+                <input type="number" step="any" class="form-control to-amount" value="@item.ToAmount" placeholder="To Amount">
+            </div>
+        </div>
+
+        @foreach (var d in cashbackRange)
+        {
+            <input type="hidden" class=""/>
+            var old = item.lstCashbackMix.FirstOrDefault(a => a.CashbackRangeId == d.CashbackRangeId);
+            <div class="col-sm-2 cashback-range" id="@(d.CashbackRangeId)">
+                <div class="form-group">
+                    <label>@d.StartRange % to @d.EndRange %</label>
+                    <input type="number" step="any" class="form-control cashback-range-input" data-fromAmount="@d.StartRange" data-toAmount="@d.EndRange" value="@(old !=null ? old.Percentage : 0 )" placeholder="@d.StartRange % to @d.EndRange %">
+                </div>
+            </div>
+        }
+        
+        <div class="col-sm-1">
+            <label> &nbsp;</label>
+            <a class="trash-icon" href="javascript:void(0);" title="Delete current cashback" onclick="schemes.removeCurrentCashBack(this)">
+                <i class="la la-trash"></i>
+            </a>
+        </div>
+    </div>
+}
+
+<div class="row" id="0">
+    <div class="col-sm-2">
+        <div class="form-group">
+            <label>From Amount<em>*</em></label>
+            <input type="number" step="any" class="form-control from-amount" placeholder="From Amount">
+        </div>
+    </div>
+    <div class="col-sm-2">
+        <div class="form-group">
+            <label>To Amount</label>
+            <input type="number" step="any" class="form-control to-amount" placeholder="To Amount">
+        </div>
+    </div>
+
+    @foreach (var d in cashbackRange)
+    {
+        <div class="col-sm-2 cashback-range" id="@(d.CashbackRangeId)">
+            <div class="form-group">
+                <label>@d.StartRange % to @d.EndRange %</label>
+                <input type="number" step="any" class="form-control cashback-range-input" placeholder="@d.StartRange % to @d.EndRange %">
+            </div>
+        </div>
+    }
+    
+    <div class="col-sm-1">
+        <label> &nbsp;</label>
+        <a class="trash-icon" href="javascript:void(0);" title="Delete current cashback" onclick="schemes.removeCurrentCashBack(this)" >
+            <i class="la la-trash"></i>
+        </a>
+    </div>
+</div>

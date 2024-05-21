@@ -1,0 +1,80 @@
+﻿@using Garaaz.Models
+@model List<clsVariant>
+
+@{
+    ViewBag.Title = "Variants";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="kt-subheader-search">
+    <h3 class="kt-subheader-search__title" style="display: inline-block;">
+        Variants
+    </h3>
+    <a href="javascript:void(0);" onclick="history.go(-1);" class="btn btn-brand btn-elevate btn-icon-sm" style="float: right;display: inline-block;">
+        <i class="la la-step-backward"></i>
+        Back
+    </a>
+</div>
+
+<header class="ribbon">
+    <h2>&nbsp;</h2>
+</header>
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+            <!--Begin::Section-->
+            <div class="row">
+                @if (Model.Count == 0)
+                {
+                    @:No variants found.
+                }                
+            </div>
+            <!--End::Section-->
+            <table class="table table-hover table-bordered table-header">
+                <tbody>
+                    <tr>
+
+                        <th>Name</th>
+                        <th>Region</th>
+                        <th>Production year</th>
+                        <th>Engine</th>
+                        <th>Description</th>
+                        <th>Chassis type</th>
+                        <th>V No.</th>
+                    </tr>
+
+                    @foreach (var variant in Model)
+                    {
+
+                        <tr>
+                            <td>
+                                <a href="@Url.Action("Groups","Home",new { @id = variant.VariantId })">@variant.VariantName</a>
+                            </td>
+                            <td>
+                                <a href="@Url.Action("Groups","Home",new { @id = variant.VariantId })">@variant.Region</a>
+                            </td>
+                            <td>
+                                <a href="@Url.Action("Groups","Home",new { @id = variant.VariantId })">@variant.ProductionYear</a>
+                            </td>
+                            <td>
+                                <a href="@Url.Action("Groups","Home",new { @id = variant.VariantId })">@variant.Engine</a>
+                            </td>
+                            <td>
+                                <a href="@Url.Action("Groups","Home",new { @id = variant.VariantId })">@variant.Description</a>
+                            </td>
+                            <td>
+                                <a href="@Url.Action("Groups","Home",new { @id = variant.VariantId })">@variant.ChassisType</a>
+                            </td>
+                            <td>
+                                <a href="@Url.Action("Groups","Home",new { @id = variant.VariantId })">@variant.VNo</a>
+                            </td>
+                        </tr>
+                    }
+
+
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>

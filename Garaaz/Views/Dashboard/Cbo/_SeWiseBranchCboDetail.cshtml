@@ -1,0 +1,100 @@
+﻿@model List<Garaaz.Models.DashboardOverview.Cbo.CategoryWiseBranchCboDetail>
+
+@{
+    const string noRecordFound = "Sorry! No record found for selected criteria";
+
+    string errorMsg = ViewBag.ErrorMsg;
+    if (string.IsNullOrWhiteSpace(errorMsg) && Model == null)
+    {
+        errorMsg = "Model is not set";
+    }
+}
+
+@if (string.IsNullOrWhiteSpace(errorMsg) && Model != null)
+{
+    if (Model.Count > 0)
+    {
+        var totalCustomers = Model.Sum(m => m.NumberOfCboCustomers);
+        var totalOrders = Model.Sum(m => m.NumberOfCboOrders);
+        var totalCboPrice = Model.Sum(m => m.CboPrice);
+        var totalCboPrice0To7Days = Model.Sum(m => m.CboPrice0To7Days);
+        var totalCboPrice7To15Days = Model.Sum(m => m.CboPrice7To15Days);
+        var totalCboPriceMoreThan15Days = Model.Sum(m => m.CboPriceMoreThan15Days);
+        var totalAvgSale = Model.Sum(m => m.AvgSale);
+        var totalCboPercentage = Model.Sum(m => m.CboPercentage);
+
+        <div class="table-responsive">
+            <table class="table table-bordered w-auto table-center">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Sr No</th>
+                        <th>Branch Code</th>
+                        <th>Branch Name</th>
+                        <th>No.CBO Customers</th>
+                        <th>No.CBO Orders</th>
+                        <th>CBO (In lacs)</th>
+                        <th>CBO (Lacs) 0-7 Days</th>
+                        <th>CBO (Lacs) 7- 15 Days</th>
+                        <th>CBO (Lacs) >15 Days</th>
+                        <th>Avg Sale (In Lacs)</th>
+                        <th>% CBO</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var rowBcd in Model)
+                    {
+                        <tr>
+                            <td>@rowBcd.SlNo</td>
+                            <td>@rowBcd.BranchCode</td>
+                            <td>@rowBcd.BranchName</td>
+                            <td>@rowBcd.NumberOfCboCustomers</td>
+                            <td>@rowBcd.NumberOfCboOrders</td>
+                            <td>@rowBcd.CboPrice</td>
+                            <td>@rowBcd.CboPrice0To7Days</td>
+                            <td>@rowBcd.CboPrice7To15Days</td>
+                            <td>@rowBcd.CboPriceMoreThan15Days</td>
+                            <td>@rowBcd.AvgSale</td>
+                            <td>@rowBcd.CboPercentage.ToString("0.0%")</td>
+                            <td><a href="javascript:void(0);" onclick="dbCbo.fetchBranchCustomerCboDetail('SE','@rowBcd.BranchCode',this)">View</a></td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td><b>Grand Total</b></td>
+                        <td></td>
+                        <td><b>@totalCustomers</b></td>
+                        <td><b>@totalOrders</b></td>
+                        <td><b>@totalCboPrice.ToString("N")</b></td>
+                        <td><b>@totalCboPrice0To7Days.ToString("N")</b></td>
+                        <td><b>@totalCboPrice7To15Days.ToString("N")</b></td>
+                        <td><b>@totalCboPriceMoreThan15Days.ToString("N")</b></td>
+                        <td><b>@totalAvgSale.ToString("N")</b></td>
+                        <td><b>@totalCboPercentage.ToString("0.0%")</b></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p class="kt-font-bold">
+            <i class="kt-font-warning flaticon-warning-sign"></i>
+            &nbsp;@noRecordFound
+        </p>
+    }
+
+}
+else
+{
+    <p class="kt-font-bold">
+        <i class="kt-font-warning flaticon-warning-sign"></i>
+        &nbsp;@errorMsg
+    </p>
+}
+
+
+

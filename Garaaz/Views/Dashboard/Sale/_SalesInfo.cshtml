@@ -1,0 +1,34 @@
+﻿@model Garaaz.Models.DashboardOverview.Sale.SaleInfoResponse
+@{
+    string errorMsg = ViewBag.ErrorMsg;
+    if (string.IsNullOrWhiteSpace(errorMsg) && Model == null)
+    {
+        errorMsg = "Model is not set";
+    }
+}
+
+<div class="kt-widget24__details">
+    <div class="kt-widget24__info">
+        @if (string.IsNullOrWhiteSpace(errorMsg) && Model != null)
+        {
+            var growthPercentage = $"({Model.GrowthPercentage}%)";
+            <h4>
+                @Model.DateInfo
+            </h4>
+            <span class="kt-widget24__title @(Model.GrowthPercentage >= 0 ? "dbGreen" : "dbRed")">
+                <span class="pr-2">@Model.TotalSale</span> <span class="growthPercent">@growthPercentage</span>
+            </span>
+            <span class="kt-widget24__desc">
+                @Model.CoDealerDistSale
+            </span>
+        }
+        else
+        {
+            <p class="kt-font-bold">
+                <i class="kt-font-warning flaticon-warning-sign"></i>
+                &nbsp;@errorMsg
+            </p>
+        }
+    </div>
+</div>
+

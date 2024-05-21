@@ -1,0 +1,42 @@
+﻿@model Garaaz.Models.AppLevelDataModel
+
+@{Html.RenderPartial("alerts");}
+
+<style>
+    .topMsg {
+        position: relative;
+        padding: 0.75rem 1.25rem;
+        margin-bottom: 1rem;
+        border: 1px solid transparent;
+        border-radius: 0.25rem;
+        z-index: 9999 !important;
+        color: #0f695f;
+        background-color: #d2f4f1;
+        border-color: #c0f0eb;
+        font-weight: 500;
+    }
+</style>
+
+@if (Model != null && Model.Levels.Count > 0)
+{
+    if (!string.IsNullOrEmpty(Model.TopMessage))
+    {
+        <div class="topMsg">
+            @Model.TopMessage
+        </div>
+    }
+
+    <table class="table">
+        @foreach (var level in Model.Levels)
+        {
+            <tr>
+                <td>@level.Title</td>
+                <td>@level.Message</td>
+            </tr>
+        }
+    </table>
+}
+else
+{
+    <p>You have not achieved any levels yet.</p>
+}

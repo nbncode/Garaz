@@ -1,0 +1,306 @@
+﻿@model ResponseOrderModel
+@using Garaaz.Models
+@{
+    ViewBag.Title = "Order Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var availabilityTypes = ViewBag.AvailabilityTypes as List<string>;
+    var outlets = ViewBag.Outlets as SelectList;
+
+    var backUrl = ViewBag.backurl != null ? ViewBag.backurl : Request.UrlReferrer;
+
+    bool isUserValid = false;
+    if (@ViewBag.Role == Constants.SuperAdmin || @ViewBag.Role == Constants.Distributor || @ViewBag.Role == Constants.Outlet) { isUserValid = true; }
+}
+
+@section AddToHead{
+    <link href="@Url.Content("~/assets/css/order-details.css")" rel="stylesheet" type="text/css" />
+}
+
+<div class="kt-subheader-search">
+    <h3 class="kt-subheader-search__title">
+        Order Details
+    </h3>
+</div>
+
+<header class="ribbon">
+    <h2>&nbsp;</h2>
+</header>
+
+<div class="page-content">
+    @{Html.RenderPartial("alerts");}
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+        <div class="row">
+            <div class="col-md-12">
+                <!--begin::Portlet-->
+                <div class="kt-portlet">
+                    <div class="kt-portlet__head">
+                        <div class="kt-portlet__head-label">
+                            <h3 class="kt-portlet__head-title">
+                                Details of your order
+                            </h3>
+                        </div>
+                        <div class="kt-portlet__head-toolbar">
+                            <div class="kt-portlet__head-wrapper">
+                                <div class="kt-portlet__head-actions">
+                                    <a href="@backUrl" class="btn btn-brand btn-elevate btn-icon-sm">
+                                        <i class="la la-step-backward"></i>
+                                        Back
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kt-portlet kt-portlet--mobile">
+                        <div class="kt-portlet__body">
+                            @if (Model != null)
+                            {
+                                <div class="kt-invoice-2">
+                                    <div class="kt-invoice__head kt-invoice_button">
+                                        <div class="kt-invoice__container">
+                                            <form action="/Home/OrderDetailsExportToExcel?orderId=@Model.OrderID&&userId=@Model.UserID" method="post">
+                                                <div class="row">
+                                                    <div class="col-sm-3">
+                                                        <input type="submit" class="btn btn-info" value="Parts Export to Excel">
+                                                    </div>
+                                                    <div class="col-md-6 text-right offset-md-3">
+                                                        <span class="kt-invoice__desc">
+                                                            @if (Model.OutletAddress != "")
+                                                            {
+                                                                <span><b>@Model.OutletAddress</b></span>
+                                                            }
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </form>
+
+                                            <div class="kt-invoice__items">
+                                                <div class="kt-invoice__item">
+                                                    <span class="kt-invoice__subtitle">DATE</span>
+                                                    <span class="kt-invoice__text">@Model.OrderDate</span>
+                                                </div>
+                                                <div class="kt-invoice__item">
+                                                    <span class="kt-invoice__subtitle">ORDER Status.</span>
+                                                    <span class="kt-invoice__text">@Model.OrderStatus</span>
+                                                </div>
+                                                <div class="kt-invoice__item">
+                                                    <span class="kt-invoice__subtitle">Payment Mode.</span>
+
+                                                    @if (Model.PaymentMethod != null && Model.PaymentMethod.Contains("RazorPay"))
+                                                    {
+                                                        <span class="kt-invoice__text">  Online Payment</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="kt-invoice__text"> Cash On Delivery</span>
+                                                    }
+                                                </div>
+                                                <div class="kt-invoice__item">
+                                                    <span class="kt-invoice__subtitle">ORDER NO.</span>
+                                                    <span class="kt-invoice__text">@Model.OrderNo</span>
+                                                </div>
+                                                <div class="kt-invoice__item">
+                                                    <span class="kt-invoice__subtitle">Workshop Name</span>
+                                                    <span class="kt-invoice__text">@Model.WorkshopName</span>
+                                                </div>
+                                                @if (Model.DelAddress != null)
+                                                {
+                                                    <div class="kt-invoice__item">
+                                                        <span class="kt-invoice__subtitle">DELIVER TO</span>
+                                                        <span class="kt-invoice__text">@Model.DelAddress.Address</span>
+                                                        <span>@Model.DelAddress.City @Model.DelAddress.PinCode</span>
+                                                    </div>
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="kt-invoice__body">
+                                        <div class="kt-invoice__container">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>ITEM</th>
+                                                            <th style="text-align: left;">AVAILABILITY TYPE</th>
+                                                            @if (isUserValid)
+                                                            {
+                                                                <th style="text-align: left;">OUTLET</th>
+                                                            }
+                                                            <th>PRICE</th>
+                                                            <th>QUANTITY</th>
+                                                            <th>TOTAL</th>
+                                                            @if (isUserValid)
+                                                            {
+                                                                <th>Action</th>
+                                                            }
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @if (Model.OrderDetails != null)
+                                                        {
+                                                            foreach (var od in Model.OrderDetails)
+                                                            {
+                                                                <tr id="@od.OrderDetailID">
+                                                                    <td prodId="@od.ProductID" class="od-product">
+                                                                        @if (string.IsNullOrEmpty(od.ProductName))
+                                                                        {
+                                                                            @od.PartNumber
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            @od.ProductName <br />
+                                                                            @od.PartNumber
+                                                                        }
+                                                                    </td>
+                                                                    <td style="text-align:left">
+                                                                        @if (isUserValid)
+                                                                        {
+                                                                            var ddlavailType = string.Format("ddlavailabilityType{0}", od.OrderDetailID);
+                                                                            <select id="@ddlavailType" class="form-control" style="max-width: 180px;">
+                                                                                <option value="">-- Select --</option>
+                                                                                @foreach (var at in availabilityTypes)
+                                                                                {
+                                                                                    var selected = od.AvailabilityType != null && od.AvailabilityType.Equals(at, StringComparison.OrdinalIgnoreCase) ? "selected" : string.Empty;
+                                                                                    <option value="@at" @selected>@at</option>
+                                                                                }
+                                                                            </select>
+                                                                        }
+                                                                        else
+                                                                        {@od.AvailabilityType}
+                                                                    </td>
+                                                                    @if (isUserValid)
+                                                                    {
+                                                                        var ddlOutletId = string.Format("ddlOutlet{0}", od.OrderDetailID);
+                                                                        <td>
+                                                                            <select id="@ddlOutletId" class="form-control" style="max-width: 180px;">
+                                                                                @foreach (var item in outlets)
+                                                                                {
+                                                                                    var selected = item.Value == Convert.ToString(od.OutletId) ? "selected" : "";
+                                                                                    <option value="@item.Value" @selected>@item.Text</option>
+                                                                                }
+                                                                            </select>
+
+
+                                                                        </td>
+                                                                    }
+                                                                    <td><span class="rupee-sign">@Constants.Sign </span> <span class="od-unit-price">@od.UnitPrice</span></td>
+                                                                    <td>
+                                                                        @if (isUserValid)
+                                                                        {
+                                                                            <input type="number" name="fname" value="@od.Qty" class="qty form-control" min="0" oninput="validity.valid||(value='0');" title='Only Number' style="max-width:80px; display: inline-block;">
+                                                                        }
+                                                                        else
+                                                                        {@od.Qty}
+                                                                    </td>
+                                                                    <td class="kt-font-danger kt-font-lg"><span class="rupee-sign">@Constants.Sign </span> <span class="od-total-price">@od.TotalPrice</span></td>
+                                                                    @if (isUserValid)
+                                                                    {
+                                                                        <td>
+                                                                            <a href="javascript:void(0);" onclick="product.DeleteFromOrder(@od.OrderDetailID)">
+                                                                                <i class="la la-trash"></i> Delete Item
+                                                                            </a>
+                                                                        </td>
+                                                                    }
+                                                                </tr>
+                                                            }
+
+                                                        }
+
+                                                    </tbody>
+                                                </table>
+                                                @if (isUserValid)
+                                                {
+                                                    <div class="text-right">
+                                                        <button type="submit" class="btn btn-primary" onclick="product.UpdateQuantity('Home')" href="javascript:void(0);">Update Quantity</button>
+                                                    </div>
+                                                }
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="kt-invoice__footer">
+                                        <div class="kt-invoice__container">
+                                            <div class="col-md-4"></div>
+                                            <div class="col-md-4"></div>
+                                            <div class="col-md-4">
+                                                <table class="table">
+                                                    <tbody>
+                                                        <tr class="cart-summary-subtotal">
+                                                            <td class="cart-summary-label">Sub-Total:</td>
+                                                            <td class="cart-summary-value"><span class="rupee-sign">@Constants.Sign</span> @Model.SubTotal</td>
+                                                        </tr>
+                                                        @if (Model.DeliveryCharge != null)
+                                                        {
+                                                            <tr class="cart-summary-neg">
+                                                                <td class="cart-summary-label">Delivery Charge:</td>
+                                                                <td class="cart-summary-value">
+
+                                                                    <span class="rupee-sign">@Constants.Sign</span> @Model.DeliveryCharge
+
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                        @if (Model.PackingCharge != null)
+                                                        {
+                                                            <tr class="cart-summary-neg">
+                                                                <td class="cart-summary-label">Packing Charge:</td>
+                                                                <td class="cart-summary-value">
+
+                                                                    <span class="rupee-sign">@Constants.Sign</span> @Model.PackingCharge
+
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                        @if (Model.Discount != null)
+                                                        {
+                                                            <tr class="cart-summary-neg">
+                                                                <td class="cart-summary-label">Discount:</td>
+                                                                <td class="cart-summary-value">
+
+                                                                    <span class="rupee-sign">@Constants.Sign</span> @Model.Discount
+
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                        <tr class="cart-summary-total">
+                                                            <td class="kt-font-xl kt-font-boldest cart-summary-label">Order Total:</td>
+                                                            <td class="kt-font-danger kt-font-xl kt-font-boldest cart-summary-value"><span class="rupee-sign">@Constants.Sign</span> @Model.OrderTotal</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @if (isUserValid)
+                                    {
+                                        <div class="float-right pt-3">
+                                            <button id="btnGenerateOrder" onclick="product.generateOrder(@Model.OrderID)" class="btn btn-warning">Generate order</button>
+                                        </div>
+                                    }
+                                </div>
+                            }
+                            else
+                            {
+                                <h3>Order details not found.</h3>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/js/product.js"></script>
+    <script>
+        $(function () {
+            product.bindICheck();
+        })
+    </script>
+}

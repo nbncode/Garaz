@@ -1,0 +1,33 @@
+﻿@model List<Garaaz.Models.BestSellerModel>
+<script src="https://www.w3schools.com/lib/w3.js"></script>
+@{
+    if (Model.Count() < 1)
+    {
+        <div class="col-md-3">
+            <div class="form-group">
+                <h5>groups not found.</h5>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="row col-md-12">
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <input oninput="w3.filterHTML('div','.col-md-3', this.value)" placeholder="Search for groups.." class="form-control">
+                </div>
+            </div>
+        </div>
+    }
+
+    foreach (var item in Model)
+    {
+        <div class="col-md-3">
+            <div class="form-group">
+                <input type="checkbox" @(item.IsBestSeller ? "checked" : "") class="icheck_n product" name="User" value="@item.GroupId">
+                <label>@item.Group</label>
+            </div>
+        </div>
+
+    }
+}

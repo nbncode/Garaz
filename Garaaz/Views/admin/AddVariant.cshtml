@@ -1,0 +1,171 @@
+﻿@model Garaaz.Models.clsVariant
+
+@{
+    ViewBag.Title = "AddVariant";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+    <div class="kt-subheader-search">
+        <h3 class="kt-subheader-search__title">
+            Variant Master
+        </h3>
+    </div>
+
+    <header class="ribbon">
+        <h2>&nbsp;</h2>
+    </header>
+
+    <div class="page-content">
+        <div class="page-content">
+            @{Html.RenderPartial("alerts");}
+
+            <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <!--begin::Portlet-->
+                        <div class="kt-portlet">
+                            <div class="kt-portlet__head">
+                                <div class="kt-portlet__head-label">
+                                    <h3 class="kt-portlet__head-title">
+                                        Add Variant
+                                    </h3>
+                                </div>
+                                <div class="kt-portlet__head-toolbar">
+                                    <div class="kt-portlet__head-wrapper">
+                                        <div class="kt-portlet__head-actions">
+                                            <a href="/admin/Variant" class="btn btn-brand btn-elevate btn-icon-sm">
+                                                <i class="la la-step-backward"></i>
+                                                Back
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @using (Html.BeginForm())
+                            {
+                                <div class="kt-form">
+                                    <div class="kt-portlet__body">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Select Brand</label>
+                                                    @Html.DropDownListFor(model => model.BrandId, ViewBag.ddlBrand as SelectList, new { @class = "form-control required", @id = "ddlBrands" })
+                                                    @Html.ValidationMessageFor(model => model.BrandId, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    @if (Model != null)
+                                                    {
+                                                        <input id="iVehicleId" type="hidden" value="@Model.VehicleId" />
+                                                    }
+                                                    <label>Select Variant Vehicle</label>
+                                                    @Html.DropDownListFor(model => model.VehicleId, Enumerable.Empty<SelectListItem>(), new { @class = "form-control required", @id = "ddlVehicles" })
+                                                    @Html.ValidationMessageFor(model => model.VehicleId, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Variant Name</label>
+
+                                                    @Html.HiddenFor(model => model.VariantId)
+
+                                                    @Html.EditorFor(model => model.VariantName, new { htmlAttributes = new { @class = "form-control required" } })
+                                                    @Html.ValidationMessageFor(model => model.VariantName, "", new { @class = "text-danger" })
+                                                </div>
+
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <div class="form-group ">
+                                                    <label>Production Year</label>
+                                                    @Html.EditorFor(model => model.ProductionYear, new { htmlAttributes = new { @class = "form-control required" } })
+                                                    @Html.ValidationMessageFor(model => model.ProductionYear, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Description</label>
+                                                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control required" } })
+                                                    @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Select Variant Parent</label>
+                                                    @Html.DropDownListFor(model => model.ParentId, ViewBag.ddlVParent as SelectList, new { @class = "form-control" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Region</label>
+                                                    @Html.EditorFor(model => model.Region, new { htmlAttributes = new { @class = "form-control" } })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Engine</label>
+                                                    @Html.EditorFor(model => model.Engine, new { htmlAttributes = new { @class = "form-control" } })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Chassis Type</label>
+                                                    @Html.EditorFor(model => model.ChassisType, new { htmlAttributes = new { @class = "form-control" } })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>V No.</label>
+                                                    @Html.EditorFor(model => model.VNo, new { htmlAttributes = new { @class = "form-control" } })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="kt-portlet__foot">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            // Get vehicle by brand on Edit
+            var url = window.location.href;
+            if (url.indexOf('edit') != -1) {
+                var brandId = $('select#ddlBrands').val();
+                admin.GetVehicleByBrandId(brandId, true);
+            }
+
+            // Get vehicle on brand change
+            $('select#ddlBrands').change(function () {
+                var brandId = $(this).val();
+                admin.GetVehicleByBrandId(brandId, false);
+            });
+
+        });
+    </script>
+
+}

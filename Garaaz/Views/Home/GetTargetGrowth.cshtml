@@ -1,0 +1,51 @@
+﻿@model IEnumerable<Garaaz.Models.TargetGrowth>
+
+@if (Model.Any())
+{
+    <!--Table rows with data-->
+    foreach (var item in Model)
+    {
+        <div class="row body" id="@item.TragetGrowthId">
+            <div class="col-sm-3 td">
+                <input type="number" step="any" class="form-control Min" value="@item.Min" placeholder="Monthly Purchase From" />
+            </div>
+            <div class="col-sm-3 td">
+                <input type="number" step="any" class="form-control Max" value="@item.Max" placeholder="Monthly Purchase To" />
+            </div>
+            <div class="col-sm-2 td">
+                <input type="number" step="any" class="form-control Growth" value="@item.Growth" placeholder="Growth (%)" />
+            </div>
+            <div class="col-sm-2 td">
+                <input type="number" step="any" class="form-control MinTarget" value="@item.MinTarget" placeholder="Min. Target" />
+            </div>
+            <div class="col-sm-1 td text-center">
+                <a class="table-trash-icon" onclick="schemes.removeCurrentTarget(this)" href="javascript:void(0);">
+                    <i class="la la-trash"></i>
+                </a>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <!--Default empty table rows-->
+        <div class="row body" id="0">
+            <div class="col-sm-3 td">
+                <input type="number" step="any" class="form-control Min" placeholder="Monthly Purchase From" />
+            </div>
+            <div class="col-sm-3 td">
+                <input type="number" step="any" class="form-control Max" placeholder="Monthly Purchase To" />
+            </div>
+            <div class="col-sm-2 td">
+                <input type="number" step="any" class="form-control Growth" placeholder="Growth (%)" />
+            </div>
+            <div class="col-sm-2 td">
+                <input type="number" step="any" class="form-control MinTarget" placeholder="Min. Target" />
+            </div>
+            <div class="col-sm-1 td text-center">
+                <a class="table-trash-icon" onclick="schemes.removeCurrentTarget(this)" href="javascript:void(0);">
+                    <i class="la la-trash"></i>
+                </a>
+            </div>
+        </div>
+}

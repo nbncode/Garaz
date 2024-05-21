@@ -1,0 +1,123 @@
+﻿@model IEnumerable<Garaaz.Models.FocusGroupModel>
+@using Garaaz.Models;
+@{
+
+}
+
+<input type="hidden" id="hdnErrorMsgForNonMatchedGroups" value="@ViewBag.ErrorMsgForNonMatchedGroups" />
+
+@foreach (var item in Model)
+{
+    <div class="row" id="@item.GroupId">
+        <input type="hidden" id="productIds-@item.GroupId" class="product-ids" value="@item.ProductIds" />
+        <div class="col-sm-3 resizebox">
+            <div class="form-group">
+                <label>Group</label>
+                <input type="password" autocomplete="off" style="display:none" />
+                <input id="txtSearchGroup-@item.GroupId" value="@item.GroupName" type="text" class="form-control" placeholder="Start typing group name" />
+            </div>
+        </div>
+        <div class="col-sm-3 resizebox">
+            <div class="focus-parts-label">
+                <label>Product</label>
+                <label class=" product">@item.ProductText</label>
+            </div>
+        </div>
+        <div class="col-sm-2">
+            <div class="form-group">
+                <label> &nbsp;</label><br>
+                <a href="javascript:void(0);" class="btn btn-info" onclick="schemes.getGroupParts(this)">Update parts</a>
+            </div>
+        </div>
+        <div class="col-sm-1">
+            <label> &nbsp;</label>
+            <a class="trash-icon" href="javascript:void(0);" title="Delete current row" onclick="schemes.removeCurrentFpgRow(this)">
+                <i class="la la-trash"></i>
+            </a>
+        </div>
+    </div>
+}
+<div class="row" id="0">
+    <input type="hidden" id="productIds-0" class="product-ids" value="" />
+    <div class="col-sm-3 resizebox">
+        <div class="form-group">
+            <label>Search Group</label>
+            <input type="password" autocomplete="off" style="display:none" />
+            <input id="txtSearchGroup-0" type="text" class="form-control auto-complete" placeholder="Start typing group name" />
+        </div>
+    </div>
+    <div class="col-sm-3 resizebox">
+        <div class="focus-parts-label">
+            <label>Product</label>
+            <label class="product" ></label>
+        </div>
+    </div>
+    <div class="col-sm-2">
+        <div class="form-group">
+            <label> &nbsp;</label><br>
+            <a href="javascript:void(0);" class="btn btn-info" onclick="schemes.getGroupParts(this)">Update parts</a>
+        </div>
+    </div>
+    <div class="col-sm-1">
+        <label> &nbsp;</label>
+        <a class="trash-icon" href="javascript:void(0);" title="Delete current row" onclick="schemes.removeCurrentFpgRow(this)">
+            <i class="la la-trash"></i>
+        </a>
+    </div>
+</div>
+
+<style>
+    .modal {
+        display: none; /* Hidden by default */
+        position: fixed; /* Stay in place */
+        z-index: 1; /* Sit on top */
+        padding-top: 100px; /* Location of the box */
+        left: 0;
+        top: 0;
+        width: 100%; /* Full width */
+        height: 100%; /* Full height */
+        overflow: auto; /* Enable scroll if needed */
+        background-color: rgb(0,0,0); /* Fallback color */
+        background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+    }
+
+    /* Modal Content */
+    .modal-content {
+        background-color: #fefefe;
+        margin: auto;
+        padding: 20px;
+        border: 1px solid #888;
+        width: 80%;
+    }
+
+    .close {
+        color: #aaaaaa;
+        float: right;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+        .close:hover,
+        .close:focus {
+            color: #000;
+            text-decoration: none;
+            cursor: pointer;
+        }
+</style>
+<script>
+    function closePartsPopup() {
+        document.getElementById("product-parts").style.display = "none";
+    }
+</script>
+
+<div class="modal" id="product-parts" style="display: none;">
+    <div class="modal-content">
+        <div class="modal-header">
+          <h5></h5>  <span class="close" onclick="closePartsPopup()"></span>
+        </div>
+        <div id="focus-parts-model">
+            
+        </div>
+    </div>
+</div>
+

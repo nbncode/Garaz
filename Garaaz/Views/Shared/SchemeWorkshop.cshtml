@@ -1,0 +1,33 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Scheme Workshops";
+
+    var controller = this.ViewContext.RouteData.GetRequiredString("controller");
+}
+<div class="kt-subheader-search">
+    <h3 class="kt-subheader-search__title">
+        Scheme's Workshops
+    </h3>
+</div>
+
+<header class="ribbon">
+    <h2>&nbsp;</h2>
+</header>
+<div class="page-content">
+    <div class="container-fluid">
+        @{Html.RenderPartial("alerts");}
+        <input type="hidden" id="PageView" value="/@controller/SchemeWorkshopPartialView?schemeId=@ViewBag.SchemeId" />
+        <div id="main-content">
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/js/schmes.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var url = $("#PageView").val();
+            admin.LoadPartialView(url);            
+        });
+    </script>
+}

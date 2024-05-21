@@ -1,0 +1,17 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+
+<input type="hidden" id="prodId" value="@ViewBag.ProductId" />
+<input type="hidden" id="price" value="@ViewBag.Price" />
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var prodId = $('#prodId').val();  
+            var price = $('#price').val();
+            var message = prodId +"&"+ price;
+            window.postMessage(message);
+        });
+    </script>
+}

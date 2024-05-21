@@ -1,0 +1,35 @@
+﻿@model Garaaz.Models.DashboardOverview.Outstanding.OsInfoResponse
+@{
+    string errorMsg = ViewBag.ErrorMsg;
+    if (string.IsNullOrWhiteSpace(errorMsg) && Model == null)
+    {
+        errorMsg = "Model is not set";
+    }
+}
+
+<div class="kt-widget24__details">
+    <div class="kt-widget24__info">
+        @if (string.IsNullOrWhiteSpace(errorMsg) && Model != null)
+        {
+            <h4>
+                @Model.DateInfo
+            </h4>
+            <span class="kt-widget24__title dbRed">
+                <span>@Model.TotalOutstanding</span>
+            </span>
+            <span class="kt-widget24__desc dbRed">
+                @Model.OutstandingDays
+            </span><br />
+            <span class="kt-widget24__desc dbRed">
+                @Model.CriticalPayment
+            </span>
+        }
+        else
+        {
+            <p class="kt-font-bold">
+                <i class="kt-font-warning flaticon-warning-sign"></i>
+                &nbsp;@errorMsg
+            </p>
+        }
+    </div>
+</div>

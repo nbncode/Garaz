@@ -1,0 +1,135 @@
+﻿@model IEnumerable<Garaaz.Models.ResponseSchemeModel>
+@{
+    ViewBag.Title = "Schemes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<div class="kt-subheader-search">
+    <h3 class="kt-subheader-search__title">
+        Schemes
+    </h3>
+</div>
+
+<header class="ribbon">
+    <h2>&nbsp;</h2>
+</header>
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+            <!--Begin::Section-->
+            <div class="row">
+                @foreach (var scheme in Model)
+                {
+                    <div class="col-sm-3">
+                        <div class="kt-portlet kt-portlet--height-fluid">
+                            <div class="kt-portlet__head kt-portlet__head--noborder">
+                                <div class="kt-portlet__head-label">
+                                    <h3 class="kt-portlet__head-title"></h3>
+                                </div>
+                            </div>
+                            <div class="kt-portlet__body kt-portlet__body--fit-y">
+                                <!--begin::Widget -->
+                                <div class="kt-widget kt-widget--user-profile-4">
+                                    <div class="kt-widget__head">
+                                        <div class="kt-widget__media">
+                                            <img class="img-fluid mx-auto" src="@Html.Raw(scheme.BannerImage)" alt="image" onerror="changeurl(this)">
+                                        </div>
+                                        <div class="kt-widget__content">
+                                            <div class="kt-widget__section">
+                                                <div class="kt-widget__username">
+                                                    @scheme.SchemeName <br />
+                                                    <br />
+                                                    @if (scheme.IsCouponAllocated)
+                                                    {
+                                                        <p id="@scheme.SchemeId"></p>
+                                                    }
+                                                    @if (scheme.IsGiftAllocated)
+                                                    {
+                                                        <a href='JavaScript:void(0)' class='btn btn-success' onclick='admin.ShowGiftDialog(@scheme.SchemeId,@scheme.WorkshopId)'>Show Gifts</a>
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end::Widget -->
+                            </div>
+                            <div class="kt-portlet__head kt-portlet__head--noborder">
+                                <div class="kt-portlet__head-label">
+                                    <h3 class="kt-portlet__head-title"></h3>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <script type="text/javascript">
+                         $(document).ready(function () {
+                            var countDownDate = new Date("@scheme.EndDate").getTime();
+                            var x_@scheme.SchemeId= setInterval(function () {
+                                var d = new Date();
+                                var now = new Date(d).getTime();
+                                var distance = countDownDate - now;
+                                var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                                var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                                var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                                var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                                if (days > 0)
+                                {
+                                     document.getElementById("@scheme.SchemeId").innerHTML = "Ends in " + days + " Day " + hours + ": "
+                                    + minutes + ": " + seconds + " ";
+                                }
+                                else
+                                {
+                                     document.getElementById("@scheme.SchemeId").innerHTML = "Ends in " + hours + ": "
+                                    + minutes + ": " + seconds + " ";
+                                }
+                                if (distance < 0) {
+                                    clearInterval(x_@scheme.SchemeId);
+                                    document.getElementById("@scheme.SchemeId").innerHTML = "<a href='JavaScript:void(0)' class='btn btn-brand' onclick='admin.ShowCouponsDialog(@scheme.SchemeId,@scheme.WorkshopId,`@ViewBag.Controller`)'>Show Coupon</a><br/>";
+                                }
+                            }, 1000);
+                            console.log(x_@scheme.SchemeId);
+                        });
+                    </script>
+
+
+                }
+            </div>
+            <!--End::Section-->
+        </div>
+    </div>
+</div>
+
+<div class="modal modalWithList" id="couponModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Coupons</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal modalWithList" id="giftModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Gifts</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

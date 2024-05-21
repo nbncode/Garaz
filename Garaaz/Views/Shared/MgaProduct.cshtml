@@ -1,0 +1,117 @@
+﻿@model List<Garaaz.Models.MgaProductGroup>
+@using Garaaz.Models;
+@{
+    ViewBag.Title = "MgaCatalouge Product";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+    <div class="kt-subheader-search">
+        <h3 class="kt-subheader-search__title">
+            Mga Product
+        </h3>
+    </div>
+    <header class="ribbon">
+        <h2>&nbsp;</h2>
+    </header>
+    <div class="page-content">
+        <div class="page-content">
+            <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="main-content">
+                @{Html.RenderPartial("alerts");}
+                <div class="row">
+                    <div class="col-md-12">
+                        <!--begin::Portlet-->
+                        <div class="kt-portlet">
+                            <div class="kt-portlet__head">
+                                <div class="kt-portlet__head-label">
+                                    <h3 class="kt-portlet__head-title">
+                                        Mga Product
+                                    </h3>
+                                </div>
+                                <div class="kt-portlet__head-toolbar">
+                                    <div class="kt-portlet__head-wrapper">
+                                        <div class="kt-portlet__head-actions">
+                                            <a href="MgaBanner" class="btn btn-brand btn-elevate btn-icon-sm">
+                                                <i class="la la-step-backward"></i>
+                                                Back
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel-body">
+                                <div class="kt-form">
+                                    <div class="kt-portlet__body">
+                                        <input type="hidden" id="bannerId" value="@ViewBag.BannerId" />
+                                        <input type="hidden" id="distributorId" value="@ViewBag.DistributorId" />
+                                        <div class="row">
+                                            @{
+                                                if (Model.Any())
+                                                {
+                                                    foreach (var group in Model)
+                                                    {
+                                                        <div class="col-md-12 maindiv">
+
+                                                            <div class="form-group mgaGroupBox">
+                                                                <input type="checkbox" class="icheck_n group" name="User" value="@group.GroupId">
+                                                                <h4>@group.Group</h4>
+                                                            </div>
+
+                                                            <div class="row mgaProductBox ml-3">
+                                                                @foreach (var item in group.Products)
+                                                                {
+                                                                    <div class="col-md-3">
+                                                                        <div class="form-group">
+                                                                            <input type="checkbox" @(item.IsChecked ? "checked" : "") class="icheck_n product" name="User" value="@item.ProductId">
+                                                                            <label>@item.Product</label>
+                                                                        </div>
+                                                                    </div>
+                                                                }
+                                                            </div>
+                                                            @if (group.Products.Count() >= 50)
+                                                            {
+                                                                <div class="row">
+                                                                    <div class="col-sm-12 text-center">
+                                                                        <a href="javascript:void(0);" groupid="@group.GroupId" pagenumber="@group.GroupPageNo" class="btn btn-brand" onclick="admin.ProductLoadMore(this,'@ViewBag.Controller')">Load more</a>
+                                                                    </div>
+                                                                </div>
+                                                            }
+
+                                                            <!-- /.panel-body -->
+                                                        </div>
+                                                    }
+                                                }
+                                            }
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- /.panel-primary panel -->
+                            </div>
+                            <!-- /.col-md-7 -->
+                            <div class="kt-portlet__foot">
+                                <div class="form-group">
+                                    <a href="javascript:void(0);" class="btn btn-primary text-white" onclick="admin.SubmitMgaProducts(@ViewBag.BannerId,'@ViewBag.Controller')">Submit</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@*@section scripts{
+    <script src="~/js/admin.js"></script>*@
+<script type="text/javascript">
+    $(document).ready(function () {
+        $('input.icheck_n.group').on('ifChecked', function () {
+            console.log($(this).closest('.maindiv').find('.mgaProductBox input'));
+            var productDiv = $(this).closest('.maindiv').find('.mgaProductBox input').iCheck('check');
+        }).on('ifUnchecked', function () {
+            var productDiv = $(this).closest('.maindiv').find('.mgaProductBox input').iCheck('uncheck');
+        });
+    });
+</script>
+@*}*@

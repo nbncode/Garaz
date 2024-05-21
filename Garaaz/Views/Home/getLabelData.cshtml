@@ -1,0 +1,99 @@
+﻿@model IEnumerable<LabelCriteria>
+@using Garaaz.Models
+
+@{
+    var rl = new RepoLabels();
+    var conditionList = rl.GetConditionSelect();
+    var operators = rl.GetOperatorSelect();
+
+    var selected = "";
+    var groups = (List<ProductGroupModel>)ViewBag.Groups;
+
+    RepoSchemes repoSchemes = new RepoSchemes();
+}
+
+@foreach (var item in Model)
+{
+<div class="row" id="@item.CriteriaId">
+    <div class="col-sm-2">
+        <div class="form-group">
+            <label>Group</label>
+            <select id="ddlProdGroups" class="form-control group" onchange="schemes.bindProducts($(this))">
+                <option value="">--Select--</option>
+                @foreach (var group in groups)
+                {
+                    selected = group.GroupId == item.GroupId ? "selected" : string.Empty;
+                    <option value="@group.GroupId" @selected>@group.GroupName</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="col-sm-2">
+        <div class="form-group">
+            <label>Product</label>
+            <select id="ddlProducts" class="form-control product">
+                <option value="">--Select--</option>
+                @{
+                    if (groups.Any())
+                    {
+                        var product = new List<ProductModel>();
+                        if (item.GroupId.HasValue && item.GroupId > 0)
+                        {
+                            product = repoSchemes.GetProducts(item.GroupId.Value);
+
+                            if (product.Count > 0)
+                            {
+                                foreach (var p in product)
+                                {
+                                    selected = p.ProductId == item.ProductId ? "selected" : string.Empty;
+                                <option value="@p.ProductId" @selected>@p.PartNumber</option>
+                                    }
+                                }
+                            }
+                        }
+                    }
+            </select>
+        </div>
+    </div>
+    <div class="col-sm-2">
+        <div class="form-group">
+            <label>Condition</label>
+            <select class="form-control condition">
+                <option value="">--Select--</option>
+                @foreach (var l in conditionList)
+                {
+                    selected = l.Value == item.Condition ? "selected" : "";
+                    <option value="@l.Value" @selected>@l.Text</option>
+                }
+            </select>
+        </div>
+    </div>
+    <div class="col-sm-2">
+        <div class="form-group">
+            <label>Value</label>
+            <input type="text" class="form-control benifit-value" value="@item.Value" placeholder="Value">
+        </div>
+    </div>
+    <div class="col-sm-2">
+        <div class="form-group">
+            <label>Quantity</label>
+            <input type="text" class="form-control benifit-value" value="@item.Qty" placeholder="Quantity">
+        </div>
+    </div>
+    <div class="col-sm-2">
+        <div class="form-group">
+            <label>Operator</label>
+            <select class="form-control operator">
+                <option value="">--Select--</option>
+                @foreach (var o in operators)
+                {
+                    selected = o.Value == item.Operator ? "selected" : "";
+                    <option value="@o.Value" @selected>@o.Text</option>
+                }
+            </select>
+        </div>
+    </div>
+</div>
+}
+
+

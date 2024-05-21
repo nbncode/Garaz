@@ -1,0 +1,107 @@
+﻿@model Garaaz.Models.SchemeLevelModel
+@{
+                /**/
+
+                var controller = this.ViewContext.RouteData.GetRequiredString("controller");
+}
+
+@{Html.RenderPartial("alerts");}
+
+<div class="kt-portlet kt-portlet--mobile">
+    <div class="kt-portlet__head kt-portlet__head--lg">
+        <div class="kt-portlet__head-label">
+            <span class="kt-portlet__head-icon">
+                <i class="kt-font-brand flaticon2-line-chart"></i>
+            </span>
+            <h3 class="kt-portlet__head-title">
+                Scheme's Workshops
+            </h3>
+        </div>
+        @if (Model != null && Model.Details.Count > 0&& Model.IsCashbackVisible)
+        {
+            <div class="kt-portlet__head-toolbar">
+                <div class="kt-portlet__head-wrapper">
+                    <div class="kt-portlet__head-actions">
+                        <button onclick="schemes.TransferToWallet(null,@ViewBag.SchemeId,'true')" class="btn btn-brand btn-elevate btn-icon-sm">Transfer all to wallet</button>
+                    </div>
+                </div>
+            </div>
+        }
+        </div>
+    <div class="kt-portlet__body">
+        @if (Model != null && Model.Details.Count > 0)
+        {
+            <table class="table table-striped- table-bordered table-hover table-checkable datatable" id="kt_table_1">
+                <thead>
+                    <tr>
+                        <th>Workshop</th>
+                        @if (Model.IsCashbackVisible)
+                        {
+                            <th>CashBack</th>
+                            <th>Transfer To Wallet</th>
+                        }
+                        <th>Levels</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var ws in Model.Details)
+                    {
+                        <tr>
+                            <td>@ws.WorkShopName</td>
+                            @if (Model.IsCashbackVisible)
+                            {
+                                <td>@ws.CashBack</td>
+                                if (ws.CashBack == 0)
+                                {
+                                    <td></td>
+                                }
+                                else if (ws.IsDistribute)
+                                {
+                                    <td>Transferred to Wallet</td>
+                                }
+                                else
+                                {
+                                    <td class="cashback"><button onclick="schemes.TransferToWallet(@ws.WorkShopId,@ViewBag.SchemeId)" class="btn btn-success">Transfer to wallet</button></td>
+                                }
+                            }
+                            <td><button onclick="schemes.ShowWorkshopLevels('@controller',@ViewBag.SchemeId,@ws.WorkShopId)" class="btn btn-success">Levels</button></td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+        else
+        {
+            <p>No workshops found for this scheme.</p>
+        }
+    </div>
+
+</div>
+
+<div class="modal" id="levelModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Levels</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //$('table.datatable').dataTable();
+        $('table.datatable').dataTable({
+            "aaSorting": [[1, 'desc']],
+            columnDefs: [{ type: 'decimal', 'targets': [1] }],
+        }); 
+    });
+</script>

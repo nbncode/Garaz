@@ -1,0 +1,82 @@
+﻿@using Garaaz.Models
+@model List<clsProductGroup>
+
+@{
+    ViewBag.Title = "Groups";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="kt-subheader-search">
+    <h3 class="kt-subheader-search__title" style="display: inline-block;">
+        Product Groups
+    </h3>
+    <a href="javascript:void(0);" onclick="history.go(-1);" class="btn btn-brand btn-elevate btn-icon-sm" style="float: right;display: inline-block;">
+        <i class="la la-step-backward"></i>
+        Back
+    </a>
+</div>
+
+<header class="ribbon">
+    <h2>&nbsp;</h2>
+</header>
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+            <h2></h2>
+            <!--Begin::Section-->
+            <div class="row">
+                @if (Model.Count == 0)
+                {
+                    @:No sub-groups found.
+                }
+                @foreach (var pg in Model)
+                {
+                    string url;
+                    if (pg.childs.Count() > 0)
+                    {
+                        url = Url.Action("SubGroups", "Home", new { @id = pg.GroupId });
+                    }
+                    else
+                    {
+                        url = Url.Action("Products", "Home", new { @id = pg.GroupId });
+                    }
+
+                    <div class="col-sm-3">
+                        <a href='@url' class="kt-portlet kt-portlet--height-fluid">
+                            <div class="kt-portlet__head kt-portlet__head--noborder">
+                                <div class="kt-portlet__head-label">
+                                    <h3 class="kt-portlet__head-title"></h3>
+                                </div>
+                            </div>
+                            <div class="kt-portlet__body kt-portlet__body--fit-y">
+                                <!--begin::Widget -->
+                                <div class="kt-widget kt-widget--user-profile-4">
+                                    <div class="kt-widget__head">
+                                        <div class="kt-widget__media">
+                                            <img class="kt-widget__img kt-hidden-" src='@Html.Raw(pg.ImagePath)' alt="image" onerror="changeurl(this)">
+                                        </div>
+                                        <div class="kt-widget__content">
+                                            <div class="kt-widget__section">
+                                                <div class="kt-widget__username">
+                                                    @pg.GroupName
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end::Widget -->
+                            </div>
+                            <div class="kt-portlet__head kt-portlet__head--noborder">
+                                <div class="kt-portlet__head-label">
+                                    <h3 class="kt-portlet__head-title"></h3>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+
+                }
+            </div>
+            <!--End::Section-->
+        </div>
+    </div>
+</div>

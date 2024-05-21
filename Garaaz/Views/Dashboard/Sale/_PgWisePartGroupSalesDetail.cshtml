@@ -1,0 +1,81 @@
+﻿@model List<Garaaz.Models.DashboardOverview.Sale.PgWiseCustomerSaleDetail>
+
+@{
+    const string noRecordFound = "Sorry! No record found for selected criteria";
+
+    string errorMsg = ViewBag.ErrorMsg;
+    if (string.IsNullOrWhiteSpace(errorMsg) && Model == null)
+    {
+        errorMsg = "Model is not set";
+    }
+}
+
+@if (string.IsNullOrWhiteSpace(errorMsg) && Model != null)
+{
+    if (Model.Count > 0)
+    {
+        var totalCustomers = Model.Sum(m => m.NumberOfCustomer);
+        var totalAvgSale = Model.Sum(m => m.AverageSale);
+        var totalPrvSale = Model.Sum(m => m.PrevAchieved)??0;
+        var totalContribution = Model.Sum(m => m.Contribution);
+
+        <div class="table-responsive">
+            <table class="table table-bordered w-auto table-center">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Sr No</th>
+                        <th>Customer Type</th>
+                        <th>No of Customers</th>
+                        <th>Avg Sale (3 Months)</th>
+                        <th>% Contribution</th>
+                        <th>@ViewBag.PrvYrHeader</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var pgwCsd in Model)
+                    {
+                        <tr>
+                            <td>@pgwCsd.SlNo</td>
+                            <td>@pgwCsd.CustomerType</td>
+                            <td>@pgwCsd.NumberOfCustomer</td>
+                            <td>@pgwCsd.AverageSale</td>
+                            <td>@pgwCsd.Contribution %</td>
+                            <td>@pgwCsd.PrevAchieved</td>
+                            <td><a href="javascript:void(0);" onclick="dbSale.fetchPgWiseBranchSaleDetail('@pgwCsd.PartGroup','@pgwCsd.CustomerType')">View</a></td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td><b>Total</b></td>
+                        <td><b>@totalCustomers</b></td>
+                        <td><b>@totalAvgSale.ToString("N")</b></td>
+                        <td><b>@totalContribution %</b></td>
+                        <td><b>@totalPrvSale.ToString("N")</b></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p class="kt-font-bold">
+            <i class="kt-font-warning flaticon-warning-sign"></i>
+            &nbsp;@noRecordFound
+        </p>
+    }
+
+}
+else
+{
+    <p class="kt-font-bold">
+        <i class="kt-font-warning flaticon-warning-sign"></i>
+        &nbsp;@errorMsg
+    </p>
+}
+
+
+

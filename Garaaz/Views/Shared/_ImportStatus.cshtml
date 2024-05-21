@@ -1,0 +1,29 @@
+﻿@model List<Garaaz.Models.Import.ImportErrorMessage>
+@{
+    var counter = 1;
+}
+
+<h4>Import Status</h4>
+
+<div class="table-responsive">
+    <table class="table table-bordered w-auto table-center">
+        <thead class="thead-light">
+            <tr>
+                <th>Sr No</th>
+                <th>Unique Id</th>
+                <th>Error Message</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var iem in Model)
+            {
+                <tr>
+                    <td>@counter</td>
+                    <td>@iem.UniqueId</td>
+                    <td>@iem.ErrorMsg</td>
+                </tr>
+                counter++;
+            }
+        </tbody>
+    </table>
+</div>

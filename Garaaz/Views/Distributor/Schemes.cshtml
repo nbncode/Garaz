@@ -1,0 +1,31 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Schemes";
+}
+
+<div class="kt-subheader-search">
+    <h3 class="kt-subheader-search__title">
+        Schemes
+    </h3>
+</div>
+
+<header class="ribbon">
+    <h2>&nbsp;</h2>
+</header>
+<div class="page-content">
+    <div class="container-fluid">
+        @{Html.RenderPartial("alerts");}
+        <input type="hidden" id="PageView" value="SchemesPartialView" />
+        <div id="main-content">
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/js/schmes.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            admin.LoadPartialView('/home/SchemesPartialView');
+        });
+    </script>
+}

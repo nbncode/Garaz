@@ -1,0 +1,375 @@
+@import url("https://fonts.googleapis.com/css?family=Wallpoet&display=swap");
+.scheme-detail {
+    color: #fff;
+    padding: 10px;
+    margin: 0 auto;
+    font-size: 36px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, 0);
+}
+.odo-wrap {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  transform: translate(0, -50%);
+  margin-top:50px;
+}
+
+.odometer {
+  height: 1em;
+  border-radius: 10px;
+  font-size: 8rem;
+  margin: 0 auto 0;
+  display: inline-block;
+  font-family: "Wallpoet", monospace;
+  background-image: -webkit-gradient(radial, 50% 50%, 0, 50% 50%, 100, color-stop(0%, rgba(139, 245, 165, 0.4)), color-stop(100%, #000000));
+  background-image: -webkit-radial-gradient(rgba(139, 245, 165, 0.4), #000000);
+  background-image: -moz-radial-gradient(rgba(139, 245, 165, 0.4), #000000);
+  background-image: -o-radial-gradient(rgba(139, 245, 165, 0.4), #000000);
+  background-image: -ms-radial-gradient(rgba(139, 245, 165, 0.4), #000000);
+  background-image: radial-gradient(rgba(139, 245, 165, 0.4), #000000);
+  background-color: black;
+  color: #8bf5a5;
+}
+
+.digit {
+  display: inline-block;
+  height: 1em;
+  width: 1em;
+  overflow: hidden;
+  border-right: 1px solid rgba(0, 0, 0, 0.5);
+  border-left: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 0 0.1em;
+}
+.digit:first-child {
+  border-left: none;
+}
+
+.digit-container {
+  line-height: 1em;
+}
+.digit-container::before {
+  content: "-";
+  display: block;
+}
+.digit-container > div {
+  display: none;
+}
+
+.oth-wrap {
+  margin-top: 10vh;
+}
+.oth-wrap button {
+  color: #fff;
+}
+
+.start .digit-container {
+  -webkit-animation: slide 3 linear;
+  animation: slide 3 linear;
+}
+.start .digit-container::before {
+  display: none;
+}
+.start .digit-container > div {
+  display: block;
+}
+.start .digit-container.digit-one {
+  -webkit-animation-duration: 2000ms;
+  animation-duration: 2000ms;
+}
+.start .digit-container.digit-two {
+  -webkit-animation-duration: 3000ms;
+  animation-duration: 3000ms;
+}
+.start .digit-container.digit-three {
+  -webkit-animation-duration: 4000ms;
+  animation-duration: 4000ms;
+}
+.start .digit-container.digit-four {
+  -webkit-animation-duration: 5000ms;
+  animation-duration: 5000ms;
+}
+.start .digit-container.digit-five {
+  -webkit-animation-duration: 6000ms;
+  animation-duration: 6000ms;
+}
+.start .digit-container.digit-six {
+  -webkit-animation-duration: 7000ms;
+  animation-duration: 7000ms;
+}
+.start .oth-wrap .message {
+  color: #f0f4c3;
+  font-size: 2rem;
+}
+.start .oth-wrap button {
+    display: none;
+}
+
+.completed {
+  transform: scale(0.75);
+  transition: all 0.5s;
+}
+.completed .oth-wrap .message {
+  transform: scale(1.25);
+  transition: all 1s;
+}
+
+@-webkit-keyframes slide {
+  from {
+    -webkit-transform: translateY(-10em);
+  }
+  to {
+    -webkit-transform: translateY(0);
+  }
+}
+@keyframes slide {
+  from {
+    transform: translateY(-10em);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+@keyframes changeBgColor {
+  0% {
+    background-image: linear-gradient(to left, #8237a3, #d9156f, #ed5824, #c39f00, #53d62f);
+  }
+  100% {
+    background-image: linear-gradient(to left, #3753a3, #b14d9d, #f45b6f, #fa9535, #c7d62f);
+  }
+}
+@-webkit-keyframes heartBeat {
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+  14% {
+    -webkit-transform: scale(1.3);
+    transform: scale(1.3);
+  }
+  28% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+  42% {
+    -webkit-transform: scale(1.3);
+    transform: scale(1.3);
+  }
+  70% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+@keyframes heartBeat {
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+  14% {
+    -webkit-transform: scale(1.3);
+    transform: scale(1.3);
+  }
+  28% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+  42% {
+    -webkit-transform: scale(1.3);
+    transform: scale(1.3);
+  }
+  70% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+.animated {
+  -webkit-animation-duration: 1s;
+  animation-duration: 1s;
+  -webkit-animation-fill-mode: both;
+  animation-fill-mode: both;
+  -webkit-animation-iteration-count: infinite;
+  animation-iteration-count: infinite;
+}
+
+.heartBeat {
+  -webkit-animation-name: heartBeat;
+  animation-name: heartBeat;
+  -webkit-animation-duration: 1.3s;
+  animation-duration: 1.3s;
+  -webkit-animation-timing-function: ease-in-out;
+  animation-timing-function: ease-in-out;
+}
+
+body {
+  background: #0c170f;
+  text-align: center;
+  overflow: hidden;
+}
+
+.button {
+  cursor: pointer;
+  margin-left: 5px;
+  border: 15px solid #000;
+  margin-bottom: 15px;
+  text-shadow: 0 -2px 0 black, 0 1px 1px #3e714d;
+  box-sizing: border-box;
+  font-size: 2em;
+  font-family: Helvetica, Arial, Sans-Serif;
+  text-decoration: none;
+  font-weight: bold;
+  color: #080e0a;
+  width: 12rem;
+  height: 12rem;
+  border-radius: 50%;
+  display: inline-block;
+  cursor: pointer;
+  background: linear-gradient(to bottom, #1b7a36 0%, #266037 26%, #1a2f20 100%);
+  outline: none;
+  transition: all 0.06s ease-out;
+  position: relative;
+}
+.button:visited {
+  color: #080e0a;
+}
+
+.button:hover {
+  background: linear-gradient(to bottom, #229843 0%, #307a45 26%, #274630 100%);
+}
+
+.button:active {
+  top: 6px;
+}
+.button:active:before {
+  top: 0;
+  box-shadow: 0 3px 3px rgba(0, 0, 0, 0.7), 0 3px 9px rgba(0, 0, 0, 0.2);
+}
+
+.completed {
+  transform: scale(1) translate(0, -50%) !important;
+}
+
+@media only screen and (max-width: 4400px) {
+  .completed {
+    transform: scale(1);
+    transition: all 0.5s;
+  }
+}
+@media only screen and (max-width: 4000px) {
+  .completed {
+    transform: scale(1);
+    transition: all 0.5s;
+  }
+}
+@media only screen and (max-width: 3600px) {
+  .completed {
+    transform: scale(1);
+    transition: all 0.5s;
+  }
+}
+@media only screen and (max-width: 3200px) {
+  .completed {
+    transform: scale(1);
+    transition: all 0.5s;
+  }
+}
+@media only screen and (max-width: 2800px) {
+  .completed {
+    transform: scale(1);
+    transition: all 0.5s;
+  }
+}
+@media only screen and (max-width: 2400px) {
+  .completed {
+    transform: scale(1);
+    transition: all 0.5s;
+  }
+}
+@media only screen and (max-width: 2000px) {
+  .completed {
+    transform: scale(1);
+    transition: all 0.5s;
+  }
+}
+@media only screen and (max-width: 1800px) {
+  .completed {
+    transform: scale(1);
+    transition: all 0.5s;
+  }
+}
+@media only screen and (max-width: 1600px) {
+  .completed {
+    transform: scale(1);
+    transition: all 0.5s;
+  }
+}
+@media only screen and (max-width: 1366px) {
+  .completed {
+    transform: scale(1);
+    transition: all 0.5s;
+  }
+}
+@media only screen and (max-width: 1024px) {
+  .completed {
+    transform: scale(1);
+    transition: all 0.5s;
+  }
+}
+.odometer {
+  font-size: 10vw;
+}
+
+.oth-wrap button {
+  font-size: 4vw;
+  width: 20vw;
+  height: 20vw;
+}
+
+.start .oth-wrap .message {
+  font-size: 8vh;
+}
+
+/*# sourceMappingURL=one.css.map */
+
+.winner-list {
+    background: #fff;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    border-radius: 4px;
+    position: absolute;
+    bottom: 10px;
+    width: calc(100% - 20px);
+    box-sizing: border-box;
+    font-weight: bold;
+    flex-wrap: wrap;
+}
+    .winner-list span {
+        margin-right: 20px;
+        font-weight:normal;
+    }
+    .winner-list label {
+        padding: 5px;
+    }
+
+.back-button {
+    background: linear-gradient(to bottom, #1b7a36 0%, #266037 26%, #1a2f20 100%);
+    color: #fff;
+    border-radius: 4px;
+    border: 5px solid #000;
+    padding: 10px;
+    max-width: 50px;
+    display: block;
+    text-decoration: none;
+}
+
+.hide{
+   display:none;
+}
+
+.whiteText {
+    color: white;
+    padding-top: 50px;
+}

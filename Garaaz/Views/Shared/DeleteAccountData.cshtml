@@ -1,0 +1,70 @@
+﻿@using Garaaz.Models
+@model Garaaz.Models.DailySale
+
+@{
+    ViewBag.Title = "Delete Accounts Data";
+    string controller = ViewBag.Controller.ToString();
+}
+<div class="kt-subheader-search">
+    <h3 class="kt-subheader-search__title">
+        @ViewBag.Title
+    </h3>
+</div>
+<header class="ribbon">
+    <h2>&nbsp;</h2>
+</header>
+<div class="page-content">
+    <div class="container-fluid">
+        @{Html.RenderPartial("alerts");}
+    </div>
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="kt-portlet">
+                    <div class="kt-portlet__head">
+                        <div class="kt-portlet__head-label">
+                            <h3 class="kt-portlet__head-title">
+                                @ViewBag.Title
+                            </h3>
+                        </div>
+                    </div>
+
+                    @using (Html.BeginForm("DeleteAccountData", controller, FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        <div class="kt-form">
+                            <div class="kt-portlet__body">
+                                @{
+                                    if (controller == "Admin")
+                                    {
+                                        <div class="row">
+                                            <div class="col-sm-3">
+                                                <div class="form-group">
+                                                    <label>Select Distributor:<em>*</em></label>
+                                                    @Html.DropDownListFor(model => model.DistributorId, Model.Distributors, new { @class = "form-control", Id = "ddldistributor" })
+                                                    @Html.ValidationMessageFor(model => model.DistributorId, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        @Html.HiddenFor(model => model.DistributorId)
+                                    }
+                                }
+                            </div>
+                        </div>
+
+                        <div class="kt-portlet__foot">
+                            <div class="kt-form__actions">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="reset" class="btn btn-secondary">Cancel</button>
+                            </div>
+                        </div>
+                    }
+
+                </div>
+            </div>
+        </div>        
+    </div>
+</div>
+

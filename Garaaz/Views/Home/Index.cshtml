@@ -1,0 +1,106 @@
+﻿@using Garaaz.Models
+@{ 
+    Layout = "~/Views/Shared/_LayoutFront.cshtml";
+    var general = new General();
+}
+
+<div class="preloader"></div>
+<div class="page-wrapper">
+    <!-- space for preloader -->
+    <header class="site-header header-one">
+        <div class="top-header">
+            <div class="container clearfix">
+                <div class="logo-box float-left">
+                    <a href="index.html">
+                        <img src="~/Content/img/logo.png" alt="">
+                    </a>
+                </div><!-- /.logo-box -->
+                <div class="float-right right-contact-block">
+                    <div class="single-right-contact">
+                        <div class="icon-block">
+                            <i class="fa fa-location-arrow"></i><!-- /.Carivon-icon-placeholder -->
+                        </div><!-- /.icon-block -->
+                        <div class="text-block">
+                            <p><span>E 28 Gayatri Plaza</span> Transport Nagar, Jaipur IND</p>
+                            <a href="/Privacy" style="color: #dc3545; text-decoration:underline;">Privacy policy</a>
+                        </div><!-- /.text-block -->
+                    </div><!-- /.single-right-contact -->
+                    <div class="single-right-contact">
+                        <div class="icon-block">
+                            <i class="fa fa-phone"></i><!-- /.Carivon-icon-placeholder -->
+                        </div><!-- /.icon-block -->
+                        <div class="text-block">
+                            <p><span>99292 19999</span> Phone line</p>
+                        </div><!-- /.text-block -->
+                    </div><!-- /.single-right-contact -->
+
+                    <div class="single-right-contact">
+                        <a href="Account/Login" class="header-btn">Login</a><!-- /.header-btn -->
+                    </div>
+                    <!-- /.single-right-contact -->
+                </div><!-- /.float-right -->
+            </div><!-- /.container -->
+        </div><!-- /.top-header -->
+
+    </header><!-- /.site-header -->
+
+    <div id="minimal-bootstrap-carousel" class="carousel slide carousel-fade slider-content-style-one slider-home-one">
+        <ol class="carousel-indicators">
+            <li data-target="#minimal-bootstrap-carousel" data-slide-to="0" class="active"></li>
+            <li data-target="#minimal-bootstrap-carousel" data-slide-to="1"></li>
+        </ol>
+
+        <!-- Wrapper for slides -->
+        <div class="carousel-inner">
+            <div class="carousel-item active slide-1" style="background-image: url(@general.CheckImageUrl("/Content/img/bg/1.jpg"));background-position: center left;">
+                <div class="carousel-caption">
+                    <div class="container">
+                        <div class="box valign-middle">
+                            <div class="content text-center">
+                                <h2 data-animation="animated fadeInUp " class="animDe-2">Garaaz Customer App</h2>
+                                <a href="#" data-animation="animated fadeInUp " class="bg1 text-white banner-btn animDe-4">Workshop Discovery, Service Reminders & Best Deals</a>
+                                <p> Download our App now</p>
+                                <div style="margin: 50px -16px 59px;">
+                                    <a href="https://play.google.com/store/apps/details?id=com.garaaz">
+                                        <img src="/Content/img/google-play@2x.png" alt="google-play@2x" style="max-width: 200px;">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="carousel-item slide-2" style="background-image: url(@general.CheckImageUrl("/Content/img/bg/1.jpg"));background-position: top center;">
+                <div class="carousel-caption">
+                    <div class="container">
+                        <div class="box valign-middle">
+                            <div class="content text-center">
+
+                                <h2 data-animation="animated fadeInUp " class="animDe-2">Workshop Management App</h2>
+                                <a href="#" data-animation="animated fadeInUp " class="animDe-4 bg1 text-white banner-btn">Order Management, Car Service Requests & Deals</a>
+                                <p> Download our App now</p>
+                                <div style="margin: 50px -16px 59px;">
+                                    <a href="https://play.google.com/store/apps/details?id=com.garaaz">
+                                        <img src="/Content/img/google-play@2x.png" alt="google-play@2x" style="max-width: 200px;">
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Controls -->
+        <a class="carousel-control-prev carousel-control-one-prev" href="#minimal-bootstrap-carousel" role="button" data-slide="prev">
+            <i class="fa fa-angle-left"></i>
+            <span class="sr-only">Previous</span>
+        </a>
+        <a class="carousel-control-next carousel-control-one-next" href="#minimal-bootstrap-carousel" role="button" data-slide="next">
+            <i class="fa fa-angle-right"></i>
+            <span class="sr-only">Next</span>
+        </a>
+    </div>
+
+
+
+</div><!-- /.page-wrapper -->

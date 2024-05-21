@@ -1,0 +1,135 @@
+﻿@model Garaaz.Models.UserDetailModel
+@{
+
+    ViewBag.Title = "NewDistributorOverview";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var urlReferrer = Request.UrlReferrer;
+}
+
+<div class="kt-subheader-search">
+    <h3 class="kt-subheader-search__title">
+        New Distributor Overview
+    </h3>
+</div>
+
+<header class="ribbon">
+    <h2>&nbsp;</h2>
+</header>
+
+<div class="page-content">
+
+    <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+        @{Html.RenderPartial("alerts");}
+        <div id="main-content">
+        </div>
+        <!--Begin::App-->
+        <div class="kt-grid kt-grid--desktop kt-grid--ver kt-grid--ver-desktop kt-app">
+
+            <!--Begin:: App Aside-->
+            <div class="kt-grid__item kt-app__toggle kt-app__aside" id="kt_user_profile_aside" style="opacity: 1;">
+                <!--Begin::Portlet-->
+                <div class="kt-portlet kt-portlet--height-fluid-">
+                    <div class="kt-portlet__head kt-portlet__head--noborder">
+                        <div class="kt-portlet__head-label">
+                            <h3 class="kt-portlet__head-title"></h3>
+                        </div>
+
+                    </div>
+                    <div class="kt-portlet__body">
+                        <!--begin::Widget -->
+                        <div class="kt-widget kt-widget--user-profile-2">
+                            <div class="kt-widget__head">
+                                <div class="kt-widget__media">
+                                    <div class="kt-widget__pic kt-widget__pic--danger kt-font-danger kt-font-boldest kt-font-light kt-hidden">
+                                    </div>
+                                </div>
+                                <div class="kt-widget__info">
+                                    <a href="javascript:void(0);" class="kt-widget__username">
+                                        @Model.DistributorName
+                                    </a>
+                                    <span class="kt-widget__desc">
+                                        Distributor
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="kt-widget__footer">
+                                <a class="btn btn-label-success btn-lg btn-upper confirm" style="@(Model.AspNetUser.EmailConfirmed ? "display:none": "")" onclick="admin.ApproveNewUser(this,'@Model.UserId',true)" href="javascript:void(0);">
+                                    Approve Distributor
+                                </a>
+                                <a class="btn btn-label-success btn-lg btn-upper not-confirm" style="@(!Model.AspNetUser.EmailConfirmed ? "display:none": "")" onclick="admin.ApproveNewUser(this,'@Model.UserId',false)" href="javascript:void(0);">
+                                    UnApprove Distributor
+                                </a>
+                            </div>
+                        </div>
+                        <!--end::Widget -->
+                    </div>
+                </div>
+            </div>
+            <!--End:: App Aside-->
+            <!--Begin:: App Content-->
+            <div class="kt-grid__item kt-grid__item--fluid kt-app__content">
+                <div class="row">
+                    <div class="col-xl-6">
+                        <!--begin:: Widgets/Finance Summary-->
+                        <div class="kt-portlet kt-portlet--height-fluid">
+                            <div class="kt-portlet__head">
+                                <div class="kt-portlet__head-label">
+                                    <h3 class="kt-portlet__head-title">
+                                        Distributor Details
+                                    </h3>                                    
+                                </div>
+                                @if (urlReferrer!=null && urlReferrer.AbsolutePath.Contains("Notifications"))
+                                {
+                                    <div class="kt-portlet__head-toolbar">
+                                        <div class="kt-portlet__head-wrapper">
+                                            <div class="kt-portlet__head-actions">
+                                                <a href="@Request.UrlReferrer" class="btn btn-brand btn-elevate btn-icon-sm">
+                                                    <i class="la la-step-backward"></i>
+                                                    Back
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                            <div class="kt-portlet__body">
+                                <div class="kt-widget12">
+                                    <div class="kt-widget12__content">
+                                        <div class="kt-widget12__item">
+                                            <div class="kt-widget12__info">
+                                                <span class="kt-widget12__desc">Distributor Name</span>
+                                                <span class="kt-widget12__value">@Model.DistributorName</span>
+                                            </div>
+
+                                            <div class="kt-widget12__info">
+                                                <span class="kt-widget12__desc">Mobile Number</span>
+                                                <span class="kt-widget12__value">@Model.AspNetUser.UserName</span>
+                                            </div>
+                                        </div>
+                                        <div class="kt-widget12__item">
+                                            <div class="kt-widget12__info">
+                                                <span class="kt-widget12__desc">Address</span>
+                                                <span class="kt-widget12__value">@(!string.IsNullOrEmpty(Model.Address) ? Model.Address : "-" )</span>
+                                            </div>
+
+                                            <div class="kt-widget12__info">
+                                                <span class="kt-widget12__desc">Full Name</span>
+                                                <span class="kt-widget12__value">@Model.FirstName @Model.LastName</span>
+                                            </div>
+
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end:: Widgets/Finance Summary-->
+                    </div>
+                </div>
+            </div>
+            <!--End:: App Content-->
+        </div>
+        <!--End::App-->
+    </div>
+</div>

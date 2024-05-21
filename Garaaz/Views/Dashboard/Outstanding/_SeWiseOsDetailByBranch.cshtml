@@ -1,0 +1,102 @@
+﻿@model List<Garaaz.Models.DashboardOverview.Outstanding.OsCustDetail>
+@{
+    const string noRecordFound = "Sorry! No record found for selected criteria";
+
+    string errorMsg = ViewBag.ErrorMsg;
+    if (string.IsNullOrWhiteSpace(errorMsg) && Model == null)
+    {
+        errorMsg = "Model is not set";
+    }
+}
+
+@if (string.IsNullOrWhiteSpace(errorMsg) && Model != null)
+{
+    if (Model.Count > 0)
+    {
+        var totalCustomer = Model.Sum(m => m.NoOfCustomers);
+        var totalOsDays = Model.Sum(m => m.OutstandingDays);
+        var totalOs = Model.Sum(m => m.Outstanding);
+        var totalCreditLimit = Model.Sum(m => m.CreditLimit);
+        var totalCp = Model.Sum(m => m.CriticalPayment);
+        var total0To14 = Model.Sum(m => m.ZeroToFourteenDays) ?? 0;
+        var total14To28 = Model.Sum(m => m.FourteenToTwentyEightDays) ?? 0;
+        var total28To50 = Model.Sum(m => m.TwentyEightToFiftyDays) ?? 0;
+        var total50To70 = Model.Sum(m => m.FiftyToSeventyDays) ?? 0;
+        var totalMore70 = Model.Sum(m => m.MoreThanSeventyDays) ?? 0;
+
+        <div class="table-responsive">
+            <table class="table table-bordered w-auto table-center">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Sr No</th>
+                        <th>Customer Type</th>
+                        <th>No of Customers</th>
+                        <th>Outstanding Days</th>
+                        <th>Outstanding</th>
+                        <th>Credit Limit</th>
+                        <th>Critical payment</th>
+                        <th>0-14 Days</th>
+                        <th>14-28 Days</th>
+                        <th>28-50 Days</th>
+                        <th>50-70 days</th>
+                        <th>> 70 days</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var osCd in Model)
+                    {
+                        <tr>
+                            <td>@osCd.SlNo</td>
+                            <td>@osCd.CustomerType</td>
+                            <td>@osCd.NoOfCustomers</td>
+                            <td>@osCd.OutstandingDays</td>
+                            <td>@osCd.Outstanding</td>
+                            <td>@osCd.CreditLimit</td>
+                            <td>@osCd.CriticalPayment</td>
+                            <td>@osCd.ZeroToFourteenDays</td>
+                            <td>@osCd.FourteenToTwentyEightDays</td>
+                            <td>@osCd.TwentyEightToFiftyDays</td>
+                            <td>@osCd.FiftyToSeventyDays</td>
+                            <td>@osCd.MoreThanSeventyDays</td>
+                            <td><a href="javascript:void(0);" onclick="dbOs.fetchSeWiseCustomerOsDetail('@osCd.BranchCode','@osCd.CustomerType')">View</a></td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td><b>Grand Total</b></td>
+                        <td><b>@totalCustomer</b></td>
+                        <td><b>@totalOsDays</b></td>
+                        <td><b>@totalOs.ToString("N")</b></td>
+                        <td><b>@totalCreditLimit.ToString("N")</b></td>
+                        <td><b>@totalCp.ToString("N")</b></td>
+                        <td><b>@total0To14.ToString("N")</b></td>
+                        <td><b>@total14To28.ToString("N")</b></td>
+                        <td><b>@total28To50.ToString("N")</b></td>
+                        <td><b>@total50To70.ToString("N")</b></td>
+                        <td><b>@totalMore70.ToString("N")</b></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p class="kt-font-bold">
+            <i class="kt-font-warning flaticon-warning-sign"></i>
+            &nbsp;@noRecordFound
+        </p>
+    }
+
+}
+else
+{
+    <p class="kt-font-bold">
+        <i class="kt-font-warning flaticon-warning-sign"></i>
+        &nbsp;@errorMsg
+    </p>
+}
+

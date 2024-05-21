@@ -1,0 +1,136 @@
+﻿@model Garaaz.Models.StockColorModel
+@{
+    ViewBag.Title = "Stock Color Settings";
+}
+@section AddToHead{
+    <link href="~/vendor/spectrum/spectrum.css" rel="stylesheet" />
+}
+
+<div class="kt-subheader-search">
+    <h3 class="kt-subheader-search__title">
+        Stock Color Settings
+    </h3>
+</div>
+
+<header class="ribbon">
+    <h2>&nbsp;</h2>
+</header>
+<div class="page-content">
+    <div class="container-fluid">
+        @{Html.RenderPartial("alerts");}
+        <div id="main-content">
+            <div class="kt-portlet kt-portlet--mobile">
+                <div class="kt-portlet__head kt-portlet__head--lg">
+                    <div class="kt-portlet__head-label">
+                        <span class="kt-portlet__head-icon">
+                            <i class="kt-font-brand flaticon2-line-chart"></i>
+                        </span>
+                        <h3 class="kt-portlet__head-title">
+                            Set stock color setting
+                        </h3>
+                    </div>
+                </div>
+                <div class="kt-portlet__body">
+                    <table width="400">
+                        <tbody>
+                            <tr>
+                                <td width="25%">Low stock:</td>
+                                <td width="20%" class="padRight10"><input id="lowStockQty" type="number" min="0" class="form-control" value="@Model.LowStockQty"></td>
+                                <td width="15%">
+                                    <input type="hidden" id="lowStockColor" value="@Model.LowStockColor" />
+                                    <input id="lowStockColorEle" type="text" class="padRight10" />
+                                </td>
+                                <td>
+                                    <input id="lowStockTag" type="text" value="@Model.LowStockTag" class="form-control" autocomplete="off" placeholder="Low stock tag" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="25%">Medium stock:</td>
+                                <td width="20%" class="padRight10"><input id="mediumStockQty" type="number" min="0" class="form-control" value="@Model.MediumStockQty"></td>
+                                <td width="15%">
+                                    <input type="hidden" id="mediumStockColor" value="@Model.MediumStockColor" />
+                                    <input id="mediumStockColorEle" type="text" class="padRight10" />
+                                </td>
+                                <td>
+                                    <input id="mediumStockTag" type="text" value="@Model.MediumStockTag" class="form-control" autocomplete="off" placeholder="Medium stock tag" />
+                                </td>
+                            </tr>
+                            <tr>
+                                <td width="25%">High stock:</td>
+                                <td width="20%" class="padRight10"><input id="highStockQty" type="number" min="0" class="form-control" disabled="disabled"></td>
+                                <td width="15%">
+                                    <input type="hidden" id="highStockColor" value="@Model.HighStockColor" />
+                                    <input id="highStockColorEle" type="text" class="padRight10" />
+                                </td>
+                                <td>
+                                    <input id="highStockTag" type="text" value="@Model.HighStockTag" class="form-control" autocomplete="off" placeholder="High stock tag" />
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="kt-portlet__foot">
+                    <div class="form-group">
+                        <button type="submit" onclick="admin.SubmitStockColor()" class="btn btn-primary">Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/vendor/spectrum/spectrum.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            InitColorPicker();
+            SetColorPicker();
+        });
+
+        function InitColorPicker() {
+            $("#lowStockColorEle").spectrum({
+                allowEmpty: true,
+                showButtons: false,
+                preferredFormat: "hex",
+                hide: function (c) {
+                    $("#lowStockColor").val(c.toHexString());
+                }
+            });
+            $("#mediumStockColorEle").spectrum({
+                allowEmpty: true,
+                showButtons: false,
+                preferredFormat: "hex",
+                hide: function (c) {
+                    $("#mediumStockColor").val(c.toHexString());
+                }
+            });
+            $("#highStockColorEle").spectrum({
+                allowEmpty: true,
+                showButtons: false,
+                preferredFormat: "hex",
+                hide: function (c) {
+                    $("#highStockColor").val(c.toHexString());
+                }
+            });
+        }
+
+        function SetColorPicker() {
+            var lowStockColor = $('#lowStockColor').val();
+            if (lowStockColor) {
+                $("#lowStockColorEle").spectrum("set", lowStockColor);
+            }
+
+            var mediumStockColor = $('#mediumStockColor').val();
+            if (mediumStockColor) {
+                $("#mediumStockColorEle").spectrum("set", mediumStockColor);
+            }
+
+            var highStockColor = $('#highStockColor').val();
+            if (highStockColor) {
+                $("#highStockColorEle").spectrum("set", highStockColor);
+            }
+        }
+    </script>
+}
+
+

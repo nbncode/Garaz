@@ -1,0 +1,58 @@
+﻿@model Garaaz.Models.DashboardOverview.Outstanding.OsCustomer
+@{
+    string errorMsg = ViewBag.ErrorMsg;
+    if (string.IsNullOrWhiteSpace(errorMsg) && Model == null)
+    {
+        errorMsg = "Model is not set";
+    }
+}
+
+@if (string.IsNullOrWhiteSpace(errorMsg) && Model != null)
+{
+    <div class="table-responsive">
+        <table class="table table-bordered w-auto table-center">
+            <thead class="thead-light">
+                <tr>
+                    <th>Party Code</th>
+                    <th>Party Name</th>
+                    <th>Customer Type</th>
+                    <th>Sales Exec/Branch Code</th>
+                    <th>Pending Bills</th>
+                    <th>< 7 days</th>
+                    <th>7 to 14 days</th>
+                    <th>14 to 21 days</th>
+                    <th>21 to 28 days</th>
+                    <th>28 to 35 days</th>
+                    <th>35 to 50 days</th>
+                    <th>50 to 70 days</th>
+                    <th>> 70 days</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>@Model.PartyCode</td>
+                    <td>@Model.PartyName</td>
+                    <td>@Model.CustomerType</td>
+                    <td>@Model.SalesExecutiveOrBranchCode</td>
+                    <td>@Model.PendingBills</td>
+                    <td>@Model.LessThan7Days</td>
+                    <td>@Model.C7To14Days</td>
+                    <td>@Model.C14To21Days</td>
+                    <td>@Model.C21To28Days</td>
+                    <td>@Model.C28To35Days</td>
+                    <td>@Model.C35To50Days</td>
+                    <td>@Model.C50To70Days</td>
+                    <td>@Model.MoreThan70Days</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+}
+else
+{
+    <p class="kt-font-bold">
+        <i class="kt-font-warning flaticon-warning-sign"></i>
+        &nbsp;@errorMsg
+    </p>
+}
+

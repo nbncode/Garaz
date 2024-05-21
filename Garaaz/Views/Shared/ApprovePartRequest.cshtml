@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Approve Part Request";
+}
+
+<div class="kt-subheader-search">
+    <h3 class="kt-subheader-search__title">
+        @ViewBag.Title
+    </h3>
+</div>
+
+<header class="ribbon">
+    <h2>&nbsp;</h2>
+</header>
+<div class="page-content">
+    <div class="container-fluid">
+        @{Html.RenderPartial("alerts");}
+        <input type="hidden" id="PageView" value="ApprovePartRequestPartialView" />
+        <div id="main-content">
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    @Scripts.Render("~/bundles/approveRequest-js")
+    <script type="text/javascript">
+        appReq.init();
+    </script>
+}
+

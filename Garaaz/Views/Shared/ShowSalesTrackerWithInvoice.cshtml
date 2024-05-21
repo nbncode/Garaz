@@ -1,0 +1,176 @@
+﻿@{
+    ViewBag.Title = "Show Sales Tracker With Invoice";
+}
+
+<div class="kt-subheader-search ">
+    <h3 class="kt-subheader-search__title">
+        Sales Tracker With Invoice
+    </h3>
+</div>
+
+<header class="ribbon">
+    <h2>&nbsp;</h2>
+</header>
+<div class="page-content">
+    <div class="container-fluid">
+        @{Html.RenderPartial("alerts");}
+        <input type="hidden" id="distributorId" value="@ViewBag.distributorId" />
+        <input type="hidden" id="PageView" value="/@ViewBag.Controller/ShowSalesTrackerWithInvoicePartialView?distributorId=@ViewBag.distributorId" />
+        <form class="kt-form">
+            <div class="kt-grid kt-grid--desktop kt-grid--ver-desktop">
+                <div class="kt-grid__item kt-grid__item--middle">
+                    <div class="row kt-margin-r-10">
+                        <div class="col-lg-3">
+                            <div class="kt-input-icon kt-input-icon--pill kt-input-icon--right">
+                                <input id="FromAmt" type="text" class="form-control form-control-pill" placeholder="From Amount">
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="kt-input-icon kt-input-icon--pill kt-input-icon--right">
+                                <input id="ToAmt" type="text" class="form-control form-control-pill" placeholder="To Amount">
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="kt-input-icon kt-input-icon--pill kt-input-icon--right">
+                                <input id="FromDate" type="text" class="form-control form-control-pill datepicker-txt" placeholder="From Date" autocomplete="off">
+                                <span class="kt-input-icon__icon kt-input-icon__icon--right"><span><i class="la la-calendar-check-o"></i></span></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="kt-input-icon kt-input-icon--pill kt-input-icon--right">
+                                <input id="ToDate" type="text" class="form-control form-control-pill datepicker-txt" placeholder="To Date" autocomplete="off">
+                                <span class="kt-input-icon__icon kt-input-icon__icon--right"><span><i class="la la-calendar-check-o"></i></span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row kt-margin-t-10">
+                        <div class="col-lg-3">
+                            <div class="kt-input-icon kt-input-icon--pill kt-input-icon--right">
+                                <select id="workshopId" class="form-control form-control-pill">
+                                    <option value="0">--select user--</option>
+                                    @{
+                                        foreach (var item in ViewBag.workshopList)
+                                        {
+                                            <option value="@item.WorkShopId">@item.WorkShopName</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="kt-grid__item kt-grid__item--middle">
+                                <button id="btnShow" type="button" class="btn btn-success btn-pill btn-upper btn-bold btn-font-sm kt-subheader-search__submit-btn" onclick="sales.BindDataTable()">Show</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <br />
+        <script type="text/javascript" src="https://cdn.datatables.net/responsive/2.2.3/js/dataTables.responsive.min.js"></script>
+
+        <div class="kt-form">
+            <div class="kt-portlet__body">
+                <div class="row">
+                    @*<div class="col-sm-2">
+                        <div class="form-group">
+                        <b>
+                        <label>Total RetailSelling</label> :<br />
+                        @Math.Round(Model.Sum(i => Convert.ToDecimal(i.RetailSelling)), 0)
+                        </b>
+                        </div>
+                        </div>
+                        <div class="col-sm-2">
+                        <div class="form-group">
+                        <b>
+                        <label>Total ReturnSelling</label> :<br />
+
+                        @Math.Round(Model.Sum(i => Convert.ToDecimal(i.ReturnSelling)), 0)
+                        </b>
+                        </div>
+                        </div>
+                        <div class="col-sm-2">
+                        <div class="form-group">
+                        <b>
+                        <label>Total NetRetailSelling</label> :<br />
+                        @Math.Round(Model.Sum(i => Convert.ToDecimal(i.NetRetailSelling)), 0)
+                        </b>
+                        </div>
+                        </div>
+                        <div class="col-sm-2">
+                        <div class="form-group">
+                        <b>
+                        <label>Total DiscountAmount</label> :<br />
+                        @Math.Round(Model.Sum(i => !string.IsNullOrEmpty(i.DiscountAmount) ? Convert.ToDecimal(i.DiscountAmount) : 0), 0)
+                        </b>
+
+                        </div>
+                        </div>*@
+                </div>
+            </div>
+        </div>
+        <div class="kt-portlet kt-portlet--mobile">
+            <div class="kt-portlet__head kt-portlet__head--lg">
+                <div class="kt-portlet__head-label">
+                    <span class="kt-portlet__head-icon">
+                        <i class="kt-font-brand flaticon2-line-chart"></i>
+                    </span>
+                    <h3 class="kt-portlet__head-title">
+                        Sales List
+                    </h3>
+                </div>
+
+            </div>
+            <div class="kt-portlet__body">
+
+                <table class="table table-striped- table-bordered table-hover table-checkable datatable" id="kt_table_1">
+                    <thead>
+                        <tr>
+                            @*<th>DailySalesTrackerId</th>*@
+                            <th>WorkshopName</th>
+                            <th>PartNum</th>
+                            <th>PartGroup</th>
+                            <th>RetailSelling</th>
+                            <th>NetRetailSelling</th>
+                            <th>DiscountAmount</th>
+                            <th>CreatedDate</th>
+                            <th>LocCode</th>
+                            <th>LocDesc</th>
+                            <th>ReturnQty</th>
+                            <th>NetRetailQty</th>
+                            <th>ReturnSelling</th>
+                            <th>PartDesc</th>
+                            <th>RootPartNum</th>
+                            <th>PartCategory</th>
+                            <th>ConsPartyCode</th>
+                            <th>Region</th>
+                            <th>DealerCode</th>
+                            <th>ConsPartyTypeDesc</th>
+                            <th>DocumentNum</th>
+                            <th>Remarks</th>
+                        </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/js/chart.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            common.bindDatepicker();
+        });
+    </script>
+    <script src="~/js/dailySales.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            //sales.init();
+            sales.BindDataTable();
+        });
+    </script>
+}
+

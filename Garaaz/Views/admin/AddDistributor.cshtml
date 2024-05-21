@@ -1,0 +1,543 @@
+﻿@model Garaaz.Models.clsDistributor
+@using Garaaz.Models;
+@{
+    var AllBrands = (List<clsBrand>)ViewBag.AllBrands;
+    /**/
+    ClsSchema clsSchema = new ClsSchema();
+    var StateList = clsSchema.GetStateList();
+    ViewBag.Title = "AddDistributor";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    }
+    <div class="kt-subheader-search">
+        <h3 class="kt-subheader-search__title">
+            Distributor Master
+        </h3>
+    </div>
+
+    <header class="ribbon">
+        <h2>&nbsp;</h2>
+    </header>
+
+    <div class="page-content">
+        @{Html.RenderPartial("alerts");}
+
+        <div class="row">
+            <div class="col-md-12">
+                <!--begin::Portlet-->
+                <div class="kt-portlet">
+
+
+                    @using (Html.BeginForm())
+                    {
+                        <div class="kt-portlet__head">
+                            <div class="kt-portlet__head-label">
+                                @if (Model != null && !string.IsNullOrEmpty(Model.UserId))
+                                {
+                                    <h3 class="kt-portlet__head-title">
+                                       Edit Distributor 
+                                    </h3>
+                                }
+                                else
+                                {
+                                    <h3 class="kt-portlet__head-title">
+                                        Add Distributor
+                                    </h3>
+                                }
+                            </div>
+                            <div class="kt-portlet__head-toolbar">
+                                <div class="kt-portlet__head-wrapper">
+                                    <div class="kt-portlet__head-actions">
+                                        <a href="/admin/Distributor" class="btn btn-brand btn-elevate btn-icon-sm">
+                                            <i class="la la-step-backward"></i>
+                                            Back
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="kt-form">
+                            <div class="kt-portlet__body">
+                                @Html.HiddenFor(model => model.BrandIds)
+                                @Html.HiddenFor(model => model.State)
+                                @Html.HiddenFor(model => model.Latitude)
+                                @Html.HiddenFor(model => model.Longitude)
+                                @if (Model != null && !string.IsNullOrEmpty(Model.UserId))
+                                {
+                                    @Html.HiddenFor(model => model.UserId)
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <h2>Contact Information</h2>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>First Name <em>*</em></label>
+                                                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control required" } })
+                                                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Last Name <em>*</em></label>
+                                                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control required" } })
+                                                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        @*<div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Gender</label>
+                                                    <input type="hidden" id="iGender" value="@Model.Gender" />
+                                                    @Html.DropDownList("Gender", new List<SelectListItem>
+                {
+                    new SelectListItem{ Text="Male", Value="Male"},
+                    new SelectListItem{ Text="Female", Value="Female"}
+                }, "--- Select ---", new { @class = "form-control" })
+                                                </div>
+                                            </div>*@
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <h2>Distributor Information</h2>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Distributor Code <em>*</em></label>
+                                                @Html.EditorFor(model => model.EmployeeCode, new { htmlAttributes = new { @class = "form-control required" } })
+                                                @Html.ValidationMessageFor(model => model.EmployeeCode, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Name <em>*</em></label>
+                                                @Html.EditorFor(model => model.DistributorName, new { htmlAttributes = new { @class = "form-control required" } })
+                                                @Html.ValidationMessageFor(model => model.DistributorName, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Address <em>*</em></label>
+                                                @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control required" } })
+                                                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>City</label>
+                                                @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group State">
+                                                <label>State</label>
+                                                @Html.DropDownListFor(model => model.State, StateList, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Pincode</label>
+                                                @Html.EditorFor(model => model.Pincode, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.Pincode, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Landline Number</label>
+                                                @Html.EditorFor(model => model.LandlineNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.LandlineNumber, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <h2>Business Information</h2>
+                                        </div>
+                                    </div>
+                                   
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Company<em>*</em></label>
+                                                @Html.EditorFor(model => model.Company, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.Company, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Brand</label>
+                                                <select class="form-control multiselect Distibutor-Brand" multiple>
+                                                    @{
+                                                        RegisterBrandRequest registerBrandRequest = new RegisterBrandRequest();
+                                                        var userId = !string.IsNullOrEmpty(Model.UserId) ? Model.UserId : "";
+                                                        var selectedBrand = registerBrandRequest.GetDistributorBrand(Constants.Distributor, userId);
+                                                        if (AllBrands != null)
+                                                        {
+                                                            foreach (var brand in AllBrands)
+                                                            {
+                                                                var IsExists = selectedBrand.Where(x => x.BrandId == brand.BrandId).FirstOrDefault();
+                                                                if (IsExists != null)
+                                                                {
+                                                                    <option value="@brand.BrandId" selected>@brand.Name</option>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <option value="@brand.BrandId">@brand.Name</option>
+                                                                }
+
+                                                            }
+                                                        }
+                                                    }
+                                                </select>
+
+                                            </div>
+                                        </div>
+                                       
+                                    </div>
+
+                                   
+
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <h2>Bank Information</h2>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Bank Name</label>
+                                                @Html.EditorFor(model => model.BankName, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.BankName, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>IFSC Code</label>
+                                                @Html.EditorFor(model => model.IFSCCode, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.IFSCCode, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Account Number</label>
+                                                @Html.EditorFor(model => model.AccNo, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.AccNo, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>UPI ID</label>
+                                                @Html.EditorFor(model => model.UPIID, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.UPIID, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>GSTIN</label>
+                                                @Html.EditorFor(model => model.Gstin, new { htmlAttributes = new { @class = "form-control" } })
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+
+
+                                <input type="hidden" name="Role" value="Abc" />
+                                @if (Model == null || string.IsNullOrEmpty(Model.UserId))
+                                {
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <h2>Contact Information</h2>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>First Name <em>*</em></label>
+                                                @Html.EditorFor(model => model.FirstName, new { htmlAttributes = new { @class = "form-control required" } })
+                                                @Html.ValidationMessageFor(model => model.FirstName, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Last Name <em>*</em></label>
+                                                @Html.EditorFor(model => model.LastName, new { htmlAttributes = new { @class = "form-control required" } })
+                                                @Html.ValidationMessageFor(model => model.LastName, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        @*<div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Gender</label>
+                                                    @Html.DropDownList("Gender", new List<SelectListItem>
+                {
+                    new SelectListItem{ Text="Male", Value="Male"},
+                    new SelectListItem{ Text="Female", Value="Female"}
+                }, "--- Select ---", new { @class = "form-control" })
+                                                </div>
+                                            </div>*@
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Email</label>
+                                                @Html.EditorFor(model => model.Email, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.Email, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Phone Number(User Name) <em>*</em></label>
+                                                @Html.EditorFor(model => model.PhoneNumber, new { htmlAttributes = new { @class = "form-control required" } })
+                                                @Html.ValidationMessageFor(model => model.PhoneNumber, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Password <em>*</em></label>
+                                                <div class="input-group" id="show_hide_password">
+                                                    @Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control required", autocomplete = "off" } })
+                                                    <div class="input-group-append">
+                                                        <span class="input-group-text"><i class="fa fa-eye-slash" aria-hidden="true"></i></span>
+                                                    </div>
+                                                </div>
+                                                @Html.ValidationMessageFor(model => model.Password, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <h2>Distributor Information</h2>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label> Distributor Code <em>*</em></label>
+                                                @Html.EditorFor(model => model.EmployeeCode, new { htmlAttributes = new { @class = "form-control required" } })
+                                                @Html.ValidationMessageFor(model => model.EmployeeCode, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Name <em>*</em></label>
+                                                @Html.EditorFor(model => model.DistributorName, new { htmlAttributes = new { @class = "form-control required" } })
+                                                @Html.ValidationMessageFor(model => model.DistributorName, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Address <em>*</em></label>
+                                                @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control required" } })
+                                                @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>City</label>
+                                                @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group State">
+                                                <label>State</label>
+                                                @Html.DropDownListFor(model => model.State, StateList, new { @class = "form-control" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Pincode</label>
+                                                @Html.EditorFor(model => model.Pincode, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.Pincode, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Landline Number</label>
+                                                @Html.EditorFor(model => model.LandlineNumber, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.LandlineNumber, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <h2>Business Information</h2>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Company<em>*</em></label>
+                                                @Html.EditorFor(model => model.Company, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.Company, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Brand</label>
+                                                <select class="form-control multiselect Distibutor-Brand" multiple>
+                                                    @{
+                                                        if (AllBrands != null)
+                                                        {
+                                                            foreach (var brand in AllBrands)
+                                                            {
+                                                                <option value="@brand.BrandId">@brand.Name</option>
+                                                            }
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12">
+                                            <h2>Bank Information</h2>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Bank Name</label>
+                                                @Html.EditorFor(model => model.BankName, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.BankName, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>IFSC Code</label>
+                                                @Html.EditorFor(model => model.IFSCCode, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.IFSCCode, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>Account Number</label>
+                                                @Html.EditorFor(model => model.AccNo, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.AccNo, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>UPI ID</label>
+                                                @Html.EditorFor(model => model.UPIID, new { htmlAttributes = new { @class = "form-control" } })
+                                                @Html.ValidationMessageFor(model => model.UPIID, "", new { @class = "text-danger" })
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-3">
+                                            <div class="form-group">
+                                                <label>GSTIN</label>
+                                                @Html.EditorFor(model => model.Gstin, new { htmlAttributes = new { @class = "form-control" } })
+                                            </div>
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+
+                        <div class="kt-portlet__foot">
+                            <div class="kt-form__actions">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="reset" class="btn btn-secondary">Cancel</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <!--end::Portlet-->
+            </div>
+        </div>
+
+    </div>
+    @section scripts{
+        <script type="text/javascript">
+            $(document).ready(function () {
+                GetBrandIds();
+                window.onload = ActivateAutocomplete();
+                function ActivateAutocomplete() {
+                    var input = document.getElementById('Address');
+                   
+                    console.log(input);
+
+                    var options = {
+                        types: ['(cities)'],
+                        componentRestrictions: { country: 'in' }
+                    };
+                    autocomplete = new google.maps.places.Autocomplete(input, options);
+                    google.maps.event.addListener(autocomplete, 'place_changed', function () {
+                        var place = autocomplete.getPlace();
+                        if (!place.geometry) {
+
+                            return;
+                        }
+
+                        lat = place.geometry.location.lat();
+                        lng = place.geometry.location.lng();
+                        $("#Latitude").val(lat);
+                        $("#Longitude").val(lng);
+                        console.log(lat, lng);
+                    });
+
+                }
+
+               
+                // Select gender during edit based on database record
+                var url = window.location.href;
+                if (url.indexOf('edit') != -1) {
+
+                    var selectedGender = $.trim($('#iGender').val());
+                    $('select[name^="Gender"] option[value="' + selectedGender + '"]').attr("selected", "selected");
+                }
+                $(".Distibutor-Brand").on("change", function () {
+                    GetBrandIds();
+                });
+                $(".State").on("change", function () {
+                    Getstate();
+                });
+               
+            });
+          
+            function GetBrandIds() {
+                var BrandIds = "";
+                $(".Distibutor-Brand option:selected").each(function () {
+                    if (BrandIds == "") {
+                        BrandIds = $(this).val();
+                    } else {
+                        BrandIds = BrandIds + "," + $(this).val();
+                    }
+                })
+                console.log("BrandIds", BrandIds);
+                $("#BrandIds").val(BrandIds);
+            }
+            function Getstate() {
+                var state = "";
+                state = $(".State option:selected").val();
+
+                console.log("state", state);
+                $("#State").val(state);
+            }
+        </script>
+    }
+

@@ -1,0 +1,232 @@
+﻿@{
+    var controller = ViewContext.RouteData.Values["controller"].ToString();
+    ViewBag.Title = controller;
+}
+<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+    <div class="kt-subheader-search">
+        <h3 class="kt-subheader-search__title">
+            Dashboard
+        </h3>
+    </div>
+
+    <header class="ribbon">
+        <h2>&nbsp;</h2>
+    </header>
+
+    <div class="page-content">
+        <div class="page-content">
+            <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+
+                @*Date filters*@
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for="ddlDateFilter">Select filter</label>
+                            @*<select id="ddlDateFilter" onchange="dashboard.fetchAllByDateFilter()" class="form-control">*@
+                            <select id="ddlDateFilter" onchange="dashboard.OptionChange()" class="form-control">
+                                <option value="MTD" selected="selected">MTD</option>
+                                <option value="YTD">YTD</option>
+                                <option value="Q1">Q1</option>
+                                <option value="Q2">Q2</option>
+                                <option value="Q3">Q3</option>
+                                <option value="Q4">Q4</option>
+                                <option value="CustomDate">Custom Date</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div id="divStartDate" class="form-group" style="display: none;">
+                            <label>Start Date<em>*</em></label>
+                            <input type="text" class="form-control" name="startDate" id="startDate" value="@DateTime.Now.ToString("dd-MM-yyyy")" data-date-format="dd-mm-yyyy">
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div id="divEndDate" class="form-group" style="display: none;">
+                            <label>End Date<em>*</em></label>
+                            <input type="text" class="form-control" name="endDate" id="endDate" value="@DateTime.Now.ToString("dd-MM-yyyy")" data-date-format="dd-mm-yyyy">
+                        </div>
+                    </div>
+                    <div class="col-sm-1"  style="display: none;">
+                        <div id="divFilter" class="form-group pt-4" style="display: none;">
+                            <button class="btn btn-info" onclick="dashboard.applyFilter()">Filter</button>
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
+                        <div class="form-group pt-4">
+                            <button class="btn btn-info" onclick="dashboard.fetchAllByDateFilter()">GetData</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <!--begin::Portlet-->
+                        <div class="kt-portlet info-block">
+                            <!--begin:Boxes-->
+                            <div class="row">
+                                <div class="col-md-12 col-lg-4 col-xl-4">
+                                    <a href="/@controller/SalesDetail">
+                                        <div class="info-box">
+                                            <div class="kt-widget24">
+                                                <div id="divSalesInfo">
+                                                </div>
+                                            </div>
+                                            <h4 class="kt-widget24__title" style="text-align: center;">
+                                                Sales
+                                            </h4>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="col-md-12 col-lg-4 col-xl-4">
+                                    <a href="/@controller/OutstandingDetail">
+                                        <div class="info-box">
+                                            <div class="kt-widget24">
+                                                <div id="divOutstandingInfo">
+                                                </div>
+                                            </div>
+                                            <h4 class="kt-widget24__title" style="text-align: center;">
+                                                Outstanding
+                                            </h4>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="col-md-12 col-lg-4 col-xl-4">
+                                    <a href="/@controller/CollectionDetail">
+                                        <div class="info-box">
+                                            <div class="kt-widget24">
+                                                <div id="divCollectionInfo">
+                                                </div>
+                                            </div>
+                                            <h4 class="kt-widget24__title" style="text-align: center;">
+                                                Collections
+                                            </h4>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <!--begin::Portlet-->
+                        <div class="kt-portlet info-block">
+                            <!--begin:Boxes-->
+                            <div class="row">
+
+                                <div class="col-md-12 col-lg-4 col-xl-4">
+                                    <a href="/@controller/InventoryDetail">
+                                        <div class="info-box">
+                                            <div class="kt-widget24">
+                                                <div id="divInventoryInfo">
+                                                </div>
+                                            </div>
+                                            <h4 class="kt-widget24__title" style="text-align: center;">
+                                                Inventory
+                                            </h4>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="col-md-12 col-lg-4 col-xl-4">
+                                    <a href="/@controller/CboDetail">
+                                        <div class="info-box">
+                                            <div class="kt-widget24">
+                                                <div id="divCboInfo">
+                                                </div>
+                                            </div>
+                                            <h4 class="kt-widget24__title" style="text-align: center;">
+                                                CBO
+                                            </h4>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="col-md-12 col-lg-4 col-xl-4">
+                                    <a href="/@controller/SchemeDetail">
+                                        <div class="info-box">
+                                            <div class="kt-widget24">
+                                                <div id="divSchemeInfo">
+                                                </div>
+                                            </div>
+                                            <h4 class="kt-widget24__title" style="text-align: center;">
+                                                Schemes
+                                            </h4>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <!--begin::Portlet-->
+                        <div class="kt-portlet info-block">
+                            <!--begin:Boxes-->
+                            <div class="row">
+
+                                <div class="col-md-12 col-lg-4 col-xl-4">
+                                    <a href="/@controller/WalletDetail">
+                                        <div class="info-box">
+                                            <div class="kt-widget24">
+                                                <div id="divWalletBalanceInfo">
+                                                </div>
+                                            </div>
+                                            <h4 class="kt-widget24__title" style="text-align: center;">
+                                                Wallet Balance
+                                            </h4>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="col-md-12 col-lg-4 col-xl-4">
+                                    <a href="/@controller/CustomerDetail">
+                                        <div class="info-box">
+                                            <div class="kt-widget24">
+                                                <div id="divCustomerInfo">
+                                                </div>
+                                            </div>
+                                            <h4 class="kt-widget24__title" style="text-align: center;">
+                                                Billing/Non-Billing Customers
+                                            </h4>
+                                        </div>
+                                    </a>
+                                </div>
+
+                                <div class="col-md-12 col-lg-4 col-xl-4">
+                                    <a href="/@controller/LooserAndGainersDetail">
+                                        <div class="info-box">
+                                            <div class="kt-widget24">
+                                                <div id="divLoserAndGainerInfo">
+                                                </div>
+                                            </div>
+                                            <h4 class="kt-widget24__title" style="text-align: center;">
+                                                Loosers & Gainers
+                                            </h4>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/vendor/moment/moment.min.js"></script>
+    <script src="~/js/db.common.js?v=0.2"></script>
+    <script src="~/js/db.main.js?v=0.2"></script>
+    <script>
+        dashboard.init();
+        dashboard.GetAllInfoFromLocalStorage();
+    </script>
+}

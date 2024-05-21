@@ -1,0 +1,354 @@
+﻿@model Garaaz.Models.SchemeGift
+@{
+    Layout = null;
+
+    int giftQty = Model.GiftRemainingQty;    
+    var coupons = Model.Coupons.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+    var controller = this.ViewContext.RouteData.GetRequiredString("controller");
+}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Set Coupon for Gift - Garaaz</title>
+    <link rel="icon" type="image/png" sizes="192x192" href="/Content/img/favicon/android-icon-192x192.png">
+    <link href="~/Content/one.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div>
+        @{Html.RenderPartial("alerts");}
+        <input type="hidden" id="hdnCoupons" value="@Model.Coupons" />
+        <input type="hidden" id="hdnGiftId" value="@Model.GiftId" />        
+        <a href="@ViewBag.Url" class="back-button">Back</a>
+        <div class="scheme-detail">
+            <p>Scheme: @Model.SchemeName, Gift: @Model.GiftName</p>
+        </div>
+        @if (coupons.Length > 0)
+        {
+            <div class="odo-wrap">
+                <div class="odometer">
+                    <div class="digit">
+                        <div class="digit-container digit-one">
+                            <div>M</div>
+                            <div>N</div>
+                            <div>O</div>
+                            <div>P</div>
+                            <div>Q</div>
+                            <div>R</div>
+                            <div>S</div>
+                            <div>T</div>
+                            <div>U</div>
+                            <div>V</div>
+                            <div>N</div>
+                            <div>N</div>
+                            <div>O</div>
+                            <div>P</div>
+                            <div>Q</div>
+                            <div>R</div>
+                            <div>S</div>
+                            <div>T</div>
+                            <div>U</div>
+                            <div>V</div>
+                            <div>A</div>
+                        </div>
+                    </div>
+                    <div class="digit">
+                        <div class="digit-container digit-two">
+                            <div>A</div>
+                            <div>N</div>
+                            <div>O</div>
+                            <div>P</div>
+                            <div>Q</div>
+                            <div>R</div>
+                            <div>S</div>
+                            <div>T</div>
+                            <div>U</div>
+                            <div>V</div>
+                            <div>A</div>
+                            <div>R</div>
+                            <div>S</div>
+                            <div>T</div>
+                            <div>U</div>
+                            <div>V</div>
+                            <div>A</div>
+                        </div>
+                    </div>
+                    <div class="digit">
+                        <div class="digit-container digit-three">
+                            <div>N</div>
+                            <div>N</div>
+                            <div>O</div>
+                            <div>P</div>
+                            <div>Q</div>
+                            <div>R</div>
+                            <div>S</div>
+                            <div>T</div>
+                            <div>U</div>
+                            <div>V</div>
+                            <div>A</div>
+                            <div>N</div>
+                            <div>N</div>
+                            <div>O</div>
+                            <div>P</div>
+                            <div>Q</div>
+                            <div>R</div>
+                            <div>S</div>
+                            <div>T</div>
+                            <div>U</div>
+                            <div>V</div>
+                            <div>A</div>
+                        </div>
+                    </div>
+                    <div class="digit">
+                        <div class="digit-container digit-four">
+                            <div>O</div>
+                            <div>N</div>
+                            <div>O</div>
+                            <div>P</div>
+                            <div>Q</div>
+                            <div>R</div>
+                            <div>S</div>
+                            <div>T</div>
+                            <div>U</div>
+                            <div>V</div>
+                            <div>A</div>
+                            <div>N</div>
+                            <div>N</div>
+                            <div>O</div>
+                            <div>P</div>
+                            <div>Q</div>
+                            <div>R</div>
+                            <div>S</div>
+                            <div>T</div>
+                            <div>U</div>
+                            <div>V</div>
+                            <div>A</div>
+                        </div>
+                    </div>
+                    <div class="digit">
+                        <div class="digit-container digit-five">
+                            <div>J</div>
+                            <div>N</div>
+                            <div>O</div>
+                            <div>P</div>
+                            <div>Q</div>
+                            <div>R</div>
+                            <div>S</div>
+                            <div>T</div>
+                            <div>U</div>
+                            <div>V</div>
+                            <div>A</div>
+                            <div>N</div>
+                            <div>N</div>
+                            <div>O</div>
+                            <div>P</div>
+                            <div>Q</div>
+                            <div>R</div>
+                            <div>S</div>
+                            <div>T</div>
+                            <div>U</div>
+                            <div>V</div>
+                            <div>A</div>
+                        </div>
+                    </div>
+                    <div class="digit">
+                        <div class="digit-container digit-six">
+                            <div>9</div>
+                            <div>N</div>
+                            <div>O</div>
+                            <div>P</div>
+                            <div>Q</div>
+                            <div>R</div>
+                            <div>S</div>
+                            <div>T</div>
+                            <div>U</div>
+                            <div>V</div>
+                            <div>A</div>
+                            <div>N</div>
+                            <div>N</div>
+                            <div>O</div>
+                            <div>P</div>
+                            <div>Q</div>
+                            <div>R</div>
+                            <div>S</div>
+                            <div>T</div>
+                            <div>U</div>
+                            <div>V</div>
+                            <div>A</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="oth-wrap">
+                    <button class="button">Start</button>
+                </div>
+
+            </div>
+            <div class="winner-list">
+                @for (int i = 1; i <= giftQty; i++)
+                {
+                    var winnerId = string.Format("Winner{0}", i);
+                    var lblWinnerId = string.Format("lblWinner{0}", i);
+                    var lblWinner = string.Format("Winner {0}", i);
+                    <text><label id="@lblWinnerId" class="hide">@lblWinner:</label><span id="@winnerId"></span><br /></text>
+                }
+            </div>
+        }
+        else
+        {
+            <p class="whiteText">No coupons found satisfying the specified criteria.</p>
+        }
+    </div>
+
+    <script src="/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/commonFunctions.js"></script>
+    <script src="~/js/schmes.js"></script>
+    <script src="~/js/fire.js"></script>
+    <script type="text/javascript">
+        var counter = 0;
+        var coupon;
+        var coupons = [];
+        var workshopName="";
+        $(function () {
+
+            // Get coupon and coupon characters
+            var hdnCoupons = $("#hdnCoupons").val();
+            coupons = hdnCoupons.split(",");
+
+            if (coupons.length > 0) {
+                SetOdometerByCoupon();
+            }
+
+            $(".odo-wrap").on("click", ".button", function () {
+                $(".odo-wrap").addClass("start");
+            });
+
+            $(".digit-six").on('animationend webkitAnimationEnd oAnimationEnd', function () {
+
+                SaveCouponForGift(SetStartText);
+            });
+        });
+
+        function SetOdometerByCoupon() {
+            coupon = coupons[counter];
+            var couponChars = coupon.split('');
+
+            // Coupon 1st digit
+            ResetDiv(".digit-one", couponChars[0]);
+
+            // Coupon 2nd digit
+            ResetDiv(".digit-two", couponChars[1]);
+
+            // Coupon 3rd digit
+            ResetDiv(".digit-three", couponChars[2]);
+
+            // Coupon 4th digit
+            ResetDiv(".digit-four", couponChars[3]);
+
+            // Coupon 5th digit
+            ResetDiv(".digit-five", couponChars[4]);
+
+            // Coupon 6th digit
+            ResetDiv(".digit-six", couponChars[5]);
+
+            counter++;
+        }
+
+        function ResetDiv(digitClass, character) {
+
+            $(digitClass).empty();
+            $(digitClass).append(`<div>${character}</div>`);
+
+            if (isNaN(character)) {
+
+                var characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+                var alphabet_array = [];
+
+                $.each(characters, function (index, alphabet) {
+                    alphabet_array.push(characters[Math.floor(Math.random() * characters.length)]);
+                });
+
+                var i;
+                for (i = 0; i < 22; i++) {
+                    $(digitClass).append("<div>" + alphabet_array[i] + "</div>");
+                }
+
+            }
+            else {
+
+                var numbers = '0123456789'.split('');
+                var number_array = [];
+
+                $.each(numbers, function (index, number) {
+                    number_array.push(numbers[Math.floor(Math.random() * numbers.length)]);
+                });
+
+                var i;
+                for (i = 0; i < 22; i++) {
+                    $(digitClass).append("<div>" + number_array[i] + "</div>");
+                }
+            }
+        }
+
+        function SaveCouponForGift(callback) {
+            schemes.saveCouponForGift(coupon,'@controller','@Model.SchemeName','@Model.GiftName', function (data) {
+                if (data.ResultFlag === 1) {                    
+                    workshopName = data.Data;
+                    ShowSuccessMsg(callback);
+                }
+                else {
+                    alert(data.Message);
+                    callback();
+                }
+            });
+        }
+
+        function ShowSuccessMsg(callback) {
+            // First show congratulations with animate
+            $(".oth-wrap").prepend(
+                '<div class="message"><div class="animated">Congratulations</div></div>'
+            );
+            $(".animated").addClass("heartBeat");
+            animate();
+
+            // Remove congratulations and animation after few seconds
+            setTimeout(function () {
+                stopAnimate();
+
+                var lblWinnerId = `#lblWinner${counter}`;
+                var winnerSpanId = `#Winner${counter}`;
+
+                if ($(lblWinnerId).length > 0 && $(winnerSpanId).length > 0) {
+                    $(lblWinnerId).removeClass("hide");                    
+                    var couponWithWorkshop = `${coupon} (${workshopName})`;
+                    $(winnerSpanId).html(couponWithWorkshop);
+                }
+                callback();
+            }, 5000);
+        }
+
+        function SetStartText() {
+            if (counter < coupons.length) {
+                $(".odo-wrap").removeClass("start");
+
+                var startText = "Start " + (counter + 1);
+                $(".odo-wrap .button").text(startText);
+
+                SetOdometerByCoupon();
+            }
+            else {
+                alert("All coupons have been allocated successfully!");
+                $(".odo-wrap").removeClass("start");
+                $(".odo-wrap .button").addClass("hide");
+            }
+        }
+    </script>
+
+</body>
+</html>
+
+
+
+
+

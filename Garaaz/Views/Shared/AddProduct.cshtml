@@ -1,0 +1,286 @@
+﻿@model Garaaz.Models.clsProduct
+@using Garaaz.Models
+
+@{
+    ViewBag.Title = "Add Product";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var ppp = new ProductPagePermission();
+    var prodTypes = ppp.ProductTypesList();
+    string controller = ViewBag.Controller.ToString();
+    var brand = new List<SelectListItem>();
+    brand.Add(new SelectListItem() { Value = "", Text = "--Select Brand---" });
+    //var brand = new SelectList(ViewBag.ddlBrands as System.Collections.IEnumerable, "Value", "Text");
+    var selectedBrandid = Model != null ? Model.BrandId : 0;
+}
+<link href="/Content/Css/fineuploader-3.7.0.min.css" rel="stylesheet" type="text/css" />
+<script src="/scripts/jquery.fineuploader-3.7.0.min.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        //$(".ckeditor").ckeditor();
+
+            var count = 0;
+            var manualuploader = new qq.FineUploader({
+                element: $('#manual-fine-uploader')[0],
+                action: '@Url.Action("/Home/upload")',
+                type: "post",
+                minSizeLimit: 0,
+                autoUpload: true,
+                text: {
+                    uploadButton: '<i class="icon-plus icon-white"></i> Select Files'
+                },
+                validation: {
+                    sizeLimit: 2000000 // 50 kB = 50 * 1024 bytes
+                },
+                callbacks: {
+                    onComplete: function (id, filename, responseJSON) {
+                        console.log(responseJSON);
+                        if (responseJSON.success == true) {
+                            var response_show = responseJSON.filename;
+                            $("#ImagePath").val(responseJSON.filename);
+
+                        } else {
+                            alert("Error: " + responseJSON.message);
+                        }
+                    }
+                }
+            });
+        });
+</script>
+<input type="hidden" id="selectedBrand" value="@selectedBrandid" />
+<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+    <div class="kt-subheader-search">
+        <h3 class="kt-subheader-search__title">
+            Product
+        </h3>
+    </div>
+
+
+    <header class="ribbon">
+        <h2>&nbsp;</h2>
+    </header>
+
+    <div class="page-content">
+        <div class="page-content">
+            @{Html.RenderPartial("alerts");}
+
+            <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <!--begin::Portlet-->
+                        <div class="kt-portlet">
+                            <div class="kt-portlet__head">
+                                <div class="kt-portlet__head-label">
+                                    <h3 class="kt-portlet__head-title">
+                                        Add Product
+                                    </h3>
+                                </div>
+                                <div class="kt-portlet__head-toolbar">
+                                    <div class="kt-portlet__head-wrapper">
+                                        <div class="kt-portlet__head-actions">
+                                            <a href="/@ViewBag.Controller/Product" class="btn btn-brand btn-elevate btn-icon-sm">
+                                                <i class="la la-step-backward"></i>
+                                                Back
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @using (Html.BeginForm())
+                            {
+                                <div class="kt-form">
+                                    <div class="kt-portlet__body">
+                                        @{
+                                            string style;
+                                            if (controller == "Admin")
+                                            {
+                                                style = "display:visible";
+                                            }
+                                            else
+                                            {
+                                                style = "display:none";
+                                            }
+                                        }
+                                        <div class="row">
+                                            <div class="col-md-3" style="@style">
+                                                <div class="form-group">
+                                                    <label>Select Distributor:<em>*</em></label>
+                                                    @Html.DropDownListFor(model => model.DistributorId, new SelectList(ViewBag.Distributors as System.Collections.IEnumerable, "Value", "Text"), new { @class = "form-control required" })
+                                                    @Html.ValidationMessageFor(model => model.DistributorId, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Select Brand<em>*</em></label>
+                                                    @Html.DropDownListFor(model => model.BrandId, brand, new { @class = "form-control required" })
+                                                    @Html.ValidationMessageFor(model => model.BrandId, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Select Group<em>*</em></label>
+                                                    @Html.DropDownListFor(model => model.GroupId, ViewBag.ddlGroups as SelectList, new { @class = "form-control required", @id = "ddlGroups" })
+                                                    @Html.ValidationMessageFor(model => model.GroupId, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Product Name<em>*</em></label>
+
+                                                    @Html.HiddenFor(model => model.ProductId)
+
+                                                    @Html.EditorFor(model => model.ProductName, new { htmlAttributes = new { @class = "form-control required" } })
+                                                    @Html.ValidationMessageFor(model => model.ProductName, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Part Number<em>*</em></label>
+                                                    @Html.EditorFor(model => model.PartNumber, new { htmlAttributes = new { @class = "form-control  required" } })
+                                                    @Html.ValidationMessageFor(model => model.PartNumber, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Description</label>
+                                                    @Html.EditorFor(model => model.Description, new { htmlAttributes = new { @class = "form-control ckeditor " } })
+                                                    @*@Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })*@
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Remark</label>
+                                                    @Html.EditorFor(model => model.Remark, new { @Id = "Remark", htmlAttributes = new { @class = "form-control ckeditor" } })
+                                                    @*@Html.ValidationMessageFor(model => model.Remark, "", new { @class = "text-danger" })*@
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Tax Value(%)</label>
+                                                    @Html.EditorFor(model => model.TaxValue, new { @Id = "Remark", htmlAttributes = new { @class = "form-control ckeditor" } })
+
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Root Part Number</label>
+                                                    @Html.EditorFor(model => model.RootPartNo, new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.RootPartNo, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Price<em>*</em></label>
+                                                    @Html.EditorFor(model => model.Price, new { htmlAttributes = new { @class = "form-control required" } })
+                                                    @Html.ValidationMessageFor(model => model.Price, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Pack Quantity</label>
+                                                    @Html.EditorFor(model => model.PackQuantity, new { htmlAttributes = new { @class = "form-control" } })
+                                                    @Html.ValidationMessageFor(model => model.PackQuantity, "", new { @class = "text-danger" })
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group ">
+                                                    <label>Select Type</label>
+                                                    @Html.DropDownListFor(model => model.ProductType, prodTypes, new { @class = "form-control", @id = "ddlProductType" })
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group ">
+                                                    <label>Image</label>
+                                                    <div class="controls">
+                                                        <div id="manual-fine-uploader">
+                                                        </div>
+                                                        @Html.HiddenFor(a => a.ImagePath, new { @class = "form-control" })
+                                                        <img id="blah" src="#" alt="" style="display:none" />
+                                                        @if (Model != null && !string.IsNullOrEmpty(Model.ImagePath))
+                                                        {
+                                                            <img src="@Url.Content(Model.ImagePath)" alt="" width="100px" height="100px" />
+                                                        }
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row outletlist">
+                                            @{
+                                                var lstOutlet = ViewBag.lstOutlet as List<OutletListResponse>;
+                                                if (lstOutlet.Count > 0)
+                                                {
+                                                    List<DailyStockResponse> lstStock = new List<DailyStockResponse>();
+                                                    if (Model != null)
+                                                    {
+                                                        lstStock = ViewBag.lstDaily as List<DailyStockResponse>;
+                                                    }
+                                                    <div class='col-sm-6'>
+                                                        <h2>Add Stock</h2>
+                                                        @foreach (var item in lstOutlet)
+                                                        {
+                                                            var d = lstStock.Where(a => a.OutletId == item.OutletId);
+                                                            <div class="row">
+                                                                <div class="col-md-3">
+                                                                    <div class="form-group">
+                                                                        <input type="checkbox" class="icheck_n group" @(d.Count() > 0 ? "checked" : "") name="@("Outlet_" + item.OutletId)" />
+                                                                        <span> @item.OutletName</span>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <div class="form-group">
+                                                                        <input class="form-control" type="number" value="@(d.Count() > 0 ? d.FirstOrDefault().Qty : "")" name="@("txt_" + item.OutletId)" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        }
+                                                    </div>
+                                                }
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="kt-portlet__foot">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+<script src="~/js/product.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var distId = $("#DistributorId").val();
+        distId = distId.length == 0 ? 0 : distId;
+        var prodId = $("#ProductId").val();
+        if (distId != undefined && distId != 0 && prodId ==0) {
+            product.BindOutletonLoad(distId);
+        }
+        else {
+            product.init();
+        }
+        
+        product.BindDistributorBrand(distId);
+    });
+</script>

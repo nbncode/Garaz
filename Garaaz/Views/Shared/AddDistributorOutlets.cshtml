@@ -1,0 +1,136 @@
+﻿@model Garaaz.Models.OutletModel
+@{
+    ViewBag.Title = "Distributor Outlets";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="kt-subheader-search">
+    <h3 class="kt-subheader-search__title">
+        Distributor Outlets Master
+    </h3>
+</div>
+
+<header class="ribbon">
+    <h2>&nbsp;</h2>
+</header>
+<div class="page-content">
+    @{Html.RenderPartial("alerts");}
+
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+        <div class="row">
+            <div class="col-md-12">
+                <!--begin::Portlet-->
+                <div class="kt-portlet">
+                    <div class="kt-portlet__head">
+                        <div class="kt-portlet__head-label">
+                            <h3 class="kt-portlet__head-title">
+                                Add/Edit Distributor Outlets
+                            </h3>
+                        </div>
+                        <div class="kt-portlet__head-toolbar">
+                            <div class="kt-portlet__head-wrapper">
+                                <div class="kt-portlet__head-actions">
+                                    <a href="@Request.UrlReferrer" class="btn btn-brand btn-elevate btn-icon-sm">
+                                        <i class="la la-step-backward"></i>
+                                        Back
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    @using (Html.BeginForm())
+                    {
+                        <div class="kt-form">
+                            <div class="kt-portlet__body">
+                                @Html.HiddenFor(model => model.Latitude)
+                                @Html.HiddenFor(model => model.Longitude)
+                                @if (Model != null && Model.OutletId > 0)
+                                {
+                                    @Html.HiddenFor(model => model.OutletId)
+                                }
+                                <input type="hidden" name="distributorId" value="@ViewBag.distributorId" />
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <h2>Outlet Information</h2>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Outlet Name <em>*</em></label>
+                                            @Html.EditorFor(model => model.OutletName, new { htmlAttributes = new { @class = "form-control required" } })
+                                            @Html.ValidationMessageFor(model => model.OutletName, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Address <em>*</em></label>
+                                            @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control required" } })
+                                            @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>Outlet Code </label>
+                                            @Html.EditorFor(model => model.OutletCode, new { htmlAttributes = new { @class = "form-control required" } })
+                                            @Html.ValidationMessageFor(model => model.OutletCode, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="kt-portlet__foot">
+                            <div class="kt-form__actions">
+                                <button type="submit" class="btn btn-primary">Submit</button>
+                                <button type="reset" class="btn btn-secondary">Cancel</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <!--end::Portlet-->
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            window.onload = InitAddressAutocomplete();
+        });
+
+        function InitAddressAutocomplete() {
+            var input = document.getElementById('Address');
+
+            var options = {
+                types: ['(cities)'],
+                componentRestrictions: { country: 'in' }
+            };
+
+            autocomplete = new google.maps.places.Autocomplete(input, options);
+
+            // Get latitude and longitude
+            google.maps.event.addListener(autocomplete, 'place_changed', function () {
+                var place = autocomplete.getPlace();
+
+                var geometry = place.geometry;
+                if ((geometry) !== undefined) {
+                    lat = geometry.location.lat();
+                    lng = geometry.location.lng();
+                    $("#Latitude").val(lat);
+                    $("#Longitude").val(lng);
+                    console.log(lat, lng);
+                }
+                else {
+                    console.log("Geometry undefined");
+                    return;
+                }
+
+            });
+        }
+    </script>
+}
+

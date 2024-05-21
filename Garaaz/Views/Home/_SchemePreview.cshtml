@@ -1,0 +1,689 @@
+﻿
+@model Garaaz.Models.Schemes.SchemePreview
+
+<div class="kt-portlet kt-portlet--mobile">
+    <div class="kt-portlet__head kt-portlet__head--lg">
+        <div class="kt-portlet__head-label">
+            <span class="kt-portlet__head-icon">
+                <i class="kt-font-brand flaticon-eye"></i>
+            </span>
+            <h3 class="kt-portlet__head-title">
+                Scheme Preview
+            </h3>
+        </div>
+        <div class="kt-portlet__head-toolbar">
+            <div class="kt-portlet__head-wrapper">
+                <div class="kt-portlet__head-actions">
+                    <a class="btn btn-brand btn-elevate btn-icon-sm" style="@(!Model.IsActive? "display:none": "")" onclick="schemes.saveActiveScheme(@ViewBag.schemeId,false)" href="javascript:void(0);">
+                        <i class="fa fa-ban"></i> Deactivate
+                    </a>
+                    <a class="btn btn-brand btn-elevate btn-icon-sm" style="@(Model.IsActive? "display:none": "")" onclick="schemes.saveActiveScheme(@ViewBag.schemeId,true)" href="javascript:void(0);">
+                        <i class="fa fa-check"></i> Activate
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="kt-portlet__body">
+        @if (Model != null)
+        {
+            <div id="prev-basicInfo" class="kt-portlet kt-portlet--height-fluid preview-container mb-25 basicInfo">
+                <div class="kt-portlet__head preview-header">
+                    @*Kept for design purpose*@
+                </div>
+                <div class="kt-portlet__body">
+                    <div class="kt-portlet__body kt-portlet__body--fit-y">
+                        <!--begin::Widget -->
+                        <div class="kt-widget kt-widget--user-profile-1">
+                            <div class="kt-widget__head banner @(string.IsNullOrEmpty(Model.BannerImgUrl)? "hideOverlay":"")" id="prvBannerDiv" style="background-image: url('@(Model.BannerImgUrl??"")')">
+                                <div class="kt-widget__media pl-3">
+                                    <img src="@Model.ThumbnailImgUrl" alt="Scheme's thumbnail" id="prvThumbnailImg">
+                                </div>
+                                <div class="kt-widget__content">
+                                    <div class="kt-widget__section">
+                                        <span class="kt-widget__username" id="prvSchemeName">
+                                            @Model.SchemeName
+                                        </span>
+                                        <span class="kt-widget__subtitle" id="prvSchemeDate">
+                                            @Model.SchemeDateRange
+                                        </span>
+                                        <span class="kt-widget__subtitle" id="prvSchemeType">
+                                            @Model.SchemeType
+                                        </span>
+                                    </div>
+                                </div>
+                                <a href="javascript:void(0);" onclick="schemes.goToSchemeEditTab('Basic')" class="edit-icon" title="Edit basic information"><i class="fa fa-edit"></i></a>
+                            </div>
+                            <div class="kt-widget__body">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="kt-widget__content">
+                                            @if (!string.IsNullOrWhiteSpace(Model.SubSchemeType))
+                                            {
+                                                <div class="kt-widget__info">
+                                                    <span class="kt-widget__label">Sub-Scheme Type:</span>
+                                                    <span class="kt-widget__data" id="prvSubSchemeType">@Model.SubSchemeType</span>
+                                                </div>
+                                            }
+                                            @if (!string.IsNullOrWhiteSpace(Model.RewardOptions))
+                                            {
+                                                <div class="kt-widget__info">
+                                                    <span class="kt-widget__label">Reward options:</span>
+                                                    <span class="kt-widget__data" id="prvRewardOptions">@Model.RewardOptions</span>
+                                                </div>
+                                            }
+
+                                            <div class="kt-widget__info">
+                                                <span class="kt-widget__label">Distributor:</span>
+                                                <span class="kt-widget__data" id="prvDistributor">@Model.DistributorName</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="kt-widget__content">
+                                            <div class="kt-widget__info">
+                                                <span class="kt-widget__label">Payback Period:</span>
+                                                <span class="kt-widget__data" id="prvPaybackPeriod">@Model.PaybackPeriod</span>
+                                            </div>
+                                            <div class="kt-widget__info">
+                                                <span class="kt-widget__label">Payback Type:</span>
+                                                <span class="kt-widget__data" id="prvPaybackType">@Model.PaybackType</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--end::Widget -->
+                    </div>
+                </div>
+            </div>
+
+            <div id="prev-partInfo" class="kt-portlet kt-portlet--height-fluid preview-container mb-25">
+                <div class="kt-portlet__head preview-header">
+                    <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title">
+                            Parts Information
+                        </h3>
+                    </div>
+                    <a href="javascript:void(0);" onclick="schemes.goToSchemeEditTab('PartInfo')" title="Edit parts information" class="edit-icon"><i class="fa fa-edit"></i></a>
+                </div>
+                <div class="kt-portlet__body">
+                    <div class="kt-widget1">
+                        <div class="kt-widget1__item">
+                            <div class="kt-widget1__info">
+                                <h3 class="kt-widget1__title">Part Category</h3>
+                                <span class="kt-widget1__desc">@Model.PartCategory</span>
+                            </div>
+                        </div>
+                        <div class="kt-widget1__item">
+                            <div class="kt-widget1__info">
+                                <h3 class="kt-widget1__title">Part Group</h3>
+                                <span class="kt-widget1__desc">@Model.PartGroup</span>
+                            </div>
+                        </div>
+                        @if (Model.PartGroup.Equals(Model.FmsPartsGroup, StringComparison.OrdinalIgnoreCase))
+                        {
+                            <div class="row row-bottom-border">
+                                <div class="col-md-6">
+                                    <div class="kt-widget1__item">
+                                        <div class="kt-widget1__info">
+                                            <h3 class="kt-widget1__title">Date range for calculating FMS</h3>
+                                            <span class="kt-widget1__desc">@Model.DateRangeForFms</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="kt-widget1__item">
+                                        <div class="kt-widget1__info">
+                                            <h3 class="kt-widget1__title">Part Creation:</h3>
+                                            <span class="kt-widget1__desc">@Model.PartCreation</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row row-bottom-border">
+                                <div class="col-md-4">
+                                    <div class="kt-widget1__item">
+                                        <div class="kt-widget1__info">
+                                            <h3 class="kt-widget1__title">F Percentage:</h3>
+                                            <span class="kt-widget1__desc">@Model.FPercentage</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="kt-widget1__item">
+                                        <div class="kt-widget1__info">
+                                            <h3 class="kt-widget1__title">M Percentage:</h3>
+                                            <span class="kt-widget1__desc">@Model.MPercentage</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="kt-widget1__item">
+                                        <div class="kt-widget1__info">
+                                            <h3 class="kt-widget1__title">S Percentage:</h3>
+                                            <span class="kt-widget1__desc">
+                                                @Model.SPercentage
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                        else if (Model.PartGroup.Equals(Model.FocusPartsGroup, StringComparison.OrdinalIgnoreCase))
+                        {
+                            if (Model.FocusParts.Count > 0)
+                            {
+                                <div id="prvFpg" class="table-responsive">
+                                    <div class="accordion" id="accordionExample">
+                                        @for (int x = 0; x < Model.FocusParts.Count; x++)
+                                        {
+
+                                            var fp = Model.FocusParts[x];
+                                            var counter = x + 1;
+                                            var groupId = "group-" + counter;
+                                            var targetId = "group-target" + counter;
+                                            var dataTarget = "#" + targetId;
+
+
+                                            <div class="card">
+                                                <div class="card-header" id="@groupId">
+                                                    <h2 class="mb-0">
+                                                        <button class="btn btn-link text-left collapsed" type="button" data-toggle="collapse" data-target="@dataTarget" aria-expanded="true" aria-controls="collapseOne" style="width:100%;">
+                                                            @fp.PartGroup (@fp.Parts.Count() products)
+                                                        </button>
+                                                    </h2>
+                                                </div>
+
+                                                <div id="@targetId" class="collapse" aria-labelledby="@groupId" data-parent="#accordionExample">
+                                                    <div class="card-body">
+                                                        <table class="table table-bordered w-auto table-center">
+                                                            <thead class="thead-light">
+                                                                <tr>
+                                                                    <th>Sl.No.</th>
+                                                                    <th>PartNumber</th>
+                                                                    <th>PartDescription</th>
+                                                                    <th>MRP</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                                                @for (int i = 0; i < fp.Parts.Count; i++)
+                                                                {
+                                                                    var part = fp.Parts[i];
+                                                                    var slNo = i + 1;
+                                                                    <tr>
+                                                                        <td>@slNo</td>
+                                                                        <td>@part.PartNumber</td>
+                                                                        <td>@part.PartDescription</td>
+                                                                        <td>@part.MRP</td>
+                                                                    </tr>
+                                                                }
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        }
+                                    </div>
+                                </div>
+                            }
+
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div id="prev-customerSegment" class="kt-portlet kt-portlet--height-fluid preview-container mb-25">
+                <div class="kt-portlet__head preview-header">
+                    <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title">
+                            Customer Segment
+                        </h3>
+                    </div>
+                    <a href="javascript:void(0);" onclick="schemes.goToSchemeEditTab('CustomerSegment')" title="Edit customer segment" class="edit-icon"><i class="fa fa-edit"></i></a>
+                </div>
+                <div class="kt-portlet__body">
+                    <div class="kt-widget1">
+                        <div class="kt-widget1__item">
+                            <div class="kt-widget1__info">
+                                <h3 class="kt-widget1__title">Branch Code:</h3>
+                                <span class="kt-widget1__desc">@Model.BranchCode</span>
+                            </div>
+                        </div>
+
+                        <div class="kt-widget1__item">
+                            <div class="kt-widget1__info">
+                                <h3 class="kt-widget1__title">Sales Person:</h3>
+                                <span class="kt-widget1__desc">@Model.SalesPerson</span>
+                            </div>
+                        </div>
+
+                        <div class="kt-widget1__item">
+                            <div class="kt-widget1__info">
+                                <h3 class="kt-widget1__title">Customer Type:</h3>
+                                <span class="kt-widget1__desc">@Model.CustomerType</span>
+                            </div>
+                        </div>
+
+                        @if (Model.TargetGrowths.Count > 0)
+                        {
+                            <div id="prvTargetGrowth" class="table-responsive">
+                                <table class="table table-bordered w-auto table-center">
+                                    <caption>Target growth setting</caption>
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Monthly Purchase From</th>
+                                            <th>Monthly Purchase To</th>
+                                            <th>Growth (%)</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var tg in Model.TargetGrowths)
+                                        {
+                                            <tr>
+                                                <td>@tg.Min</td>
+                                                <td>@tg.Max</td>
+                                                <td>@tg.Growth</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+
+                        @if (Model.Categories.Count > 0)
+                        {
+                            <div id="prvCategories" class="table-responsive">
+                                <table class="table table-bordered w-auto table-center">
+                                    <caption>Categories setting</caption>
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Category Name</th>
+                                            <th>Monthly Purchase From</th>
+                                            <th>Monthly Purchase To</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var c in Model.Categories)
+                                        {
+                                            <tr>
+                                                <td>@c.Category</td>
+                                                <td>@c.MinAmount</td>
+                                                <td>@c.MaxAmount</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+            </div>
+
+            <div id="prev-targetInfo" class="kt-portlet kt-portlet--height-fluid preview-container mb-25">
+                <div class="kt-portlet__head preview-header">
+                    <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title">
+                            Target Information
+                        </h3>
+                    </div>
+                    <a href="javascript:void(0);" onclick="schemes.goToSchemeEditTab('TargetInfo')" title="Edit target information" class="edit-icon"><i class="fa fa-edit"></i></a>
+                </div>
+                <div class="kt-portlet__body">
+                    <div class="kt-widget1">
+
+                        <div class="row row-bottom-border">
+                            <div class="col-md-6">
+                                <div class="kt-widget1__item">
+                                    <div class="kt-widget1__info">
+                                        <h3 class="kt-widget1__title">Previous year date range:</h3>
+                                        <span class="kt-widget1__desc">@Model.PrevYearDateRange</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="kt-widget1__item">
+                                    <div class="kt-widget1__info">
+                                        <h3 class="kt-widget1__title">Previous month date range:</h3>
+                                        <span class="kt-widget1__desc">@Model.PrevMonthDateRange</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        @if (Model.TargetWorkshops.Count > 0)
+                        {
+                            <div class="kt-invoice-2">
+                                <div class="kt-invoice__head kt-invoice_button">
+                                    <div class="kt-invoice__container">
+                                        <form action="/Home/TargetWorkshopsExport?schemeId=@ViewBag.schemeId" method="post">
+                                            <div class="row">
+                                                <div class="col-sm-12 text-right">
+                                                    <input type="submit" class="btn btn-info" value="Export to Excel">
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div id="prvTargetWorkshops" class="table-responsive">
+                                <table class="table table-bordered w-auto table-center">
+                                    <caption>Target workshops</caption>
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>slNo</th>
+                                            <th>Location</th>
+                                            <th>WorkShop</th>
+                                            <th>Customer Type</th>
+                                            <th>Ro</th>
+                                            <th>Sales Executive</th>
+                                            <th>Prev FY Avg Sale</th>
+                                            <th>Growth(%)</th>
+                                            <th>Target</th>
+                                            <th>Prev Month Data</th>
+                                            <th>Growth Comp(%)</th>
+                                            <th>Qualified</th>
+                                            <th>Achieved</th>
+                                            <th>Achieved %</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @{var slNo = 0;
+                                        }
+                                        @foreach (var tw in Model.TargetWorkshops)
+                                        {
+                                            slNo++;
+                                            <tr>
+                                                <td>@slNo</td>
+                                                <td>@tw.LocationCode</td>
+                                                <td>@tw.WorkShopName</td>
+                                                <td>@tw.CustomerType</td>
+                                                <td>@tw.RoIncharge</td>
+                                                <td>@tw.SalesExecutive</td>
+                                                <td>@tw.PrevYearAvgSale</td>
+                                                <td>@tw.GrowthPercentage</td>
+                                                <td>@tw.NewTarget</td>
+                                                <td>@tw.PrevMonthAvgSale</td>
+                                                <td>@tw.GrowthComparisonPercentage</td>
+                                                <td>@(tw.IsQualifiedAsDefault ? "Yes" : "No")</td>
+                                                <td>@tw.TargetAchieved</td>
+                                                <td>
+                                                    @{
+                                                        var achievedPercentage = $"{tw.AchievedPercentage}%";
+                                                        if (tw.AchievedPercentage == 0 || tw.AchievedPercentage == 100)
+                                                        {
+                                                            <p>@achievedPercentage</p>
+                                                        }
+                                                        else if (tw.AchievedPercentage > 100)
+                                                        {
+                                                            <p class="kt-font-success"><i class="la la-arrow-up"></i> @achievedPercentage</p>
+                                                        }
+                                                        else if (tw.AchievedPercentage < 100)
+                                                        {
+                                                            <p class="kt-font-danger"><i class="la la-arrow-down"></i> @achievedPercentage</p>
+                                                        }
+                                                    }
+                                                </td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div id="prev-rewardInfo" class="kt-portlet kt-portlet--height-fluid preview-container mb-25">
+                <div class="kt-portlet__head preview-header">
+                    <div class="kt-portlet__head-label">
+                        <h3 class="kt-portlet__head-title">
+                            Reward Information
+                        </h3>
+                    </div>
+                    <a href="javascript:void(0);" onclick="schemes.goToSchemeEditTab('@(Model?.SchemeType == "Cashback" ? "Cashback" : "Tabs")')" title="Edit reward information" class="edit-icon"><i class="fa fa-edit"></i></a>
+                </div>
+                <div class="kt-portlet__body">
+                    <div class="kt-widget1">
+
+                        @if (Model.TargetOverviews.Count > 0)
+                        {
+                            <div id="prv-rewardInfo-targetOverview" class="table-responsive table-bottom-border">
+                                <table class="table table-bordered w-auto table-center">
+                                    <caption>Target Overviews</caption>
+                                    <thead class="thead-light">
+                                        <tr>
+                                            <th>Growth Range</th>
+                                            <th>Growth (%)</th>
+                                            <th>Total Workshops</th>
+                                            <th>Total Target</th>
+                                            <th>Avg Target</th>
+                                            <th>Max Target</th>
+                                            <th>Min Target</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach (var to in Model.TargetOverviews)
+                                        {
+                                            <tr>
+                                                <td>@to.TargetGrowthRange</td>
+                                                <td>@to.GrowthPercentage</td>
+                                                <td>@to.TotalWorkshops</td>
+                                                <td>@to.TotalTarget</td>
+                                                <td>@to.AverageTarget</td>
+                                                <td>@to.MaximumTarget</td>
+                                                <td>@to.MinimumTarget</td>
+                                            </tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                        }
+
+                        @if (Model.ShowCashback)
+                        {
+                            <div id="prv-rewardInfo-Cashback">
+                                <div class="row row-bottom-border">
+                                    <div class="col-md-6">
+                                        <div class="kt-widget1__item">
+                                            <div class="kt-widget1__info">
+                                                <h3 class="kt-widget1__title">Cashback Criteria:</h3>
+                                                <span class="kt-widget1__desc">@Model.CashbackCriteria</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    @if (Model.ShowAssuredGift)
+                                    {
+                                        <div class="col-md-6">
+                                            <div class="kt-widget1__item">
+                                                <div class="kt-widget1__info">
+                                                    <h3 class="kt-widget1__title">Both cashback and assured gift applicable:</h3>
+                                                    <span class="kt-widget1__desc">@(Model.AreBothCbAgApplicable ? "Yes" : "No")</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+
+                                @if (Model.Cashbacks.Count > 0)
+                                {
+                                    <div id="prvCashback" class="table-responsive">
+                                        <table class="table table-bordered w-auto table-center">
+                                            <caption>Cashback setting</caption>
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th>From Amount</th>
+                                                    <th>To Amount</th>
+                                                    @foreach (var colText in Model.CbrColText)
+                                                    {
+                                                        <th>@colText</th>
+                                                    }
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var cb in Model.Cashbacks)
+                                                {
+                                                    <tr>
+                                                        <td>@cb.FromAmount</td>
+                                                        <td>@cb.ToAmount</td>
+                                                        @foreach (var cbr in cb.lstCashbackMix)
+                                                        {
+                                                            <td>@cbr.Percentage</td>
+                                                        }
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+                            </div>
+                        }
+
+                        @if (Model.ShowAssuredGift)
+                        {
+                            <div id="prv-rewardInfo-AssureGift" class="pt-3">
+
+                                @if (Model.ShowLuckyDraw)
+                                {
+                                    <div class="kt-widget1__item">
+                                        <div class="kt-widget1__info">
+                                            <h3 class="kt-widget1__title">Both assured gift and lucky draw applicable:</h3>
+                                            <span class="kt-widget1__desc">@(Model.AreBothAgLdApplicable ? "Yes" : "No")</span>
+                                        </div>
+                                    </div>
+                                }
+
+                                @if (Model.AssuredGifts.Count > 0)
+                                {
+                                    <div id="prvAssuredGift" class="table-responsive">
+                                        <table class="table table-bordered w-auto table-center">
+                                            <caption>Assured gift setting</caption>
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th>Category</th>
+                                                    <th>Sales Target</th>
+                                                    <th>Point</th>
+                                                    <th>Reward</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var ag in Model.AssuredGifts)
+                                                {
+                                                    <tr>
+                                                        <td>@ag.Categories</td>
+                                                        <td>@ag.Target</td>
+                                                        <td>@ag.Point</td>
+                                                        <td>@ag.Reward</td>
+                                                    </tr>}
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+                            </div>
+                        }
+
+                        @if (Model.ShowLuckyDraw)
+                        {
+                            <div id="prv-rewardInfo-LuckyDraw" class="pt-3">
+
+                                <div class="row row-bottom-border">
+                                    <div class="col-md-6">
+                                        <div class="kt-widget1__item">
+                                            <div class="kt-widget1__info">
+                                                <h3 class="kt-widget1__title">User participate in multiple draw:</h3>
+                                                <span class="kt-widget1__desc">@(Model.CanTakeMoreThanOneGift ? "Yes" : "No")</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="kt-widget1__item">
+                                            <div class="kt-widget1__info">
+                                                <h3 class="kt-widget1__title">Max number of gifts allowed:</h3>
+                                                <span class="kt-widget1__desc">@Model.MaxGiftsAllowed</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @if (Model.LuckyDraws.Count > 0)
+                                {
+                                    <div id="prvLuckyDraw" class="table-responsive">
+                                        <table class="table table-bordered w-auto table-center">
+                                            <caption>Lucky draw setting</caption>
+                                            <thead class="thead-light">
+                                                <tr>
+                                                    <th>Category</th>
+                                                    <th>Gift</th>
+                                                    <th>Qty/No of Draws</th>
+                                                    <th>Draw Order</th>
+                                                    <th>Image</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var ld in Model.LuckyDraws)
+                                                {
+                                                    <tr>
+                                                        <td>@ld.Categories</td>
+                                                        <td>@ld.Gift</td>
+                                                        <td>@ld.Qty</td>
+                                                        <td>@ld.DrawOrder</td>
+                                                        <td><img alt="Gift" src="@ld.ImagePath" height="50" width="50" /></td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                }
+                            </div>
+                        }
+
+                        @if (Model.ShowCouponAllocation && Model.CouponAllocations.Count > 0)
+                        {
+                            <div id="prv-rewardInfo-CouponAllocation" class="pt-3">
+                                <div id="prvCouponAllocation" class="table-responsive">
+                                    <table class="table table-bordered w-auto table-center">
+                                        <caption>Coupon allocation setting</caption>
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>Amount</th>
+                                                <th>Type</th>
+                                                <th>Parts/Accessories</th>
+                                                <th>Number of coupons</th>
+                                                <th>Additional Coupon Amount</th>
+                                                <th>Additional Number Of Coupons</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var ca in Model.CouponAllocations)
+                                            {
+                                                <tr>
+                                                    <td>@ca.Amount</td>
+                                                    <td>@ca.Type</td>
+                                                    <td>@ca.PartsOrAccessories</td>
+                                                    <td>@ca.NumberOfCoupons</td>
+                                                    <td>@ca.AdditionalCouponAmount</td>
+                                                    <td>@ca.AdditionalNumberOfCoupons</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <p class="kt-font-bold">
+                <i class="kt-font-warning flaticon-warning-sign"></i>
+                &nbsp;@ViewBag.ErrorMsg
+            </p>
+        }
+    </div>
+</div>

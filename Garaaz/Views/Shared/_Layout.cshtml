@@ -1,0 +1,488 @@
+﻿@using Garaaz.Models;
+@using System.Configuration;
+@using Microsoft.AspNet.Identity
+@using Garaaz.Controllers
+@using System.Security.Claims;
+@using Garaaz.Models.Services;
+@using Garaaz.Models.Notifications
+
+
+@{
+    var version = ConfigurationManager.AppSettings["jsversion"].ToString();
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - Garaaz</title>
+
+    <!--begin::Fonts -->
+    <script src="/vendor/webfont/1.6.16/webfont.js"></script>
+    <script>
+        WebFont.load({
+            google: { "families": ["Poppins:300,400,500,600,700", "Roboto:300,400,500,600,700"] },
+            active: function ()
+            {
+                sessionStorage.fonts = true;
+            }
+        });
+    </script>
+
+    <link rel="icon" type="image/png" sizes="192x192" href="/Content/img/favicon/android-icon-192x192.png">
+
+    <!--end::Page Custom Styles -->
+    <link href="/assets/vendors/global/vendors.bundle.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/css/style.bundle.css" rel="stylesheet" type="text/css" />
+
+    <script src="/vendor/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/commonFunctions.js?ver=@version"></script>
+    <link href="/vendor/bootstrap-datepicker/dist/css/bootstrap-datepicker.min.css" rel="stylesheet" />
+    <link href="/vendor/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" />
+    <link href="~/vendor/bootstrap-multiselect/css/bootstrap-multiselect.css" rel="stylesheet" />
+    <link href="~/vendor/iCheck/skins/square/_all.css" rel="stylesheet" />
+    <link href="/Content/jquery-ui.css" rel="stylesheet" />
+    <link href="~/assets/vendors/datatables/datatables.bundle.css" rel="stylesheet" />
+
+    @if (IsSectionDefined("AddToHead"))
+    {
+        @RenderSection("AddToHead", required: false)
+    }
+
+</head>
+<body class="kt-quick-panel--right kt-demo-panel--right kt-offcanvas-panel--right kt-header--fixed kt-header-mobile--fixed
+      kt-subheader--enabled kt-subheader--solid kt-aside--enabled kt-page--loading kt-aside--fixed kt-aside--minimize" id="body">
+
+    <div class="kt-spinner home-page kt-spinner--v2 kt-spinner--md kt-spinner--info"></div>
+
+    <!-- begin:: Header Mobile -->
+    <div id="kt_header_mobile" class="kt-header-mobile  kt-header-mobile--fixed ">
+        <div class="kt-header-mobile__logo">
+            <a href="#">
+                <img alt="Logo" src="/assets/images/logo.png" />
+            </a>
+        </div>
+        <div class="kt-header-mobile__toolbar">
+            <div class="kt-header-mobile__toolbar-toggler kt-header-mobile__toolbar-toggler--left" id="kt_aside_mobile_toggler"><span></span></div>
+
+            @*<div class="kt-header-mobile__toolbar-toggler" id="kt_header_mobile_toggler"><span></span></div>*@
+            <div class="kt-header-mobile__toolbar-topbar-toggler" id="kt_header_mobile_topbar_toggler"><i class="flaticon-more"></i></div>
+        </div>
+    </div>
+
+    <div class="kt-grid kt-grid--hor kt-grid--root">
+        <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--ver kt-page">
+            <!-- begin:: Aside -->
+            <button class="kt-aside-close " id="kt_aside_close_btn"><i class="la la-close"></i></button>
+            <div class="kt-aside  kt-aside--fixed  kt-grid__item kt-grid kt-grid--desktop kt-grid--hor-desktop" id="kt_aside">
+                <!-- begin:: Aside Menu -->
+                <div class="kt-aside-menu-wrapper kt-grid__item kt-grid__item--fluid" id="kt_aside_menu_wrapper">
+                    <div id="kt_aside_menu"
+                         class="kt-aside-menu "
+                         data-ktmenu-vertical="1"
+                         data-ktmenu-scroll="1" data-ktmenu-dropdown-timeout="500">
+
+                        @if (General.IsSuperAdmin())
+                        {
+                            Html.RenderPartial("navbar_admin");
+                        }
+                        else if (General.IsDistributor())
+                        {
+                            Html.RenderPartial("navbar_distributor");
+                        }
+                        else if (General.IsOutlet())
+                        {
+                            Html.RenderPartial("navbar_outlet");
+                        }
+                        else if (General.IsRoIncharge())
+                        {
+                            Html.RenderPartial("navbar_outlet");
+                        }
+                        else if (General.IsWorkShop() || General.IsWorkShopUser())
+                        {
+                            Html.RenderPartial("navbar_workshop");
+                        }
+                        else if (General.IsUser())
+                        {
+                            Html.RenderPartial("navbar_users");
+                        }
+                        else if (General.IsSalesExecutive())
+                        {
+                            Html.RenderPartial("navbar_users");
+                        }
+
+                    </div>
+                </div>
+                <!-- end:: Aside Menu -->
+            </div>
+            <!-- end:: Aside -->
+            <div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor kt-wrapper" id="kt_wrapper">
+                <!-- begin:: Header -->
+                <div id="kt_header" class="kt-header kt-grid kt-grid--ver  kt-header--fixed ">
+                    <!-- begin:: Aside -->
+                    @*header-collapse*@
+                    <div class="kt-header__brand kt-grid__item  " id="kt_header_brand">
+                        <div class="kt-header__brand-logo">
+                            <a href="javascript:void(0);">
+                                <img alt="Logo" src="/assets/images/logo.png" />
+                            </a>
+                        </div>
+                        <div class="kt-aside__brand-tools">
+                            <button class="kt-aside__brand-aside-toggler" id="kt_aside_toggler">
+                                <i class="flaticon-menu-2"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- end:: Aside -->
+                    <!-- begin:: Title -->
+                    <h3 class="kt-header__title kt-grid__item">
+                        Garaaz
+                    </h3>
+                    @if (General.IsWorkShop() || General.IsWorkShopUser())
+                    {
+                        RepoUsers repoUser = new RepoUsers();
+                        var distributors = repoUser.GetDistributorsForWorkShop(new WorkShopDistributorsRequest()).Distributors;//ViewBag.Distributors;
+                        if (distributors != null && distributors.Count() > 1)
+                        {
+                            <div class="form-group">
+                                <label></label>
+                                @Html.DropDownList("Mobiledropdown2", distributors as SelectList, new { @class = "form-control", Id = "ddl_Users" })
+
+                            </div>
+                        }
+                    }
+                    <!-- end:: Title -->
+                    <!-- begin: Header Menu -->
+                    <button class="kt-header-menu-wrapper-close" id="kt_header_menu_mobile_close_btn"><i class="la la-close"></i></button>
+                    <div class="kt-header-menu-wrapper kt-grid__item kt-grid__item--fluid" id="kt_header_menu_wrapper">
+
+                    </div>
+                    <!-- end: Header Menu -->
+                    <!-- begin:: Header Topbar -->
+                    <div class="kt-header__topbar">
+                        @{
+                            // For MobileDashboard page, we get userId and role as parameters
+                            string role = ((ClaimsIdentity)User.Identity).Claims.Where(c => c.Type == ClaimTypes.Role).OrderByDescending(o => o.Value).Select(c => c.Value).FirstOrDefault() ?? Request.QueryString["role"];
+
+                            var id = User.Identity.GetUserId() ?? Request.QueryString["userId"];
+                            RepoUsers user = new RepoUsers();
+                            var userDetail = user.GetUserDetailByUserId(id);
+                        }
+                        <h5 class="kt-header__title kt-grid__item" style="font-size: 1rem;text-align:center;">
+                            Hello, @(userDetail?.FirstName) &nbsp;@(userDetail?.LastName)
+                            <br /> <br /> (@role)
+                            @*<span style="margin-left: inherit;"><br />( @role )</span>*@
+                        </h5>
+
+                        <!--begin: Notifications -->
+                        <div class="kt-header__topbar-item dropdown">
+                            <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="10px,0px" id="_Notifications">
+                                <span class="kt-header__topbar-icon kt-header__topbar-icon--success"><i class="flaticon2-bell-alarm-symbol"></i></span>
+                                <span class="kt-hidden kt-badge kt-badge--danger"></span>
+                            </div>
+                            @{
+                                var userId = General.GetUserId();
+                            }
+                            <input type="hidden" id="UserId" name="notcount" value="@userId">
+                            @Html.Partial("_Notifications")
+                        </div>
+                        <!--end: Notifications -->
+                        <!--begin: Cart -->
+                        <div class="kt-header__topbar-item dropdown">
+                            <div id="cart-btn" class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="10px,0px">
+                                <span class="kt-header__topbar-icon"><i class="flaticon2-shopping-cart-1"></i></span>
+                                <div class="kt-mycart__button">
+                                    @{
+                                        var Cartitems = 0;
+                                        var utils = new Utils();
+                                        var tempOrderId = utils.getIntCookiesValue("TempOrderId");
+                                        var UserId = General.GetUserId();
+                                        if (!string.IsNullOrEmpty(tempOrderId.ToString()) && !string.IsNullOrEmpty(UserId.ToString()))
+                                        {
+                                            RepoOrder cls = new RepoOrder();
+                                            Cartitems = cls.GetCartcount(tempOrderId);
+                                        }
+                                    }
+                                    <span class="kt-badge kt-badge--brand" style="margin: 17px 0 0;position: relative;right: 10px;">@Cartitems</span>
+                                </div>
+                            </div>
+                            <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl">
+                                <div id="cart-items">
+                                </div>
+                            </div>
+                        </div>
+                        <!--end: Cart-->
+                        <!--begin: User bar -->
+                        <div class="kt-header__topbar-item kt-header__topbar-item--user">
+                            <div class="kt-header__topbar-wrapper" data-toggle="dropdown" data-offset="10px,0px">
+                                <span class="kt-header__topbar-icon kt-hidden-"><i class="flaticon2-user-outline-symbol"></i></span>
+                            </div>
+                            <div class="dropdown-menu dropdown-menu-fit dropdown-menu-right dropdown-menu-anim dropdown-menu-xl">
+                                <!--begin: Head -->
+                                <div class="kt-user-card kt-user-card--skin-dark kt-notification-item-padding-x" style="background-image: url(/assets/images/misc/bg-1.jpg)">
+                                    <div class="kt-user-card__name">
+                                        Hello @General.GetUsername()
+                                    </div>
+                                </div>
+                                <!--end: Head -->
+                                <!--begin: Navigation -->
+                                <div class="kt-notification">
+                                    <a href='@Url.Action("ProfileDetail","Home")' class="kt-notification__item">
+                                        <div class="kt-notification__item-icon">
+                                            <i class="flaticon2-calendar-3 kt-font-success"></i>
+                                        </div>
+                                        <div class="kt-notification__item-details">
+                                            <div class="kt-notification__item-title kt-font-bold">
+                                                My Profile
+                                            </div>
+                                            <div class="kt-notification__item-time">
+                                                Account settings and more
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <a class="kt-notification__item" href="javascript:void(0)" onclick="common.ChangePasswordPopUp('@User.Identity.GetUserId()')">
+                                        <div class="kt-notification__item-icon">
+                                            <i class="la la-edit"></i>
+                                        </div>
+                                        <div class="kt-notification__item-details">
+                                            <div class="kt-notification__item-title kt-font-bold">
+                                                Change Password
+                                            </div>
+                                            <div class="kt-notification__item-time">
+
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <a class="kt-notification__item" href="javascript:void(0)" onclick="common.ChangeMobilePopUp()">
+                                        <div class="kt-notification__item-icon">
+                                            <i class="la la-mobile-phone"></i>
+                                        </div>
+                                        <div class="kt-notification__item-details">
+                                            <div class="kt-notification__item-title kt-font-bold">
+                                                Change Mobile Number
+                                            </div>
+                                            <div class="kt-notification__item-time">
+
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <a href='@Url.Action("AllNotifications","Home")' class="kt-notification__item">
+                                        <div class="kt-notification__item-icon">
+                                            <i class="flaticon2-bell-alarm-symbol"></i>
+                                        </div>
+                                        <div class="kt-notification__item-details">
+                                            <div class="kt-notification__item-title kt-font-bold">
+                                                All Notifications
+                                            </div>
+                                            <div class="kt-notification__item-time">
+                                                Click here to see all notifications.
+                                            </div>
+                                        </div>
+                                    </a>
+                                    <div class="kt-notification__custom kt-space-between">
+                                        <a href="/Account/LogOff" id="Signout" class="btn btn-label btn-label-brand btn-sm btn-bold">Sign Out</a>
+
+                                    </div>
+                                </div>
+                                <!--end: Navigation -->
+                            </div>
+                        </div>
+                        <!--end: User bar -->
+                    </div>
+                    <!-- end:: Header Topbar -->
+                </div>
+                <!-- end:: Header -->
+                <div class="kt-content  kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor" id="kt_content">
+                    @RenderBody()
+                </div>
+            </div>
+        </div>
+    </div>
+    @if (Request.IsAuthenticated)
+    {
+        <input type="hidden" id="access_token" value="@General.GetToken()" />
+        <input type="hidden" id="user_id" value="@User.Identity.GetUserId()" />
+        <input type="hidden" id="user_role" value="@role" />
+    }
+    <script>
+        var KTAppOptions = { "colors": { "state": { "brand": "#22b9ff", "light": "#ffffff", "dark": "#282a3c", "primary": "#5867dd", "success": "#34bfa3", "info": "#36a3f7", "warning": "#ffb822", "danger": "#fd3995" }, "base": { "label": ["#c5cbe3", "#a1a8c3", "#3d4465", "#3e4466"], "shape": ["#f0f3ff", "#d9dffa", "#afb4d4", "#646c9a"] } } };
+    </script>
+
+
+
+    <!-- The Modal -->
+
+    <div class="modal changePassword" id="myModalPassword">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Change Password</h4>
+                    <button type="button" class="close" data-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="hidden" class="form-control userId" />
+                                <label>New Password <em>*</em></label>
+                                <div class="input-group" id="show_hide_password">
+                                    <input type="password" class="form-control newPassword" placeholder="New Password" />
+                                    <div class="input-group-append">
+                                        <span class="input-group-text"><i class="fa fa-eye-slash" aria-hidden="true"></i></span>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Confirm Password <em>*</em></label>
+                                <input type="password" class="form-control confirmPassword" placeholder="Confirm Password" />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Modal footer -->
+                    <div class="modal-footer">
+                        <a href="javascript:void(0);" class="btn btn-info ml-0" onclick="common.ChangePassword()">Change Password</a>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal changeMobile" id="myModalMobile">
+        <div class="modal-dialog">
+            <div class="modal-content">
+
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Change Mobile Number</h4>
+                    <button type="button" class="close" data-dismiss="modal"></button>
+                </div>
+
+                <!-- Modal body -->
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <input type="hidden" class="form-control userId" />
+                                <label>New Mobile Number <em>*</em></label>
+                                <input type="text" class="form-control newMobile" placeholder="New Mobile Number" />
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Confirm Mobile Number <em>*</em></label>
+                                <input type="text" class="form-control confirmMobile" placeholder="Confirm Mobile Number" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <a href="javascript:void(0);" class="btn btn-info ml-0" onclick="common.ChangeMobile()">Change Mobile Number</a>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!--begin::Global Theme Bundle(used by all pages) -->
+    <script src="/assets/vendors/global/vendors.bundle.js" type="text/javascript"></script>
+    <script src="/assets/js/scripts.bundle.js" type="text/javascript"></script>
+    <script src="/assets/js/dashboard.js" type="text/javascript"></script>
+
+    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBmRrnqSJVZZKtKrtdO9zmYmdy2AhKFU9k&libraries=places"></script>
+
+
+    <script src="~/assets/vendors/datatables/datatables.bundle.js"></script>
+
+
+    <script src="/vendor/bootstrap-switch/dist/js/bootstrap-switch.min.js"></script>
+    <script src="~/vendor/bootstrap-multiselect/js/bootstrap-multiselect.js"></script>
+    <script src="/vendor/iCheck/icheck.min.js"></script>
+
+    <script src="~/js/admin.js?ver=@version"></script>
+    <script src="/Scripts/jquery-ui.js"></script>
+    <script src="/vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js"></script>
+    <script src="/scripts/jquery.validate.min.js" type="text/javascript"></script>
+    <script src="/scripts/jquery.validate.unobtrusive.min.js" type="text/javascript"></script>
+    <script type="text/javascript">
+        $(document).ready(function ()
+        {
+            // change distributor ddl selected value
+            var role = $("#user_role").val();
+            if (role == 'Workshop' || role == 'WorkshopUsers')
+            {
+                var userId = $("#UserId").val();
+                $("#ddl_Users option[value='" + userId + "']").attr("selected", "selected");
+            }
+            common.RemoveMessage();
+            $("#ddl_Users").change(function ()
+            {
+                var userId = $("#ddl_Users option:selected").val();
+                $("#UserId").val(userId);
+                admin.SetWorkshopUserId(userId);
+            });
+            common.loadInit();
+            $("#kt_aside_toggler").click(function ()
+            {
+                $("#kt_header_brand").toggleClass("header-collapse");
+            });
+            // change Notification counter
+            $("#_Notifications").click(function ()
+            {
+                var userid = $("#UserId").val();
+                GetNewNotifications(userid);
+            });
+            function GetNewNotifications(id)
+            {
+                var data = {
+                    UserId: id,
+                    NumberOfNotification: 30,
+                    GetAllNotification: false
+                };
+                $.ajax({
+                    type: "Get",
+                    url: "/home/GetNotification",
+                    data: data,
+                    contentType: "application/json;charset=utf-8",
+                    dataType: "json",
+                    success: function (result)
+                    {
+                        if (result > 0)
+                        {
+                            document.getElementById('countnoti').innerHTML = result + " new";
+                        }
+                        else { document.getElementById('countnoti').remove(); }
+                    }
+                });
+            }
+
+            //   Show password js
+            $("#show_hide_password i").click(function ()
+            {
+                if ($('#show_hide_password input').attr("type") == "text")
+                {
+                    $('#show_hide_password input').attr('type', 'password');
+                    $('#show_hide_password i').addClass("fa-eye-slash");
+                    $('#show_hide_password i').removeClass("fa-eye");
+                } else if ($('#show_hide_password input').attr("type") == "password")
+                {
+                    $('#show_hide_password input').attr('type', 'text');
+                    $('#show_hide_password i').removeClass("fa-eye-slash");
+                    $('#show_hide_password i').addClass("fa-eye");
+                }
+            });
+        });
+
+    </script>
+    @RenderSection("scripts", required: false)
+</body>
+</html>

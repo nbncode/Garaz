@@ -1,0 +1,81 @@
+﻿@model List<Garaaz.Models.DashboardOverview.Sale.SeWiseSaleDetail>
+
+@{
+    const string noRecordFound = "Sorry! No record found for selected criteria";
+
+    string errorMsg = ViewBag.ErrorMsg;
+    if (string.IsNullOrWhiteSpace(errorMsg) && Model == null)
+    {
+        errorMsg = "Model is not set";
+    }
+}
+
+@if (string.IsNullOrWhiteSpace(errorMsg) && Model != null)
+{
+    if (Model.Count > 0)
+    {
+        var totalCustomers = Model.Sum(m => m.NumberOfCustomers);
+        var totalAvgSale = Model.Sum(m => m.AverageSale);
+        var totalPrvSale = Model.Sum(m => m.PrevAchieved) ?? 0;
+        var totalAchieved = Model.Sum(m => m.Achieved);
+        var totalAchievedPer = $"{Math.Round(totalAchieved * 100 / (totalPrvSale == 0 ? 100 : totalPrvSale), 2)}%";
+
+        <div class="table-responsive">
+            <table class="table table-bordered w-auto table-center">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Sr No</th>
+                        <th>Customer Type</th>
+                        <th>No of Customers</th>
+                        <th>Avg Sale (3 Months)</th>
+                        <th>Achieved</th>
+                        <th>Achieved%</th>
+                        <th>@ViewBag.PrvYrHeader</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var sewSd in Model)
+                    {
+                    <tr>
+                        <td>@sewSd.SlNo</td>
+                        <td>@sewSd.CustomerType</td>
+                        <td>@sewSd.NumberOfCustomers</td>
+                        <td>@sewSd.AverageSale</td>
+                        <td>@sewSd.Achieved</td>
+                        <td>@sewSd.AchievedPercentage</td>
+                        <td>@sewSd.PrevAchieved</td>
+                    </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td><b>Total</b></td>
+                        <td><b>@totalCustomers</b></td>
+                        <td><b>@totalAvgSale.ToString("N")</b></td>
+                        <td><b>@totalAchieved.ToString("N")</b></td>
+                        <td><b>@totalAchievedPer</b></td>
+                        <td><b>@totalPrvSale.ToString("N")</b></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p class="kt-font-bold">
+            <i class="kt-font-warning flaticon-warning-sign"></i>
+            &nbsp;@noRecordFound
+        </p>
+    }
+}
+else
+{
+    <p class="kt-font-bold">
+        <i class="kt-font-warning flaticon-warning-sign"></i>
+        &nbsp;@errorMsg
+    </p>
+}
+
+
+

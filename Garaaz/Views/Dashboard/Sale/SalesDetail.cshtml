@@ -1,0 +1,89 @@
+﻿@{
+    ViewBag.Title = "Sales Detail";
+}
+
+<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+    <div class="kt-subheader-search">
+        <h3 class="kt-subheader-search__title">
+            Dashboard - @ViewBag.Title
+        </h3>
+    </div>
+
+    <header class="ribbon">
+        <h2>&nbsp;</h2>
+    </header>
+
+    <div class="page-content">
+        <div class="page-content">
+            <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+
+                @*Date filters*@
+                <div class="row">
+                    <div class="col-sm-2">
+                        <div class="form-group">
+                            <label for="ddlDateFilter">Select filter</label>
+                            <select id="ddlDateFilter" onchange="dbSale.fetchSalesByDateFilter()" class="form-control">
+                                <option value="MTD" selected="selected">MTD</option>
+                                <option value="YTD">YTD</option>
+                                <option value="Q1">Q1</option>
+                                <option value="Q2">Q2</option>
+                                <option value="Q3">Q3</option>
+                                <option value="Q4">Q4</option>
+                                <option value="CustomDate">Custom Date</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div id="divStartDate" class="form-group" style="display: none;">
+                            <label>Start Date<em>*</em></label>
+                            <input type="text" class="form-control" name="startDate" id="startDate" value="@DateTime.Now.ToString("dd-MM-yyyy")" data-date-format="dd-mm-yyyy">
+                        </div>
+                    </div>
+                    <div class="col-sm-3">
+                        <div id="divEndDate" class="form-group" style="display: none;">
+                            <label>End Date<em>*</em></label>
+                            <input type="text" class="form-control" name="endDate" id="endDate" value="@DateTime.Now.ToString("dd-MM-yyyy")" data-date-format="dd-mm-yyyy">
+                        </div>
+                    </div>
+                    <div class="col-sm-1">
+                        <div id="divFilter" class="form-group pt-4" style="display: none;">
+                            <button class="btn btn-info" onclick="dbSale.applyFilter()">Filter</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row ml-1 pb-3">
+                    <a href="Index" id="backtoMain" data-referer="" class="btn btn-brand btn-elevate btn-icon-sm flaticon2-back" style="display: none;">&nbsp;Back</a>
+                </div>
+                <div class="row ml-1 pb-3">
+                    <a href="javascript:void(0);" id="back" data-referer="" onclick="dbSale.handleBack()" class="btn btn-brand btn-elevate btn-icon-sm flaticon2-back" style="display: none;">&nbsp;Back</a>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="kt-portlet info-block">
+                            <div id="divContainer"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="kt-portlet info-block">
+                            <div id="divSubContainer"></div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        <div class="kt-portlet info-block">
+                            <div id="divLastContainer"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/vendor/moment/moment.min.js"></script>
+    <script src="~/js/db.common.js?v=0.2"></script>
+    <script src="~/js/db.sale.js?v=0.2"></script>
+    <script>
+        dbSale.initSale();
+    </script>
+}

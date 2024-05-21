@@ -1,0 +1,192 @@
+﻿@using Garaaz.Models;
+@using System.Configuration;
+@using Microsoft.AspNet.Identity
+@using Garaaz.Controllers
+
+@{
+
+    List<Feature> features = new List<Feature>();
+    var UserId = General.GetUserId();
+    if (!string.IsNullOrEmpty(UserId.ToString()))
+    {
+        General cls = new General();
+        features = cls.GetDistributorUserMenue(UserId);
+    }
+}
+<ul class="kt-menu__nav ">
+    <li class="kt-menu__item  kt-menu__item--active" aria-haspopup="true">
+        <a href="/Outlet/index" class="kt-menu__link ">
+            <i class="kt-menu__link-icon flaticon2-protection"></i>
+            <span class="kt-menu__link-text">Dashboard</span>
+        </a>
+    </li>
+
+    <li class="kt-menu__item " aria-haspopup="true">
+        <a href="/Outlet/OutletUsers" class="kt-menu__link ">
+            <i class="kt-menu__link-icon flaticon2-user-outline-symbol"></i>
+            <span class="kt-menu__link-text">Users</span>
+        </a>
+    </li>
+    <li class="kt-menu__item " aria-haspopup="true">
+        <a href="/Outlet/AllOrders" class="kt-menu__link ">
+            <i class="kt-menu__link-icon flaticon2-soft-icons-1"></i>
+            <span class="kt-menu__link-text">My Orders</span>
+        </a>
+    </li>
+    <li class="kt-menu__item " aria-haspopup="true">
+        <a href="/Outlet/CustomerBackOrders" class="kt-menu__link ">
+            <i class="kt-menu__link-icon flaticon2-soft-icons-1"></i>
+            <span class="kt-menu__link-text">Back Orders</span>
+        </a>
+    </li>
+    <li class="kt-menu__item " aria-haspopup="true">
+        <a href="/Outlet/NewPartRequest" class="kt-menu__link ">
+            <i class="kt-menu__link-bullet kt-menu__link-bullet--line"><span></span></i>
+            <span class="kt-menu__link-text">New Part Requests</span>
+        </a>
+    </li>
+    @if (features.Count() > 0)
+    {
+        <li class="kt-menu__item  kt-menu__item--submenu" aria-haspopup="true" data-ktmenu-submenu-toggle="hover">
+            <a href="javascript:;" class="kt-menu__link kt-menu__toggle">
+                <i class="kt-menu__link-icon flaticon2-list-3"></i>
+                <span class="kt-menu__link-text">Permissions</span>
+                <i class="kt-menu__ver-arrow la la-angle-right"></i>
+            </a>
+            <div class="kt-menu__submenu ">
+                <span class="kt-menu__arrow"></span>
+                <ul class="kt-menu__subnav">
+                    @foreach (var item in features)
+                    {
+                        if (item.FeatureValue == DistributerUserMenues.Outlets)
+                        {
+                            <li class="kt-menu__item " aria-haspopup="true">
+                                <a href="/Distributor/DistributorOutlets" class="kt-menu__link ">
+                                    <i class="kt-menu__link-icon flaticon2-list-3"><span></span></i>
+                                    <span class="kt-menu__link-text">Outlets</span>
+                                </a>
+                            </li>
+                        }
+                        else if (item.FeatureValue == DistributerUserMenues.Users)
+                        {
+                            <li class="kt-menu__item " aria-haspopup="true">
+                                <a href="/Distributor/DistributorUsers" class="kt-menu__link ">
+                                    <i class="kt-menu__link-icon flaticon-avatar"><span></span></i>
+                                    <span class="kt-menu__link-text">Users</span>
+                                </a>
+                            </li>
+                        }
+                        else if (item.FeatureValue == DistributerUserMenues.SalesExecutives)
+                        {
+                            <li class="kt-menu__item " aria-haspopup="true">
+                                <a href="/Distributor/SalesExecutive" class="kt-menu__link ">
+                                    <i class="kt-menu__link-icon flaticon-squares-2"><span></span></i>
+                                    <span class="kt-menu__link-text">Sales Executives</span>
+                                </a>
+                            </li>
+                        }
+                        else if (item.FeatureValue == DistributerUserMenues.ROIncharge)
+                        {
+                            <li class="kt-menu__item " aria-haspopup="true">
+                                <a href="/Distributor/RoIncharge" class="kt-menu__link ">
+                                    <i class="kt-menu__link-icon flaticon-arrows"><span></span></i>
+                                    <span class="kt-menu__link-text">RO Incharge</span>
+                                </a>
+                            </li>
+                        }
+                        else if (item.FeatureValue == DistributerUserMenues.Workshop)
+                        {
+                            <li class="kt-menu__item " aria-haspopup="true">
+                                <a href="/Distributor/Workshop" class="kt-menu__link ">
+                                    <i class="kt-menu__link-icon flaticon-apps"><span></span></i>
+                                    <span class="kt-menu__link-text">Workshop</span>
+                                </a>
+                            </li>
+                        }
+                        else if (item.FeatureValue == DistributerUserMenues.Schemes)
+                        {
+                            <li class="kt-menu__item " aria-haspopup="true">
+                                <a href="/distributor/Schemes" class="kt-menu__link ">
+                                    <i class="kt-menu__link-icon flaticon2-list"><span></span></i>
+                                    <span class="kt-menu__link-text">Schemes</span>
+                                </a>
+                            </li>
+                        }
+                        else if (item.FeatureValue == DistributerUserMenues.LocationCode)
+                        {
+                            <li class="kt-menu__item " aria-haspopup="true">
+                                <a href="/Distributor/DistributorLocations" class="kt-menu__link ">
+                                    <i class="kt-menu__link-icon flaticon2-analytics-2"><span></span></i>
+                                    <span class="kt-menu__link-text">Location Code</span>
+                                </a>
+                            </li>
+                        }
+                        else if (item.FeatureValue == DistributerUserMenues.ShowSales)
+                        {
+                            <li class="kt-menu__item " aria-haspopup="true">
+                                <a href="/Distributor/ShowSalesTrackerWithInvoice" class="kt-menu__link ">
+                                    <i class="kt-menu__link-icon flaticon2-analytics"><span></span></i>
+                                    <span class="kt-menu__link-text">Show Sales</span>
+                                </a>
+                            </li>
+                        }
+                        else if (item.FeatureValue == DistributerUserMenues.CurrentOrder)
+                        {
+                            <li class="kt-menu__item " aria-haspopup="true">
+                                <a href="/Distributor/AllOrders" class="kt-menu__link ">
+                                    <i class="kt-menu__link-icon flaticon2-analytics-1"><span></span></i>
+                                    <span class="kt-menu__link-text">My Orders</span>
+                                </a>
+                            </li>
+                        }
+                        else if (item.FeatureValue == DistributerUserMenues.Updates)
+                        {
+                            <li class="kt-menu__item " aria-haspopup="true">
+                                <a href="/Distributor/MgaBanner" class="kt-menu__link ">
+                                    <i class="kt-menu__link-icon flaticon2-architecture-and-city"><span></span></i>
+                                    <span class="kt-menu__link-text">Updates</span>
+                                </a>
+                            </li>
+                        }
+                        else if (item.FeatureValue == DistributerUserMenues.ProductGroup)
+                        {
+                            <li class="kt-menu__item " aria-haspopup="true">
+                                <a href="/Distributor/ProductGroup" class="kt-menu__link ">
+                                    <i class="kt-menu__link-icon flaticon2-group"><span></span></i>
+                                    <span class="kt-menu__link-text">Product Group</span>
+                                </a>
+                            </li>
+                        }
+                        else if (item.FeatureValue == DistributerUserMenues.Product)
+                        {
+                            <li class="kt-menu__item " aria-haspopup="true">
+                                <a href="/Distributor/Product" class="kt-menu__link ">
+                                    <i class="kt-menu__link-icon flaticon2-soft-icons"><span></span></i>
+                                    <span class="kt-menu__link-text">Product</span>
+                                </a>
+                            </li>
+                        }
+                        else if (item.FeatureValue == DistributerUserMenues.BackOrders)
+                        {
+                            <li class="kt-menu__item " aria-haspopup="true">
+                                <a href="/Distributor/CustomerBackOrders" class="kt-menu__link ">
+                                    <i class="kt-menu__link-icon flaticon2-soft-icons"><span></span></i>
+                                    <span class="kt-menu__link-text">Back Orders</span>
+                                </a>
+                            </li>
+                        }
+                        else if (item.FeatureValue == DistributerUserMenues.NewPartRequests)
+                        {
+                            <li class="kt-menu__item " aria-haspopup="true">
+                                <a href="/Distributor/NewPartRequest" class="kt-menu__link ">
+                                    <i class="kt-menu__link-icon flaticon2-soft-icons"><span></span></i>
+                                    <span class="kt-menu__link-text">New Part Requests</span>
+                                </a>
+                            </li>
+                        }
+                    }
+                </ul>
+            </div>
+        </li>
+    }
+</ul>

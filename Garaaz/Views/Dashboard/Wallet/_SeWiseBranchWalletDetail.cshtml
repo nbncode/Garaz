@@ -1,0 +1,83 @@
+﻿@model List<Garaaz.Models.DashboardOverview.Wallet.SeWiseBranchWallet>
+
+@{
+    const string noRecordFound = "Sorry! No record found for selected criteria";
+
+    string errorMsg = ViewBag.ErrorMsg;
+    if (string.IsNullOrWhiteSpace(errorMsg) && Model == null)
+    {
+        errorMsg = "Model is not set";
+    }
+}
+
+@if (string.IsNullOrWhiteSpace(errorMsg) && Model != null)
+{
+    if (Model.Count > 0)
+    {
+        var totalCustomers = Model.Sum(m => m.NumberOfCustomers);
+        var totalAvgSale = Model.Sum(m => m.AverageSale);
+        var totalWalletBal = Model.Sum(m => m.WalletBalance);
+        var totalPayoutOfSalesPercentage = Model.Sum(m => m.PayoutOfSalesPercentage);
+
+        <div class="table-responsive">
+            <table class="table table-bordered w-auto table-center dataTable">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Sr No</th>
+                        <th>Branch Code</th>
+                        <th>Sales Exec Name</th>
+                        <th>No of Customers</th>
+                        <th>Avg Sale (3 Months)</th>
+                        <th>Wallet Balance</th>
+                        <th>Payout of Sales %</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var sewBwd in Model)
+                    {
+                        <tr>
+                            <td>@sewBwd.SlNo</td>
+                            <td>@sewBwd.BranchCode</td>
+                            <td>@sewBwd.SalesExecName</td>
+                            <td>@sewBwd.NumberOfCustomers</td>
+                            <td>@sewBwd.AverageSale</td>
+                            <td>@sewBwd.WalletBalance</td>
+                            <td>@sewBwd.PayoutOfSalesPercentage.ToString("P")</td>
+                            <td><a href="javascript:void(0);" onclick="dbWal.fetchBranchWalletDetailByType('SE','@sewBwd.BranchCode')">View</a></td>
+                        </tr>
+                    }
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td></td>
+                        <td><b>Grand Total</b></td>
+                        <td></td>
+                        <td><b>@totalCustomers</b></td>
+                        <td><b>@totalAvgSale.ToString("N")</b></td>
+                        <td><b>@totalWalletBal.ToString("N")</b></td>
+                        <td><b>@totalPayoutOfSalesPercentage.ToString("P")</b></td>
+                        <td></td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+    }
+    else
+    {
+        <p class="kt-font-bold">
+            <i class="kt-font-warning flaticon-warning-sign"></i>
+            &nbsp;@noRecordFound
+        </p>
+    }
+}
+else
+{
+    <p class="kt-font-bold">
+        <i class="kt-font-warning flaticon-warning-sign"></i>
+        &nbsp;@errorMsg
+    </p>
+}
+
+
+

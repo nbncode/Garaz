@@ -1,0 +1,45 @@
+﻿@model IEnumerable<Garaaz.Models.ResponseSchemeCategoryModel>
+
+@if (Model.Any())
+{
+    <!--Table rows with data-->
+    foreach (var item in Model)
+    {
+        <div class="row body" id="@item.CategoryId">
+            <div class="col-sm-4 td">
+                <input type="text" class="form-control category-name" value="@item.Category" placeholder="Category Name">
+            </div>
+            <div class="col-sm-4 td">
+                <input type="number" step="any" class="form-control min-price" value="@item.MinAmount" placeholder="Monthly Purchase From">
+            </div>
+            <div class="col-sm-3 td">
+                <input type="number" step="any" class="form-control max-price" value="@item.MaxAmount" placeholder="Monthly Purchase To">
+            </div>
+            <div class="col-sm-1 td text-center">
+                <a class="table-trash-icon" onclick="schemes.removeCurrentCategory(this)" href="javascript:void(0);">
+                    <i class="la la-trash"></i>
+                </a>
+            </div>
+        </div>
+    }
+}
+else
+{
+    <!--Default empty table rows-->
+    <div class="row body" id="0">
+        <div class="col-sm-4 td">
+            <input type="text" class="form-control category-name" placeholder="Category Name">
+        </div>
+        <div class="col-sm-4 td">
+            <input type="number" step="any" class="form-control min-price" placeholder="Monthly Purchase From">
+        </div>
+        <div class="col-sm-3 td">
+            <input type="number" step="any" class="form-control max-price" placeholder="Monthly Purchase To">
+        </div>
+        <div class="col-sm-1 td text-center">
+            <a class="table-trash-icon" onclick="schemes.removeCurrentCategory(this)" href="javascript:void(0);">
+                <i class="la la-trash"></i>
+            </a>
+        </div>
+    </div>
+}

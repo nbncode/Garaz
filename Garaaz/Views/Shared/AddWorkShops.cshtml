@@ -1,0 +1,67 @@
+﻿@{
+    var distributorid = Request.QueryString["DistributorId"];
+    ViewBag.Title = "Add Customer";
+}
+
+<div class="kt-subheader-search">
+    <h3 class="kt-subheader-search__title">
+        Customers
+    </h3>
+</div>
+
+<header class="ribbon">
+    <h2>&nbsp;</h2>
+</header>
+<div class="page-content">
+    <div class="row">
+        <div class="col-md-12">
+            <div id="main-content">
+                @{Html.RenderPartial("alerts");}
+                <!--begin::Portlet-->
+                <div class="kt-portlet">
+                    <div class="kt-portlet__head">
+                        <div class="kt-portlet__head-label">
+                            <h3 class="kt-portlet__head-title">
+                                Add Existing Customer
+                            </h3>
+                        </div>
+                        <div class="kt-portlet__head-toolbar">
+                            <div class="kt-portlet__head-wrapper">
+                                <div class="kt-portlet__head-actions">
+                                    <a href="/@ViewBag.Controller/Workshop?distributorId=@ViewBag.distributorId" class="btn btn-brand btn-elevate btn-icon-sm">
+                                        <i class="la la-step-backward"></i>
+                                        Back
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="kt-form">
+                        <div class="kt-portlet__body">
+                            <div class="row">
+                                <div class="col-sm-5">
+                                    <div class="ui-widget">
+                                        <div class="form-group">
+                                            <label>Select Workshop <em>*</em></label>
+                                            <input id="tags" onkeyup="admin.SetValueToInput()" class="form-control">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-7 workshop-btn">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="kt-portlet__foot">
+                            <div class="kt-form__actions">
+                                <button type="button" onclick="admin.SubmitWorkShops(@distributorid,document.getElementById('tags').value)" class="btn btn-primary">Submit</button>
+                                <a href="/@ViewBag.Controller/AddWorkshop?distributorId=@distributorid" class="btn btn-brand">Add New WorkShop</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

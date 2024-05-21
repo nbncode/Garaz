@@ -1,0 +1,33 @@
+﻿
+@{
+    ViewBag.Title = "Distributor Users";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="kt-subheader-search">
+    <h3 class="kt-subheader-search__title">
+        User Master
+    </h3>
+</div>
+
+<header class="ribbon">
+    <h2>&nbsp;</h2>
+</header>
+<div class="page-content">
+    <div class="container-fluid">
+        @{Html.RenderPartial("alerts");}
+        <input type="hidden" id="PageView" value="/@ViewBag.Controller/DistributorUsersPartialView?distributorId=@ViewBag.distributorId&outletId=@ViewBag.outletId&workshopId=@ViewBag.workshopId" />
+        <div id="main-content">
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var url = $("#PageView").val();
+            admin.LoadPartialView(url);
+        });
+    </script>
+}
+

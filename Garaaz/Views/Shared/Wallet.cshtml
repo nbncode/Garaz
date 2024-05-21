@@ -1,0 +1,98 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Wallet";
+    var controller = this.ViewContext.RouteData.GetRequiredString("controller");
+}
+<div class="kt-subheader-search">
+    <h3 class="kt-subheader-search__title">
+        Wallet
+    </h3>
+</div>
+
+<header class="ribbon">
+    <h2>&nbsp;</h2>
+</header>
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label for="couponNumber">Coupon number:</label>
+                    <input type="password" style="display:none;"> <!--This input is to make autocomplete off work in Chrome browser for couponNumber.-->
+                    <input id="couponNumber" type="text" maxlength="6" autocomplete="off" placeholder="Coupon to search" class="form-control" />
+                </div>
+            </div>
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label></label>
+                    <a href="javascript:void(0);" class="btn btn-info align" style="margin-top:25px;" onclick="admin.GetWsWallet(false,'@controller')">Search Workshop</a>
+                    <a href="javascript:void(0);" class="btn btn-warning align" style="margin-top:25px;" onclick="admin.GetWsWallet(true,'@controller')">Reset</a>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="form-group text-right">
+                    <label></label>
+                    <a href="javascript:void(0);" class="btn btn-info" style="margin-top:25px;" data-toggle="modal" data-target="#redeemModal">Redeem Coupon</a>
+                </div>
+            </div>
+        </div>
+        @{Html.RenderPartial("alerts");}
+        <input type="hidden" id="PageView" value="/@controller/WalletPartialView" />
+
+        <div id="main-content">
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="redeemModal">
+    <div class="modal-dialog">
+        <div class="modal-content">
+
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title">Redeem</h4>
+                <button type="button" class="close" data-dismiss="modal"></button>
+            </div>
+
+            <!-- Modal body -->
+            <div class="modal-body">
+                <div class="addMoney">
+                    <div class="row">
+                        <div class="col-sm-8">
+                            <div class="form-group">
+                                <input type="text" id="redeemCouponNo" class="form-control redeemCouponNo" autocomplete="off" placeholder="Coupon Number" />
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <a href="javascript:void(0);" class="btn btn-info" onclick="admin.SearchCouponNo()">Search</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <div class="form-group">
+                                <h5 id="couponExistMsg"></h5>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Modal footer -->
+            <div class="modal-footer">
+                <a href="javascript:void(0);" id="confirmCouponNo" class="btn btn-info ml-0 disabled" onclick="admin.RedeemCouponNo()">Confirm Redeem</a>
+                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            </div>
+
+        </div>
+    </div>
+</div>
+@section scripts{
+<script src="~/js/schmes.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var url = $("#PageView").val();
+        admin.LoadPartialView(url);
+    });
+</script>
+}

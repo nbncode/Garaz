@@ -1,0 +1,38 @@
+﻿
+<div id="main-content">
+    <header class="ribbon">
+        <h2>&nbsp;</h2>
+    </header>
+    <div class="page-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="panel panel-info">
+                        <div class="panel-heading">
+                            <h2>UPLOAD EXCEL FILE</h2>
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                @using(Html.BeginForm("UploadExcel", "Admin",FormMethod.Post,new { enctype = "multipart/form-data" }))
+                                {
+                                <div class="col-sm-6">
+                                    <div class="ui-widget" style="display: inline-block;">
+                                        <label>Select Excel File :</label>
+                                        <input type="file" name="file" id="file" style="width: 100%;"/>
+                                    </div>
+                                    <button class="btn btn-primary">Submit</button>
+                                </div>
+                                }
+                                
+                            </div>
+                        </div>
+                        <!-- /.panel-body -->
+                    </div>
+                    <!-- /.panel-primary panel -->
+                </div>
+                <!-- /.col-md-7 -->
+            </div>
+        </div>
+    </div>
+
+</div>

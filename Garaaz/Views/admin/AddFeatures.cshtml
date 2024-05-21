@@ -1,0 +1,105 @@
+﻿@model Garaaz.Models.clsFeatures
+@using Garaaz.Models
+
+@{
+    ViewBag.Title = "AddFeatures";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    List<RolesData> roles = (List<RolesData>)ViewBag.Roles;
+}
+
+<div class="kt-grid__item kt-grid__item--fluid kt-grid kt-grid--hor">
+    <div class="kt-subheader-search">
+        <h3 class="kt-subheader-search__title">
+            Features Master
+        </h3>
+    </div>
+
+
+    <header class="ribbon">
+        <h2>&nbsp;</h2>
+    </header>
+
+    <div class="page-content">
+        <div class="page-content">
+            @{Html.RenderPartial("alerts");}
+
+            <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+                <div class="row">
+                    <div class="col-md-12">
+                        <!--begin::Portlet-->
+                        <div class="kt-portlet">
+                            <div class="kt-portlet__head">
+                                <div class="kt-portlet__head-label">
+                                    <h3 class="kt-portlet__head-title">
+                                        Add Features
+                                    </h3>
+                                </div>
+                                <div class="kt-portlet__head-toolbar">
+                                    <div class="kt-portlet__head-wrapper">
+                                        <div class="kt-portlet__head-actions">
+                                            <a href="/admin/Feature" class="btn btn-brand btn-elevate btn-icon-sm">
+                                                <i class="la la-step-backward"></i>
+                                                Back
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            @using (Html.BeginForm())
+                            {
+                                <div class="kt-form">
+                                    <div class="kt-portlet__body">
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Features Name<em>*</em></label>
+
+                                                    @Html.HiddenFor(model => model.FeatureId)
+
+                                                    @Html.EditorFor(model => model.FeatureName, new { htmlAttributes = new { @class = "form-control required" } })
+                                                    @Html.ValidationMessageFor(model => model.FeatureName, "", new { @class = "text-danger" })
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label>Features Value<em>*</em></label>
+                                                    @if (Model.FeatureId > 0)
+                                                    {
+                                                        @Html.EditorFor(model => model.FeatureValue, new { htmlAttributes = new { @class = "form-control", disabled = "true" } })
+                                                        @Html.ValidationMessageFor(model => model.FeatureValue, "", new { @class = "text-danger" })
+                                                    }
+                                                    else
+                                                    {
+                                                        @Html.EditorFor(model => model.FeatureValue, new { htmlAttributes = new { @class = "form-control required disable" } })
+                                                        @Html.ValidationMessageFor(model => model.FeatureValue, "", new { @class = "text-danger" })
+                                                    }
+                                                </div>
+
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="form-group">
+                                                    <label for="IsDefault" class="pt-5">Is Default</label>
+                                                    @Html.CheckBoxFor(m => m.IsDefault, new { @class = "icheck_n Role form-control" })
+                                                </div>
+
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="kt-portlet__foot">
+                                    <div class="form-group">
+                                        <button type="submit" class="btn btn-primary">Submit</button>
+                                    </div>
+                                </div>
+                            }
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

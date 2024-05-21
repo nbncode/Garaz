@@ -1,0 +1,32 @@
+﻿@model Garaaz.Models.DashboardOverview.Inventory.InvInfoResponse
+@{
+    string errorMsg = ViewBag.ErrorMsg;
+    if (string.IsNullOrWhiteSpace(errorMsg) && Model == null)
+    {
+        errorMsg = "Model is not set";
+    }
+}
+
+<div class="kt-widget24__details">
+    <div class="kt-widget24__info">
+        @if (string.IsNullOrWhiteSpace(errorMsg) && Model != null)
+        {
+            <h4>
+                @Model.DateInfo
+            </h4>
+            <span class="kt-widget24__title dbGreen">
+                <span class="pr-2">@Model.TotalInventory</span>
+            </span>
+            <span class="kt-widget24__desc">
+                @Model.InventoryDays
+            </span>
+        }
+        else
+        {
+            <p class="kt-font-bold">
+                <i class="kt-font-warning flaticon-warning-sign"></i>
+                &nbsp;@errorMsg
+            </p>
+        }
+    </div>
+</div>

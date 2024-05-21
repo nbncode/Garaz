@@ -1,0 +1,12 @@
+@font-face {
+  font-family: 'SpartanMB-Thin';
+  src: url('SpartanMB-Thin.eot');
+  src: url('SpartanMB-Thin.eot?#iefix') format('embedded-opentype'),
+       url('SpartanMB-Thin.svg#SpartanMB-Thin') format('svg'),
+       url('SpartanMB-Thin.ttf') format('truetype'),
+       url('SpartanMB-Thin.woff') format('woff'),
+       url('SpartanMB-Thin.woff2') format('woff2');
+  font-weight: normal;
+  font-style: normal;
+}
+

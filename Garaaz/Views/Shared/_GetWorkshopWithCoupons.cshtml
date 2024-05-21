@@ -1,0 +1,65 @@
+﻿@model Garaaz.Models.CouponSchemeModel
+@{
+    var couponAllocated = Convert.ToBoolean(Model.Scheme.IsCouponAllocated);
+    var controller = this.ViewContext.RouteData.GetRequiredString("controller");
+    bool isSuperAdmin = User.IsInRole(Garaaz.Models.Constants.SuperAdmin);
+}
+<!--begin: Datatable -->
+<table class="table table-striped- table-bordered table-hover table-checkable datatable" id="kt_table_1">
+    <thead>
+        <tr>
+            <th>
+                Workshop Name
+            </th>
+            <th>Qualified</th>
+            <th>
+                Number of Coupons
+            </th>
+            @if (couponAllocated)
+            {
+                <th>Details</th>
+            }
+            @if (couponAllocated && isSuperAdmin)
+            {
+                <th>Actions</th>
+            }
+        </tr>
+    </thead>
+
+    <tbody>
+        @foreach (var item in Model.SchemeWorkshops)
+        {
+            <tr id="@item.WorkshopId">
+                <td class="wsName">@item.WorkshopName</td>
+                <td class="qualified">@item.Qualified</td>
+                @if (item.IsLuckyDrawSelected)
+                {
+                    <td class="numberOfCoupon">@item.NumberOfCoupon</td>
+                }
+                else
+                {
+                    <td>@item.MsgForNoCoupons</td>
+                }
+
+                @if (couponAllocated)
+                {
+                    <td>
+                        <a href="JavaScript:void(0);" onclick="admin.ShowCouponsDialog(@Model.Scheme.SchemeId,@item.WorkshopId,'@controller')">Show coupons</a>
+                    </td>
+                }
+                @if (couponAllocated && isSuperAdmin)
+                {
+                    <td><a href="JavaScript:void(0);" onclick="admin.AddCouponsDialog(@item.WorkshopId,'@item.WorkshopName')">Add coupons</a></td>
+                }
+            </tr>
+        }
+    </tbody>
+</table>
+<!--end: Datatable -->
+
+<script type="text/javascript">
+    $(document).ready(function ()
+    {
+        $('table.datatable').dataTable();
+    });
+</script>

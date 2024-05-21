@@ -1,0 +1,256 @@
+﻿@model Garaaz.Models.clsDistributor
+@{
+    ViewBag.Title = "Register";
+}
+
+<h2>@ViewBag.Title</h2>
+
+@{Html.RenderPartial("alerts");}
+
+@using (Html.BeginForm("Register", "Account", FormMethod.Post, new { id = "frmRegister", @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <h4>Contact Information</h4>
+    <hr />
+    @Html.ValidationSummary("", new { @class = "text-danger" })
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.FirstName, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.LastName, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Email, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.PhoneNumber, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+        </div>
+    </div>
+    <div class="form-group">
+        <label class="col-md-2 control-label">Register as</label>
+        <div class="col-md-10">
+
+            <input type="radio" name="RegisterType" value="Workshop" id="rbWorkshop" class="form-control" /> <label>Workshop</label>
+
+            <input type="radio" name="RegisterType" value="Distributor" id="rbDistributor" class="form-control" /><label>Distributor</label>
+        </div>
+    </div>
+    <div id="Workshop" class="hidden">
+        <div class="form-group">
+            @Html.LabelFor(m => m.WorkshopName, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.WorkshopName, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="WorkShopAddress" class="col-md-2 control-label">Address</label>
+            <div class="col-md-10">
+                <input type="text" name="WorkShopAddress" id="WorkShopAddress" class="form-control" />
+            </div>
+        </div>
+    </div>
+    <br />
+    <div id="Distributor" class="hidden">
+        <div class="form-group">
+            @Html.LabelFor(m => m.DistributorName, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.DistributorName, new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(m => m.Address, new { @class = "col-md-2 control-label" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(m => m.Address, new { @class = "form-control" })
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" id="city" name="city" />
+    <input type="hidden" id="cityLat" name="Latitude" />
+    <input type="hidden" id="cityLng" name="Longitude" />
+    @Html.HiddenFor(m => m.RegTypeId)
+
+
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <input type="submit" class="btn btn-default" value="Register" onclick="HandleDistributorFields()" />
+        </div>
+    </div>
+}
+
+@section Scripts
+{
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+
+            InitWorkshopAutocomplete();
+
+            InitDistributorAutocomplete();
+
+            SelectRegisterTypeRadio();
+
+            ApplyAsteriksToRequiredFields();  
+
+            ImproviseInputByiCheck();
+
+            HandleRegisterViewRadio();            
+            
+        });
+
+        function InitWorkshopAutocomplete() {
+            var input = document.getElementById('WorkShopAddress');
+
+            var options = {
+                types: ['(cities)'],
+                componentRestrictions: { country: 'in' }
+            };
+
+            autocomplete = new google.maps.places.Autocomplete(input, options);
+
+            // Get latitude and longitude
+            google.maps.event.addListener(autocomplete, 'place_changed', function () {
+                var place = autocomplete.getPlace();
+                document.getElementById('city').value = place.name;
+                document.getElementById('cityLat').value = place.geometry.location.lat();
+                document.getElementById('cityLng').value = place.geometry.location.lng();
+
+            });
+        }
+
+        function InitDistributorAutocomplete() {
+            var input = document.getElementById('Address');
+
+            var options = {
+                types: ['(cities)'],
+                componentRestrictions: { country: 'in' }
+            };
+
+            autocomplete = new google.maps.places.Autocomplete(input, options);
+
+            // Get latitude and longitude
+            google.maps.event.addListener(autocomplete, 'place_changed', function () {
+                var place = autocomplete.getPlace();
+                document.getElementById('city').value = place.name;
+                document.getElementById('cityLat').value = place.geometry.location.lat();
+                document.getElementById('cityLng').value = place.geometry.location.lng();
+
+            });
+        }
+
+        function SelectRegisterTypeRadio() {
+            var regTypeId = $('#RegTypeId').val();
+
+            //console.log("Register type radio selected: " + regTypeId);
+
+            // Check radio as per value
+            $(regTypeId).iCheck('check'); 
+
+            // Show or hide div as per value
+            if (regTypeId === '#rbWorkshop')
+            {                
+                $('#Workshop').removeClass("hidden");
+                $('#Workshop').addClass("visible");
+
+                $('#Distributor').removeClass("visible");
+                $('#Distributor').addClass("hidden");               
+
+            }
+
+            if (regTypeId === '#rbDistributor')
+            {
+                $('#Distributor').removeClass("hidden");
+                $('#Distributor').addClass("visible");
+
+                $('#Workshop').removeClass("visible");
+                $('#Workshop').addClass("hidden");               
+            }
+
+            //$(regTypeId).prop("checked", true).change();
+        }
+
+        function ApplyAsteriksToRequiredFields() {
+            $('input[type=text]').each(function () {
+                var req = $(this).attr('data-val-required');
+                if (undefined != req) {
+                    var label = $('label[for="' + $(this).attr('id') + '"]');
+                    var text = label.text();
+                    if (text.length > 0) {
+                        label.append('<span style="color:red"> *</span>');
+                    }
+                }
+            });
+        }
+
+        function HandleDistributorFields() {            
+
+            var regTypeVal = $("input[name='RegisterType']:checked").val();           
+
+            if (regTypeVal === "Workshop") {
+                // So as to prevent validation while submitting form for Workshop                
+                $('#DistributorName').val("Enter Distributor Name");
+                $('#Address').val("Enter Address");                
+            }
+        }
+
+        function ImproviseInputByiCheck() {
+            $('input').iCheck({
+                checkboxClass: 'icheckbox_square-blue',
+                radioClass: 'iradio_square-blue',
+                increaseArea: '20%'
+            });
+        }
+
+        function HandleRegisterViewRadio()
+        {
+            $('input').on('ifChecked', function (event)
+            {
+                var regTypeId = $('#RegTypeId');
+
+                // console.log("Radio button selected: " + $(this).val());
+               
+                if ($(this).val() === 'Workshop') {
+                    $('#Workshop').removeClass("hidden");
+                    $('#Workshop').addClass("visible");
+
+                    $('#Distributor').removeClass("visible");
+                    $('#Distributor').addClass("hidden");
+
+                    regTypeId.val("#rbWorkshop");
+
+                }
+
+                if ($(this).val() === 'Distributor') {
+                    $('#Distributor').removeClass("hidden");
+                    $('#Distributor').addClass("visible");
+
+                    $('#Workshop').removeClass("visible");
+                    $('#Workshop').addClass("hidden");
+
+                    regTypeId.val("#rbDistributor");
+                }
+            });
+        }
+   
+
+    </script>
+
+}

@@ -1,0 +1,33 @@
+﻿@model Garaaz.Models.DashboardOverview.Scheme.SchemeInfoResponse
+@{
+    string errorMsg = ViewBag.ErrorMsg;
+    if (string.IsNullOrWhiteSpace(errorMsg) && Model == null)
+    {
+        errorMsg = "Model is not set";
+    }
+}
+
+<div class="kt-widget24__details">
+    <div class="kt-widget24__info">
+        @if (string.IsNullOrWhiteSpace(errorMsg) && Model!=null)
+        {
+            var targetAchievedPercentage = $"({Model.TargetAchievedPercentage}%)";
+            <h4>
+                @Model.DateInfo
+            </h4>
+            <span class="kt-widget24__title dbGreen">
+                <span class="pr-2">@Model.TargetAchieved</span> <span class="growthPercent">@targetAchievedPercentage</span>
+            </span>
+            <span class="kt-widget24__desc">
+                @Model.TotalTarget
+            </span>
+        }
+        else
+        {
+            <p class="kt-font-bold">
+                <i class="kt-font-warning flaticon-warning-sign"></i>
+                &nbsp;@errorMsg
+            </p>
+        }
+    </div>
+</div>

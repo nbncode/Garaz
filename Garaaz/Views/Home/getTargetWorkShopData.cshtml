@@ -1,0 +1,74 @@
+﻿@model IEnumerable<Garaaz.Models.ResponseTargetWorkshopModel>
+@{
+
+    var growthCompPercentMinValue = ViewBag.MinValue as decimal?;
+    var growthCompPercentBaseValue = ViewBag.BaseValue as decimal?;
+}
+
+<div id="main-content">
+    <a href="javascript:void(0);" class="btn pull-right btn-info mb-2" onclick="schemes.askGrowthPercentModal()">Calculate Growth</a>
+    <div class="table-responsive ">
+        <table id="tblTargetWs" class="table table-bordered">
+            <thead class="tbl-header">
+                <tr>
+                    <th scope="col">WorkShop</th>
+                    <th scope="col">Customer Type</th>
+                    <th scope="col">Prev FY Avg Sale</th>
+                    <th scope="col">Growth (%)</th>
+                    <th scope="col">New Target</th>
+                    <th scope="col">Prev Month Data</th>
+                    <th scope="col">Growth Comparison (%) <i id="sortIcon" class="fa cursor fa-fw fa-sort" onclick="schemes.sortByGrowth()"></i></th>
+                    <th scope="col">Qualified</th>
+                    <th scope="col">Remove</th>
+                </tr>
+            </thead>
+            <tbody>
+                @if (Model != null)
+                {
+                    foreach (var item in Model)
+                    {
+                        <tr id="@item.WorkShopId">
+                            <td>
+                                <label class="workshop-name">@item.WorkShopName</label>
+                                <span class="workshop-code" style="display: block; text-align: center">@item.WorkShopCode</span>
+                            </td>
+                            <td><label class="customer-type">@item.CustomerType</label></td>
+                            <td><label class="prev-year-sale">@item.PrevYearAvgSale</label></td>
+                            <td><label class="growth-percentage">@item.GrowthPercentage</label></td>
+                            <td><input type="number" step="any" class="form-control w-75 new-target" value="@item.NewTarget"></td>
+                            <td><label class="prev-month-sale">@item.PrevMonthAvgSale</label></td>
+                            <td><label class="growth-comparison-percentage @(growthCompPercentMinValue > item.GrowthComparisonPercentage ? " red-color" : "")">@item.GrowthComparisonPercentage</label></td>
+                            <td class="col-center"><input type="checkbox" class="icheck icheck-input" @(item.IsQualifiedAsDefault ? "checked" : "") /><label></label></td>
+                            <td class="col-center">
+                                <a class="table-trash-icon" onclick="schemes.removeCurrentWorkshop(this)" href="javascript:void(0);">
+                                    <i class="la la-trash"></i>
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                }
+            </tbody>
+        </table>
+    </div>
+    <input type="hidden" id="hdnErrorMsgForNonMatchedFileWorkshops" value="@ViewBag.ErrorMsgForNonMatchedWorkshops" />
+</div>
+
+<div class="modal" id="growthCompPercentModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Change Growth Comparison %</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Calculate growth for all workshops whose <em>Growth Comparison %</em> is less than <input type="number" step="any" id="growthCompPercentMinValue" class="blank" value="@growthCompPercentMinValue" /> % by setting growth comparison to <input type="number" step="any" id="growthCompPercentBaseValue" class="blank" value="@growthCompPercentBaseValue" />%.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="schemes.calculateGrowth()">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

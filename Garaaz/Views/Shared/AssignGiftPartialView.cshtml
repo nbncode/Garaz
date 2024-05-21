@@ -1,0 +1,96 @@
+﻿@model Garaaz.Models.SchemeGiftModel
+@{
+    var controller = this.ViewContext.RouteData.GetRequiredString("controller");
+    bool isSuperAdmin = User.IsInRole(Garaaz.Models.Constants.SuperAdmin);
+}
+
+@if (Model.Scheme?.IsCouponAllocated != null && Model.Scheme.IsCouponAllocated.Value)
+{
+    if (Model.GiftDatas.Count > 0)
+    {
+        foreach (var giftData in Model.GiftDatas)
+        {
+            <div class="colorHeading"><p style="background-color:@giftData.ColorCode">@giftData.CategoryName</p></div>
+            <div class="row kt-margin-b-50-desktop">
+                @foreach (var gift in giftData.data)
+                {
+                    <div class="col-sm-3">
+                        <div class="assign-box">
+                            <div class="img-box">
+                                <img src="@gift.GiftImage" />
+                            </div>
+                            <div class="assignContentBox">
+                                @if (gift.Qty > 0)
+                                {
+                                    <a href="/@controller/SetCouponForGift?schemeId=@Model.Scheme.SchemeId&giftId=@gift.GiftId">@gift.GiftName</a>
+                                }
+                                else
+                                {
+                                    <a href="JavaScript:void(0);">@gift.GiftName</a>
+                                }
+                                <p>@gift.Qty</p>
+                                <div class="btn-box">
+                                    @if (isSuperAdmin)
+                                    {
+                                        <button class="btn btn-success" onclick="schemes.showDecideWinners(@Model.Scheme.SchemeId,@gift.GiftId)">Decide winners</button>
+                                    }
+                                    @if (gift.CouponAllocated)
+                                    {
+                                        <button class="btn btn-brand" onclick="schemes.showWinners(@gift.GiftId,'@controller')">Winners</button>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+    }
+    else
+    {
+        <p>No gifts found for this scheme.</p>
+    }
+}
+else
+{
+    <p>No coupons allocated for this scheme.</p>
+}
+
+<div class="modal" id="winnersModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Gift's Coupon & Workshop</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal" id="decideWinnersModal" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Decide Winners</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-success" onclick="schemes.saveDecideWinners()">Save</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+

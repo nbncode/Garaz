@@ -1,0 +1,76 @@
+﻿@model List<Garaaz.Models.DashboardOverview.Cbo.CboInfoResponse>
+@{
+    string errorMsg = ViewBag.ErrorMsg;
+    if (string.IsNullOrWhiteSpace(errorMsg) && Model == null)
+    {
+        errorMsg = "Model is not set";
+    }
+}
+
+@if (string.IsNullOrWhiteSpace(errorMsg) && Model != null)
+{
+    <div class="row">
+        @foreach (var cboIr in Model)
+        {
+            if (!string.IsNullOrWhiteSpace(cboIr.Category))
+            {
+                <div class="col-md-12 col-lg-4 col-xl-4">
+                    <a href="javascript:void(0);" onclick="dbCbo.fetchCboDetailForSubGroup('@cboIr.Category')">
+                        <div class="info-box info-sub">
+                            <div class="kt-widget24">
+                                <div class="kt-widget24__details">
+                                    <div class="kt-widget24__info">
+                                        <h4>
+                                            @cboIr.DateInfo
+                                        </h4>
+                                        <span class="kt-widget24__title dbRed">
+                                            <span>@cboIr.TotalCbo</span>
+                                        </span>
+                                        <span class="kt-widget24__desc">
+                                            @cboIr.CancelledCbo
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                            <h4 class="kt-widget24__title" style="text-align: center;">
+                                @cboIr.Footer
+                            </h4>
+                        </div>
+                    </a>
+                </div>
+            }
+            else
+            {
+                <div class="col-md-12 col-lg-4 col-xl-4">
+                    <div class="info-box">
+                        <div class="kt-widget24">
+                            <div class="kt-widget24__details">
+                                <div class="kt-widget24__info">
+                                    <h4>
+                                        @cboIr.DateInfo
+                                    </h4>
+                                    <span class="kt-widget24__title dbRed">
+                                        <span>@cboIr.TotalCbo</span>
+                                    </span>
+                                    <span class="kt-widget24__desc">
+                                        @cboIr.CancelledCbo
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        <h4 class="kt-widget24__title" style="text-align: center;">
+                            @cboIr.Footer
+                        </h4>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+}
+else
+{
+    <p class="kt-font-bold">
+        <i class="kt-font-warning flaticon-warning-sign"></i>
+        &nbsp;@errorMsg
+    </p>
+}

@@ -1,0 +1,87 @@
+﻿@using Garaaz.Models
+@model List<ResponseProductModel>
+@{
+                /**/
+
+                /**/
+
+                ViewBag.Title = "Products";
+}
+
+<div class="kt-subheader-search">
+    <h3 class="kt-subheader-search__title" style="display: inline-block;">
+        Products
+    </h3>
+    <a href="javascript:void(0);" onclick="history.go(-1);" class="btn btn-brand btn-elevate btn-icon-sm" style="float: right;display: inline-block;">
+        <i class="la la-step-backward"></i>
+        Back
+    </a>
+</div>
+
+<header class="ribbon">
+    <h2>&nbsp;</h2>
+</header>
+
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+            <h2></h2>
+            <!--Begin::Section-->
+            <div class="row">
+                @if (Model.Count == 0)
+                {
+                    @:No products found.
+                }
+                @foreach (var rpm in Model)
+                {
+                    <div class="col-sm-3">
+                        <div class="kt-portlet kt-portlet--height-fluid">
+                            <div class="kt-portlet__head kt-portlet__head--noborder">
+                                <div class="kt-portlet__head-label">
+                                    <h3 class="kt-portlet__head-title"></h3>
+                                </div>
+                            </div>
+                            <div class="kt-portlet__body kt-portlet__body--fit-y">
+                                <!--begin::Widget -->
+                                <div class="kt-widget kt-widget--user-profile-4">
+                                    <div class="kt-widget__head">
+                                        <div class="kt-widget__media">
+                                            <img class="kt-widget__img kt-hidden-" src='@Html.Raw(rpm.ImagePath)' alt="image" onerror="changeurl(this)">
+                                        </div>
+                                        <input type="hidden" id="iProdName_@rpm.ProductId" value="@rpm.ProductName" />
+                                        <input type="hidden" id="iPrice_@rpm.ProductId" value="@rpm.Price" />
+                                        <input type="hidden" id="iImagePath_@rpm.ProductId" value="@rpm.ImagePath" />
+                                        <div class="kt-widget__content">
+                                            <div class="kt-widget__section">
+                                                <a href='#' class="kt-widget__username">
+                                                    @rpm.ProductName
+                                                </a>
+                                                <p>Price: <span style="font-family:Arial">@Constants.Sign</span> @rpm.Price</p>
+                                                <label>Quantity:</label><input type="number" id="txtQty_@rpm.ProductId" class="form-control" />
+                                                <div class="kt-widget__action">
+                                                    <button type="button" product-id="@rpm.ProductId" class="btn btn-label-brand btn-bold btn-sm btn-upper add-to-cart">add to cart</button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end::Widget -->
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+            <!--End::Section-->
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/js/product.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            product.init();
+        })
+    </script>
+
+}

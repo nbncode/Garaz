@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="9bdc7683af654ca68cd7bf80afb91390" Name="Diagram1" ZoomLevel="82">
+        <EntityTypeShape EntityType="garaazModel.BannerMobile" Width="1.5" PointX="10.5" PointY="9.875" />
+        <EntityTypeShape EntityType="garaazModel.Coupon" Width="1.5" PointX="10.5" PointY="26.5" />
+        <EntityTypeShape EntityType="garaazModel.DailyStock" Width="1.5" PointX="5.25" PointY="8.25" />
+        <EntityTypeShape EntityType="garaazModel.DistributorLocation" Width="1.875" PointX="2" PointY="24.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="garaazModel.FocusPart" Width="1.5" PointX="10.5" PointY="13.25" />
+        <EntityTypeShape EntityType="garaazModel.LabelCriteria" Width="1.5" PointX="10.5" PointY="17.125" />
+        <EntityTypeShape EntityType="garaazModel.MgaCatalougeProduct" Width="1.5" PointX="9.75" PointY="30.5" />
+        <EntityTypeShape EntityType="garaazModel.ProductAvailabilityType" Width="1.5" PointX="0.75" PointY="4.75" />
+        <EntityTypeShape EntityType="garaazModel.RoSalesExecutive" Width="1.5" PointX="0.75" PointY="7.75" />
+        <EntityTypeShape EntityType="garaazModel.SalesExecutiveWorkshop" Width="1.5" PointX="7.5" PointY="33.25" />
+        <EntityTypeShape EntityType="garaazModel.TempOrder" Width="1.5" PointX="7.5" PointY="44.5" />
+        <EntityTypeShape EntityType="garaazModel.TempOrderDetail" Width="1.5" PointX="9.75" PointY="34.875" />
+        <AssociationConnector Association="garaazModel.FK_TempOrderDetails_TempOrder" />
+        <EntityTypeShape EntityType="garaazModel.GiftsCoupon" Width="1.5" PointX="7.5" PointY="63.625" />
+        <EntityTypeShape EntityType="garaazModel.OrderDetail" Width="1.5" PointX="12.75" PointY="24.875" />
+        <EntityTypeShape EntityType="garaazModel.AspNetRole" Width="1.5" PointX="3.375" PointY="5.75" />
+        <EntityTypeShape EntityType="garaazModel.Feature" Width="1.5" PointX="3.375" PointY="12.75" />
+        <EntityTypeShape EntityType="garaazModel.OrderTable" Width="1.5" PointX="7.5" PointY="24.75" />
+        <AssociationConnector Association="garaazModel.FK_OrderDetails_OrderTable" />
+        <EntityTypeShape EntityType="garaazModel.CustomerBackOrder" Width="1.5" PointX="7.5" PointY="36.125" />
+        <EntityTypeShape EntityType="garaazModel.StockColor" Width="1.5" PointX="18.125" PointY="5.25" />
+        <EntityTypeShape EntityType="garaazModel.ProductGroup" Width="1.5" PointX="5.25" PointY="35.375" />
+        <AssociationConnector Association="garaazModel.FK_FocusPart_ProductGroup" />
+        <AssociationConnector Association="garaazModel.FK_LabelCriteria_ProductGroup" />
+        <EntityTypeShape EntityType="garaazModel.DefaultWinner" Width="1.5" PointX="13.5" PointY="15.25" />
+        <EntityTypeShape EntityType="garaazModel.WalletTransaction" Width="1.5" PointX="7.5" PointY="5.375" />
+        <EntityTypeShape EntityType="garaazModel.WorkshopCoupon" Width="1.5" PointX="7.5" PointY="9" />
+        <EntityTypeShape EntityType="garaazModel.Product" Width="1.5" PointX="7.5" PointY="50.375" />
+        <AssociationConnector Association="garaazModel.FK__MgaCatalo__Produ__45FE52CB" />
+        <AssociationConnector Association="garaazModel.FK_Product_Product" />
+        <AssociationConnector Association="garaazModel.FK_Product_ProductGroup" />
+        <AssociationConnector Association="garaazModel.FK_TempOrderDetails_Product" />
+        <EntityTypeShape EntityType="garaazModel.AccountLedger" Width="1.5" PointX="7.5" PointY="0.75" />
+        <EntityTypeShape EntityType="garaazModel.MailTemplate" Width="1.5" PointX="13.375" PointY="10.75" />
+        <EntityTypeShape EntityType="garaazModel.Support" Width="1.5" PointX="15.375" PointY="3.75" />
+        <EntityTypeShape EntityType="garaazModel.SupportQuery" Width="1.5" PointX="3.375" PointY="15.75" />
+        <EntityTypeShape EntityType="garaazModel.ProductType" Width="1.5" PointX="16.375" PointY="12.75" />
+        <EntityTypeShape EntityType="garaazModel.GeneralPurpose" Width="1.5" PointX="16.375" PointY="15.75" />
+        <EntityTypeShape EntityType="garaazModel.BestSeller" Width="1.5" PointX="15.375" PointY="0.75" />
+        <EntityTypeShape EntityType="garaazModel.UserDetail" Width="1.5" PointX="15.375" PointY="6.75" />
+        <EntityTypeShape EntityType="garaazModel.GrowthPercentage" Width="1.5" PointX="17.375" PointY="0.75" />
+        <EntityTypeShape EntityType="garaazModel.CashbackRange" Width="1.5" PointX="3" PointY="40.75" />
+        <EntityTypeShape EntityType="garaazModel.CashbackRangeMix" Width="1.5" PointX="10.25" PointY="22.5" />
+        <AssociationConnector Association="garaazModel.FK_CashbackRangeMix_CashbackRange" />
+        <EntityTypeShape EntityType="garaazModel.WorkShopData" Width="1.5" PointX="18.375" PointY="8.75" />
+        <EntityTypeShape EntityType="garaazModel.Outlet" Width="1.5" PointX="3" PointY="19.375" />
+        <AssociationConnector Association="garaazModel.FK_DailyStock_Outlets" />
+        <AssociationConnector Association="garaazModel.FK__OrderDeta__Outle__5AC46587" />
+        <AssociationConnector Association="garaazModel.FK__OrderTabl__outle__7F01C5FD" />
+        <AssociationConnector Association="garaazModel.FK__TempOrder__Outle__5BB889C0" />
+        <EntityTypeShape EntityType="garaazModel.WorkShop" Width="1.5" PointX="5.25" PointY="19.125" />
+        <AssociationConnector Association="garaazModel.FK__AccountLe__Works__1A74D648" />
+        <AssociationConnector Association="garaazModel.FK_Coupons_WorkShops" />
+        <AssociationConnector Association="garaazModel.FK_CustomerBackOrder_WorkShops" />
+        <AssociationConnector Association="garaazModel.FK_DefaultWinners_WorkShops" />
+        <AssociationConnector Association="garaazModel.FK_GiftsCoupon_WorkShops" />
+        <AssociationConnector Association="garaazModel.FK_OrderTable_WorkShops" />
+        <AssociationConnector Association="garaazModel.FK_workshop_OutletId" />
+        <AssociationConnector Association="garaazModel.FK_SalesExecutiveWorkshop_WorkShops" />
+        <AssociationConnector Association="garaazModel.FK_TempOrder_WorkShops" />
+        <AssociationConnector Association="garaazModel.FK_WalletTransaction_WorkShops" />
+        <AssociationConnector Association="garaazModel.FK_WorkshopCoupon_WorkShops" />
+        <EntityTypeShape EntityType="garaazModel.MgaCatalougeBanner" Width="1.5" PointX="0.75" PointY="1" />
+        <AssociationConnector Association="garaazModel.FK__MgaCatalo__Banne__450A2E92" />
+        <EntityTypeShape EntityType="garaazModel.TargetGrowth" Width="1.5" PointX="3" PointY="27.75" />
+        <EntityTypeShape EntityType="garaazModel.TargetWorkShop" Width="1.5" PointX="13.5" PointY="20.75" />
+        <AssociationConnector Association="garaazModel.FK_TargetWorkShop_WorkShops" />
+        <EntityTypeShape EntityType="garaazModel.CashBack" Width="1.5" PointX="3" PointY="31.25" />
+        <AssociationConnector Association="garaazModel.FK_CashbackRangeMix_CashBack" />
+        <EntityTypeShape EntityType="garaazModel.Scheme" Width="1.5" PointX="0.75" PointY="18.25" />
+        <AssociationConnector Association="garaazModel.FK__BannerMob__Creat__76D69450" />
+        <AssociationConnector Association="garaazModel.FK_CashBack_Schemes" />
+        <AssociationConnector Association="garaazModel.FK_CashbackRange_Schemes" />
+        <AssociationConnector Association="garaazModel.FK_CashbackRangeMix_Schemes" />
+        <AssociationConnector Association="garaazModel.FK_Coupons_Schemes" />
+        <AssociationConnector Association="garaazModel.FK_DefaultWinners_Schemes" />
+        <AssociationConnector Association="garaazModel.FK_FocusPart_Schemes" />
+        <AssociationConnector Association="garaazModel.FK_LabelCriteria_Schemes" />
+        <AssociationConnector Association="garaazModel.FK_TargetGrowth_Schemes" />
+        <AssociationConnector Association="garaazModel.FK_TargetWorkShop_Schemes" />
+        <EntityTypeShape EntityType="garaazModel.FmsGroupSale" Width="1.5" PointX="12.5" PointY="29.625" />
+        <AssociationConnector Association="garaazModel.FK__FmsGroupS__Group__1E3A7A34" />
+        <AssociationConnector Association="garaazModel.FK__FmsGroupS__Schem__1D4655FB" />
+        <EntityTypeShape EntityType="garaazModel.AssuredGiftCategory" Width="1.5" PointX="10.75" PointY="0.75" />
+        <EntityTypeShape EntityType="garaazModel.GiftCategory" Width="1.5" PointX="0.75" PointY="10.75" />
+        <EntityTypeShape EntityType="garaazModel.WorkshopSchemesSelectedType" Width="1.5" PointX="10.375" PointY="3.75" />
+        <AssociationConnector Association="garaazModel.FK_Outlets_DistributorLocation" />
+        <EntityTypeShape EntityType="garaazModel.RequestPartFilter" Width="1.5" PointX="12.375" PointY="3.75" />
+        <EntityTypeShape EntityType="garaazModel.NewPartRequest" Width="1.5" PointX="0.75" PointY="13.75" />
+        <EntityTypeShape EntityType="garaazModel.ApprovedPartRequest" Width="1.5" PointX="3" PointY="9.375" />
+        <AssociationConnector Association="garaazModel.FK_ApprovedPartRequest_NewPartRequest" />
+        <EntityTypeShape EntityType="garaazModel.DailySalesTrackerWithInvoiceData" Width="1.5" PointX="7.375" PointY="12.75" />
+        <AssociationConnector Association="garaazModel.FK_DailySalesTrackerWithInvoiceData_DailySalesTrackerWithInvoiceData" />
+        <EntityTypeShape EntityType="garaazModel.Outstanding" Width="1.5" PointX="20.375" PointY="0.75" />
+        <EntityTypeShape EntityType="garaazModel.WorkshopSchemeCashback" Width="1.5" PointX="3.375" PointY="0.75" />
+        <EntityTypeShape EntityType="garaazModel.DistributorsOutlet" Width="1.5" PointX="5.25" PointY="32.125" />
+        <AssociationConnector Association="garaazModel.FK_DistributorsOutlets_Outlets" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

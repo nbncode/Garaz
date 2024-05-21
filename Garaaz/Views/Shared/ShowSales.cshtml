@@ -1,0 +1,89 @@
+﻿@{
+    ViewBag.Title = "Show Sales Tracker With Invoice";
+}
+
+<div class="kt-subheader-search ">
+    <h3 class="kt-subheader-search__title">
+        Sales Tracker With Invoice
+    </h3>
+</div>
+
+<header class="ribbon">
+    <h2>&nbsp;</h2>
+</header>
+<div class="page-content">
+    <div class="container-fluid">
+        @{Html.RenderPartial("alerts");}
+        <input type="hidden" id="PageView" value="/@ViewBag.Controller/ShowSalesTrackerWithInvoicePartialView?distributorId=@ViewBag.distributorId" />
+        <form class="kt-form">
+            <div class="kt-grid kt-grid--desktop kt-grid--ver-desktop">
+                <div class="kt-grid__item kt-grid__item--middle">
+                    <div class="row kt-margin-r-10">
+                        <div class="col-lg-3">
+                            <div class="kt-input-icon kt-input-icon--pill kt-input-icon--right">
+                                <input id="FromAmt" type="text" class="form-control form-control-pill" placeholder="From Amount">
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="kt-input-icon kt-input-icon--pill kt-input-icon--right">
+                                <input id="ToAmt" type="text" class="form-control form-control-pill" placeholder="To Amount">
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="kt-input-icon kt-input-icon--pill kt-input-icon--right">
+                                <input id="FromDate" type="text" class="form-control form-control-pill datepicker-txt" placeholder="From Date" autocomplete="off">
+                                <span class="kt-input-icon__icon kt-input-icon__icon--right"><span><i class="la la-calendar-check-o"></i></span></span>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="kt-input-icon kt-input-icon--pill kt-input-icon--right">
+                                <input id="ToDate" type="text" class="form-control form-control-pill datepicker-txt" placeholder="To Date" autocomplete="off">
+                                <span class="kt-input-icon__icon kt-input-icon__icon--right"><span><i class="la la-calendar-check-o"></i></span></span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row kt-margin-t-10">
+                        <div class="col-lg-3">
+                            <div class="kt-input-icon kt-input-icon--pill kt-input-icon--right">
+                                <select id="workshopId" class="form-control form-control-pill">
+                                    <option value="">--select user--</option>
+                                    @{
+                                        foreach (var item in ViewBag.workshopList)
+                                        {
+                                            <option value="@item.WorkShopId">@item.WorkShopName</option>
+                                        }
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-3">
+                            <div class="kt-grid__item kt-grid__item--middle">
+                                <button id="btnShow" type="button" class="btn btn-success btn-pill btn-upper btn-bold btn-font-sm kt-subheader-search__submit-btn">Show</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <br/>
+        <div id="main-content">
+        </div>
+    </div>
+</div>
+
+@section scripts{
+     <script src="~/js/chart.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            common.bindDatepicker();
+        });
+    </script>
+    <script src="~/js/dailySales.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            sales.init();
+        });
+    </script>
+}
+

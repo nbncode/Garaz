@@ -1,0 +1,36 @@
+﻿@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Scheme Preview";
+
+    var controller = ViewContext.RouteData.GetRequiredString("controller");
+    var url = $"/{controller}/SchemePreviewPartial?schemeId={ViewBag.SchemeId}";
+}
+<div class="kt-subheader-search">
+    <h3 class="kt-subheader-search__title">
+        Scheme Preview
+    </h3>
+</div>
+
+<header class="ribbon">
+    <h2>&nbsp;</h2>
+</header>
+<div class="page-content">
+    <div class="container-fluid">
+        @{Html.RenderPartial("alerts");}
+        <input type="hidden" id="partialViewUrl" value="@url" />
+        <input type="hidden" id="hdnSchemeId" value="@ViewBag.SchemeId" />
+        <div id="main-content">
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script src="~/js/schmes.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function ()
+        {
+            const url = $('#partialViewUrl').val();
+            admin.LoadPartialView(url);
+        });
+    </script>
+}

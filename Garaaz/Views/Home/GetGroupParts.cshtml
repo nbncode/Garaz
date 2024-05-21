@@ -1,0 +1,79 @@
+﻿@model IEnumerable<Garaaz.Models.FocusPartsModel>
+@using Garaaz.Models;
+@{
+    var productIds = (List<int>)ViewBag.ProductIds;
+}
+<script src="https://www.w3schools.com/lib/w3.js"></script>
+<div class="panel-body">
+    <div class="kt-form">
+        <div class="kt-portlet__body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group d-flex justify-content-start focus-parts">
+                        @if (Model.Count() < 1)
+                        {
+                            <div class="row">
+                                <h5>parts not found.</h5>
+                            </div>
+                        }
+                        @if (productIds.Count == 0)
+                        {<input checked type="checkbox" id="select-all" class="form-control mr-2">}
+                        else
+                        { <input type="checkbox" id="select-all" class="form-control mr-2">}
+                        <input oninput="w3.filterHTML('#parts-row', 'div', this.value)" placeholder="Search for parts.." class="form-control">
+
+                    </div>
+                    <div class="row" id="parts-row">
+                        @foreach (var item in Model)
+                        {
+                            if (productIds.Count > 0)
+                            {
+                                var check = productIds.Contains(item.ProductId) ? "checked" : string.Empty;
+
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <input type="checkbox" @check class="icheck_n mr-2" name="Feature" value="@item.ProductId"><label>@item.ProductName (@item.PartNumber)</label>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <div class="col-md-3">
+                                    <div class="form-group">
+                                        <input type="checkbox" checked class="icheck_n mr-2" name="Feature" value="@item.ProductId"><label>@item.ProductName (@item.PartNumber)</label>
+                                    </div>
+                                </div>
+                            }
+                        }
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+@if (Model.Count() > 0)
+{
+    <div class="kt-portlet__foot">
+        <div class="form-group">
+            <a href="javascript:void(0);" class="btn btn-primary text-white" onclick="schemes.updateFocusParts(@ViewBag.GroupId)">Save parts</a>
+        </div>
+    </div>
+}
+<script>
+    $(document).ready(function () {
+        //$("#select-all").iCheck('check');
+        //$(".icheck_n").each(function () {
+        //    if ($(this).checked == false) {
+        //        $("#select-all").iCheck('uncheck');
+        //    }
+        //});
+
+        $("#select-all").change(function () {
+            var masterCheckBox = document.getElementById("select-all");
+            $(".icheck_n").each(function () {
+                $(this).iCheck(masterCheckBox.checked ? 'check' : 'uncheck');
+            });
+        });
+    });
+</script>

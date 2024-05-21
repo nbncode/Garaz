@@ -1,0 +1,89 @@
+﻿@model List<Garaaz.Models.NewPartRequestModel>
+@{
+    var controller = ViewContext.RouteData.Values["controller"].ToString(); // ViewBag.Controller.ToString();
+}
+<div class="kt-portlet kt-portlet--mobile">
+    <div class="kt-portlet__head kt-portlet__head--lg">
+        <div class="kt-portlet__head-label">
+            <span class="kt-portlet__head-icon">
+                <i class="kt-font-brand flaticon2-line-chart"></i>
+            </span>
+            <h3 class="kt-portlet__head-title">
+                New Part Requests
+            </h3>
+        </div>
+    </div>
+    <div class="kt-portlet__body">
+        <table class="table table-striped- table-bordered table-hover table-checkable datatable" id="kt_table_1">
+            <thead>
+                <tr>
+                    <th>Workshop Code</th>
+                    <th>Workshop</th>
+                    <th>RequestId</th>
+                    <th>Status</th>
+                    <th>Requested On</th>
+                    <th>Car Make</th>
+                    <th>Model</th>
+                    <th>Year</th>
+                    <th>Modification</th>
+                    <th>Search</th>
+                    <th>Part detail</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var npr in Model)
+                {
+                    var badgeStatus = npr.Status == "Pending" ? "badge-warning" : "badge-success";
+
+                <tr>
+                    <td>@npr.WorkshopCode</td>
+                    <td>@npr.WorkshopName</td>
+                    <td>@npr.Id</td>
+                    <td><span class="badge @badgeStatus">@npr.Status</span></td>
+                    <td>
+                        @if (npr.CreatedDate != null)
+                        {
+                            var orderDate = Convert.ToDateTime(npr.CreatedDate);
+                            @orderDate.ToShortDateString();
+                        }
+                    </td>
+                    <td>@npr.CarMake</td>
+                    <td>@npr.Model</td>
+                    <td>@npr.Year</td>
+                    <td>@npr.Modification</td>
+                    <td>@npr.Search</td>
+                    <td>@npr.PartNumAndQty</td>
+                    <td>
+                        <span class="dropdown">
+                            <a href="#" class="btn btn-sm btn-brand btn-icon btn-icon-md" data-toggle="dropdown" aria-expanded="false">
+                                <i class="la la-ellipsis-h"></i>
+                            </a>
+                            <div class="dropdown-menu dropdown-menu-right" x-placement="top-end" style="position: absolute; will-change: transform; top: 0; left: 0; transform: translate3d(-214px, -144px, 0);">
+                                <a class="dropdown-item" href="/@controller/ApprovePartRequest?requestId=@npr.Id">
+                                    <i class="la la-comment"></i> Approve Request
+                                </a>
+                                <a class="dropdown-item" id="Delete" onclick="admin.deleteNewPartRequest('@controller', '@npr.Id')" href="javascript:void(0);">
+                                    <i class="la la-trash"></i> Delete
+                                </a>
+                            </div>
+                        </span>
+                    </td>
+                </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script type="text/javascript">
+    $(document).ready(function ()
+    {
+        //$('table.datatable').dataTable();
+        $('table.datatable').dataTable({
+            "aaSorting": [[0, 'desc']],
+            columnDefs: [{ type: 'date', 'targets': [3] }],
+        }); 
+    });
+</script>
+

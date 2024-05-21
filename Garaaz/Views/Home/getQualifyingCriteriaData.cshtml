@@ -1,0 +1,136 @@
+﻿@model IEnumerable<Garaaz.Models.ResponseQualifyCriteriaModel>
+@using Garaaz.Models;
+@{
+    var products = (List<ResponseProductModel>)ViewBag.Products;
+}
+
+@foreach (var item in Model)
+{
+    <div class="row" id="@item.QualifyCriteriaId">
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label>Amount<em>*</em></label>
+                <input type="text" class="form-control from-amount" value="@item.AmountUpto" placeholder="Amount">
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label>Type</label>
+                <select class="form-control type">
+                    <option value="">--Select--</option>
+                    @{
+                        var selected = item.Type == "All" ? "selected" : "";
+                    }
+                    <option value="All" @selected>All</option>
+                    @foreach (var pt in ClsSchema.ProductTypes)
+                    {
+                        selected = pt.Value == item.Type ? "selected" : "";
+                        <option value="@pt.Value" @selected>@pt.Text</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label>Parts/Accessories</label>
+                <select class="form-control product">
+                    <option value="">--Select--</option>
+                    @foreach (var l in products)
+                    {
+                        selected = l.ProductId.ToString() == item.TypeValue ? "selected" : "";
+                        <option value="@l.ProductId.ToString()" @selected>@l.ProductName</option>
+                    }
+                </select>
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label>Number Of Coupons</label>
+                <input type="text" class="form-control number-Of-coupons" value="@item.NumberOfCoupons" placeholder="Number Of Coupons">
+            </div>
+        </div>
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label>Additional Coupon Amount<em>*</em></label>
+                <input type="text" class="form-control additional-coupon-amount" value="@item.AdditionalCouponAmount" placeholder="Additional Coupon Amount">
+            </div>
+        </div>
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label>Additional Number Of Coupons<em>*</em></label>
+                <input type="text" class="form-control additional-number-of-coupon" value="@item.AdditionalNumberOfCoupons" placeholder="Additional Number Of Coupons">
+            </div>
+        </div>
+        <div class="col-sm-1">
+            <label> &nbsp;</label>
+            <a class="trash-icon" href="javascript:void(0);" title="Remove current coupon allocation" onclick="schemes.removeCurrentCouponAllocation(this)" >
+                <i class="la la-trash"></i>
+            </a>
+        </div>
+    </div>
+
+}
+
+    <div class="row" id="0">
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label>Amount<em>*</em></label>
+                <input type="text" class="form-control from-amount" placeholder="Amount">
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label>Type</label>
+                <select class="form-control type">
+                    <option value="">--Select--</option>
+                    <option value="All">All</option>
+                    @foreach (var pt in ClsSchema.ProductTypes)
+                    {
+                        <option value="@pt.Value">@pt.Text</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label>Parts/Accessories</label>
+                <select class="form-control product">
+                    <option value="">--Select--</option>
+                    @foreach (var l in products)
+                    {
+                        <option value="@l.ProductId.ToString()">@l.ProductName</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label>Number Of Coupons</label>
+                <input type="text" class="form-control number-Of-coupons" placeholder="Number Of Coupons">
+            </div>
+        </div>
+
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label>Additional Coupon Amount<em>*</em></label>
+                <input type="text" class="form-control additional-coupon-amount" placeholder="Additional Coupon Amount">
+            </div>
+        </div>
+
+        <div class="col-sm-5">
+            <div class="form-group">
+                <label>Additional Number Of Coupons<em>*</em></label>
+                <input type="text" class="form-control additional-number-of-coupon" placeholder="Additional Number Of Coupons">
+            </div>
+        </div>
+        <div class="col-sm-1">
+            <label> &nbsp;</label>
+            <a class="trash-icon" href="javascript:void(0);" title="Remove current coupon allocation" onclick="schemes.removeCurrentCouponAllocation(this)">
+                <i class="la la-trash"></i>
+            </a>
+        </div>
+
+    </div>

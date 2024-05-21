@@ -1,0 +1,31 @@
+﻿@model IEnumerable<Garaaz.Models.WorkshopModelScheme>
+@using Garaaz.Models
+@{
+    var savedWorkShops = (List<WorkshopModelScheme>)ViewBag.SavedWorkshop;
+}
+
+<div class="kt-form__section kt-form__section--first kt-border">
+    <div class="padding-check">
+        <input type="checkbox" id="checkbox-selectall" value="selectAll" class="icheck icheck-input" />
+        <label>
+            Check All
+        </label>
+    </div>
+    <div class="kt-wizard-v2__form workshopform">
+        <div class="row workshopblock" id="workshops">
+            @foreach (var item in Model)
+            {
+                var check = ViewBag.schemeId == null || ViewBag.schemeId == 0 ? "checked" : (savedWorkShops.Where(a => a.WorkShopId == item.WorkShopId).FirstOrDefault() != null ? "checked" : "");
+                <div class="col-sm-4">
+                    <div class="form-group workshopformbox">
+                        <input type="checkbox" @check class="icheck icheck-input" value="@item.WorkShopId" />
+                        <label>
+                            @item.WorkShopName @(string.IsNullOrEmpty(item.ConsPartyCode) ? "" : " (" + item.ConsPartyCode + ")")
+                            <span>@item.Address</span>
+                        </label>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>

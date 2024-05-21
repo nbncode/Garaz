@@ -1,0 +1,18 @@
+﻿@model IEnumerable<Garaaz.Models.SchemeLocation>
+@using Garaaz.Models
+@{
+    ViewBag.Title = "GetLocations";
+    var locations = (List<DistributorLocation>)ViewBag.Locations;
+}
+
+@foreach (var item in locations)
+{
+    var selected = Model != null && Model.Where(a => a.LocationId == item.LocationId).FirstOrDefault() != null ? "checked" : "";
+    <div class="col-sm-4">
+        <div class="form-group">
+            <div style="margin-top: 8px;">
+                <input type="checkbox" class="icheck icheck-input" @selected value="@item.LocationId" /><label>@item.Location</label>
+            </div>
+        </div>
+    </div>
+}

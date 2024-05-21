@@ -1,0 +1,113 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{724B67F7-755E-4ECE-B1C3-A42C0257BC72}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>Garaaz.DbScripts</RootNamespace>
+    <AssemblyName>Garaaz.DbScripts</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="dbup-core, Version=4.3.0.0, Culture=neutral, PublicKeyToken=4b419c53bdfd4cbf, processorArchitecture=MSIL">
+      <HintPath>..\packages\dbup-core.4.3.0\lib\net45\dbup-core.dll</HintPath>
+    </Reference>
+    <Reference Include="dbup-sqlserver, Version=4.3.0.0, Culture=neutral, PublicKeyToken=4b419c53bdfd4cbf, processorArchitecture=MSIL">
+      <HintPath>..\packages\dbup-sqlserver.4.3.0\lib\net35\dbup-sqlserver.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\usp_Dashboard_RoWiseOutstandingDetails.StoredProcedure.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\dbo.getDistributorId.UserDefinedFunction.sql" />
+    <EmbeddedResource Include="Scripts\dbo.getWorkshopId.UserDefinedFunction.sql" />
+    <EmbeddedResource Include="Scripts\dbo.Sp_AvailableStock.StoredProcedure.sql" />
+    <EmbeddedResource Include="Scripts\dbo.Sp_DailySalesData.StoredProcedure.sql" />
+    <EmbeddedResource Include="Scripts\dbo.sp_wallet.StoredProcedure.sql" />
+    <EmbeddedResource Include="Scripts\dbo.usp_Dashboard_CboDetail.StoredProcedure.sql" />
+    <EmbeddedResource Include="Scripts\dbo.usp_Dashboard_CsWiseSaleDetails.StoredProcedure.sql" />
+    <EmbeddedResource Include="Scripts\dbo.usp_Dashboard_CurrentUserAccountLedgers.StoredProcedure.sql" />
+    <EmbeddedResource Include="Scripts\dbo.usp_Dashboard_CurrentUserStocksPrice.StoredProcedure.sql" />
+    <EmbeddedResource Include="Scripts\dbo.usp_Dashboard_CurrentUserWorkshops.StoredProcedure.sql" />
+    <EmbeddedResource Include="Scripts\dbo.usp_Dashboard_RoWiseSaleDetails.StoredProcedure.sql" />
+    <EmbeddedResource Include="Scripts\dbo.usp_Dashboard_Sale_CategoryWise.StoredProcedure.sql" />
+    <EmbeddedResource Include="Scripts\dbo.usp_Dashboard_SeWiseSaleDetails.StoredProcedure.sql" />
+    <EmbeddedResource Include="Scripts\dbo.usp_Dashboard_TargetWorkshops.StoredProcedure.sql" />
+    <EmbeddedResource Include="Scripts\dbo.usp_Dashboard_TotalSaleDetail.StoredProcedure.sql" />
+    <EmbeddedResource Include="Scripts\dbo.usp_ImportAccountLedger.StoredProcedure.sql" />
+    <EmbeddedResource Include="Scripts\dbo.usp_ImportCBOrders.StoredProcedure.sql" />
+    <EmbeddedResource Include="Scripts\dbo.usp_ImportDailySales.StoredProcedure.sql" />
+    <EmbeddedResource Include="Scripts\dbo.usp_ImportDailyStock.StoredProcedure.sql" />
+    <EmbeddedResource Include="Scripts\dbo.usp_ImportOutlets.StoredProcedure.sql" />
+    <EmbeddedResource Include="Scripts\dbo.usp_ImportProduct.StoredProcedure.sql" />
+    <EmbeddedResource Include="Scripts\dbo.usp_ImportWorkshop.StoredProcedure.sql" />
+    <EmbeddedResource Include="Scripts\dbo.usp_SalesAndGrowth.StoredProcedure.sql" />
+    <EmbeddedResource Include="Scripts\Create tables.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\usp_Dashboard_SeWiseOutstandingDetails.StoredProcedure.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\dbo.usp_Dashboard_InventoryDetails.StoredProcedure.sql" />
+    <EmbeddedResource Include="Scripts\dbo.usp_Dashboard_CurrentSaleDetails.StoredProcedure.sql" />
+    <EmbeddedResource Include="Scripts\usp_Dashboard_CollectionDetail.StoredProcedure.sql" />
+    <EmbeddedResource Include="Scripts\dbo.usp_Dashboard_PgWiseSaleDetails.StoredProcedure.sql" />
+    <EmbeddedResource Include="Scripts\usp_Dashboard_WalletDetail.StoredProcedure.sql" />
+    <EmbeddedResource Include="Scripts\usp_Dashboard_CsWiseOutstandingDetails.StoredProcedure.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\usp_Dashboard_CustomerDetail.StoredProcedure.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\dbo.usp_ImportRequestPartFilter.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\usp_SalesAndGrowth_App.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\usp_ShowSalesTrackerWithInvoice.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Scripts\dbo.usp_Dashboard_LooserAndGainersDetails.sql" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

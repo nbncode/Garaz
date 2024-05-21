@@ -1,0 +1,68 @@
+﻿@using Garaaz.Models
+@model List<clsBrand>
+@{
+    /**/
+
+    ViewBag.Title = "Brands";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="kt-subheader-search">
+    <h3 class="kt-subheader-search__title">
+        Brands
+    </h3>
+</div>
+
+<header class="ribbon">
+    <h2>&nbsp;</h2>
+</header>
+<div class="page-content">
+    <div class="container-fluid">
+        <div class="kt-container  kt-container--fluid  kt-grid__item kt-grid__item--fluid">
+            <!--Begin::Section-->
+            <div class="row">
+                @if (Model.Count == 0)
+                {
+                    @:No brands found.
+                }
+
+                @foreach (var brand in Model)
+                {
+                    <div class="col-sm-3">
+                        <a href='@Url.Action("Vehicles","Home",new { @id = brand.BrandId })' class="kt-portlet kt-portlet--height-fluid">
+                            <div class="kt-portlet__head kt-portlet__head--noborder">
+                                <div class="kt-portlet__head-label">
+                                    <h3 class="kt-portlet__head-title"></h3>
+                                </div>
+                            </div>
+                            <div class="kt-portlet__body kt-portlet__body--fit-y">
+                                <!--begin::Widget -->
+                                <div class="kt-widget kt-widget--user-profile-4">
+                                    <div class="kt-widget__head">
+                                        <div class="kt-widget__media">
+                                            <img class="kt-widget__img kt-hidden-" src="@Html.Raw(brand.ImagePath)" alt="image" onerror="changeurl(this)">
+                                        </div>
+                                        <div class="kt-widget__content">
+                                            <div class="kt-widget__section">
+                                                <div class="kt-widget__username">
+                                                    @brand.Name
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--end::Widget -->
+                            </div>
+                            <div class="kt-portlet__head kt-portlet__head--noborder">
+                                <div class="kt-portlet__head-label">
+                                    <h3 class="kt-portlet__head-title"></h3>
+                                </div>
+                            </div>
+                        </a>
+                    </div>
+                }
+            </div>
+            <!--End::Section-->
+        </div>
+    </div>
+</div>

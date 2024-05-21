@@ -1,0 +1,68 @@
+﻿@model List<Garaaz.Models.BackOrderModel>
+
+@{
+
+    <!--begin: Datatable -->
+    <table class="table table-striped- table-bordered table-hover table-checkable datatable" id="kt_table_1">
+        <thead>
+            <tr>
+                <Th>Party Code </Th>
+                <Th>Party Name </Th>
+                <Th>CO No. </Th>
+                <Th>Part Number </Th>
+                <Th>Order </Th>
+                <Th>Part Description </Th>
+                <Th>Location Code </Th>
+                <Th> Order Date </Th>
+                <Th>Part Status </Th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+
+                <tr id="@item.CustomerOrderId">
+                    <td>
+                        @item.PartyCode
+                    </td>
+                    <td>
+                        @item.PartyName
+                    </td>
+                    <td>
+                        @item.CONo
+                    </td>
+                    <td>
+                        @item.PartNum
+                    </td>
+                    <td>
+                        @item.Order
+                    </td>
+                    <td>
+                        @item.PartDesc
+                    </td>
+                    <td>
+                        @item.LocCode
+                    </td>
+                    <td>
+                        @(item.CODate != null ? item.CODate.Value.ToShortDateString() : "")
+                    </td>
+                    <td>
+                        @(string.IsNullOrEmpty(item.PartStatus) ? "Pending" : item.PartStatus)
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+    <!--end: Datatable -->
+}
+<script type="text/javascript">
+    $(document).ready(function () {
+        // for order by desc with column data
+        $('table.datatable').dataTable({
+            "order": [[7, 'desc']]
+        });
+    });
+
+
+</script>

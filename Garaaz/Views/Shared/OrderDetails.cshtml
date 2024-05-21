@@ -1,0 +1,178 @@
+﻿@model ResponseOrderModel
+@using Garaaz.Models
+@{
+    ViewBag.Title = "Order Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section AddToHead{
+    <link href="@Url.Content("~/assets/css/order-details.css")" rel="stylesheet" type="text/css" />
+}
+
+<div class="kt-subheader-search">
+    <h3 class="kt-subheader-search__title">
+        Order Details
+    </h3>
+</div>
+
+<header class="ribbon">
+    <h2>&nbsp;</h2>
+</header>
+
+<div class="page-content">
+    @{Html.RenderPartial("alerts");}
+    <div class="kt-content  kt-grid__item kt-grid__item--fluid" id="kt_content">
+        <div class="row">
+            <div class="col-md-12">
+                <!--begin::Portlet-->
+                <div class="kt-portlet">
+                    <div class="kt-portlet__head">
+                        <div class="kt-portlet__head-label">
+                            <h3 class="kt-portlet__head-title">
+                                Details of your order
+                            </h3>
+                        </div>
+                    </div>
+
+                    <div class="kt-portlet kt-portlet--mobile">
+                        <div class="kt-portlet__body">
+                            @if (Model != null)
+                            {
+                                <div class="kt-invoice-2">
+                                    <div class="kt-invoice__head">
+                                        <div class="kt-invoice__container">
+                                            <div class="kt-invoice__brand">
+                                                <h1 class="kt-invoice__title">ORDER DETAILS</h1>
+
+                                                <div class="kt-invoice__logo">
+                                                    <a href="#"><img src="/assets/images/logo.png" style="width:100px;"></a>
+
+                                                    <span class="kt-invoice__desc">
+                                                        <span>Cecilia Chapman, 711-2880 Nulla St, Mankato</span>
+                                                        <span>Mississippi 96522</span>
+                                                    </span>
+                                                </div>
+                                            </div>
+
+                                            <div class="kt-invoice__items">
+                                                <div class="kt-invoice__item">
+                                                    <span class="kt-invoice__subtitle">DATE</span>
+                                                    <span class="kt-invoice__text">@Model.OrderDate</span>
+                                                </div>
+                                                <div class="kt-invoice__item">
+                                                    <span class="kt-invoice__subtitle">ORDER NO.</span>
+                                                    <span class="kt-invoice__text">@Model.OrderNo</span>
+                                                </div>
+                                                @if (Model.DelAddress != null)
+                                                {
+                                                    <div class="kt-invoice__item">
+                                                        <span class="kt-invoice__subtitle">DELIVER TO</span>
+                                                        <span class="kt-invoice__text">@Model.DelAddress.Address</span>
+                                                        <span>@Model.DelAddress.City @Model.DelAddress.PinCode</span>
+                                                    </div>
+                                                }
+
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="kt-invoice__body">
+                                        <div class="kt-invoice__container">
+                                            <div class="table-responsive">
+                                                <table class="table">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>ITEM</th>
+                                                            <th>PRICE</th>
+                                                            <th>QUANTITY</th>
+                                                            <th>TOTAL</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        @if (Model.OrderDetails != null)
+                                                        {
+                                                            foreach (var od in Model.OrderDetails)
+                                                            {
+                                                                <tr>
+                                                                    <td>@od.ProductName</td>
+                                                                    <td><span class="rupee-sign">@Constants.Sign</span> @od.UnitPrice</td>
+                                                                    <td>@od.Qty</td>
+                                                                    <td class="kt-font-danger kt-font-lg"><span class="rupee-sign">@Constants.Sign</span> @od.TotalPrice</td>
+                                                                </tr>
+                                                            }
+                                                        }
+
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="kt-invoice__footer">
+                                        <div class="kt-invoice__container">
+                                            <div class="col-md-4"></div>
+                                            <div class="col-md-4"></div>
+                                            <div class="col-md-4">
+                                                <table class="table">
+                                                    <tbody>
+                                                        <tr class="cart-summary-subtotal">
+                                                            <td class="cart-summary-label">Sub-Total:</td>
+                                                            <td class="cart-summary-value"><span class="rupee-sign">@Constants.Sign</span> @Model.SubTotal</td>
+                                                        </tr>
+                                                        @if (Model.DeliveryCharge != null)
+                                                        {
+                                                            <tr class="cart-summary-neg">
+                                                                <td class="cart-summary-label">Delivery Charge:</td>
+                                                                <td class="cart-summary-value">
+
+                                                                    <span class="rupee-sign">@Constants.Sign</span> @Model.DeliveryCharge
+
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                        @if (Model.PackingCharge != null)
+                                                        {
+                                                            <tr class="cart-summary-neg">
+                                                                <td class="cart-summary-label">Packing Charge:</td>
+                                                                <td class="cart-summary-value">
+
+                                                                    <span class="rupee-sign">@Constants.Sign</span> @Model.PackingCharge
+
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                        @if (Model.Discount != null)
+                                                        {
+                                                            <tr class="cart-summary-neg">
+                                                                <td class="cart-summary-label">Discount:</td>
+                                                                <td class="cart-summary-value">
+
+                                                                    <span class="rupee-sign">@Constants.Sign</span> @Model.Discount
+
+                                                                </td>
+                                                            </tr>
+                                                        }
+                                                        <tr class="cart-summary-total">
+                                                            <td class="kt-font-xl kt-font-boldest cart-summary-label">Order Total:</td>
+                                                            <td class="kt-font-danger kt-font-xl kt-font-boldest cart-summary-value"><span class="rupee-sign">@Constants.Sign</span> @Model.OrderTotal</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            else
+                            {
+                                <h3>Order details not found.</h3>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
